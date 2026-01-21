@@ -488,12 +488,12 @@ const Work = () => {
                 "min-[1100px]:h-224",
               )}
             >
-              <div className="work-inner absolute left-2 top-0 h-full w-[calc(100%-1rem)] bg-dark">
-                <div className="work-content relative h-full p-12">
+              <div className="work-inner absolute left-2 top-0 flex h-full w-[calc(100%-1rem)] flex-col overflow-hidden rounded-[0.2rem] bg-dark">
+                <div className="work-content relative flex-1 p-12">
                   <h2
                     className={cn(
                       "work-title absolute left-12 top-12 font-heading text-[3.2rem] leading-[100%]",
-                      "origin-top-left scale-[0.6] translate-x-[-1.4rem] translate-y-[-1.4rem]",
+                      "origin-top-left scale-[0.6] w-full translate-x-[-1.4rem] translate-y-[-1.4rem]",
                       "transition-transform duration-1000 ease-ease",
                       "group-[.active]/col:scale-100 group-[.active]/col:translate-x-0 group-[.active]/col:translate-y-0",
                     )}
@@ -502,7 +502,7 @@ const Work = () => {
                   </h2>
                   <p
                     data-work-featured-text
-                    className="work-text absolute left-12 top-[8.2rem] w-240 text-[1.4rem] leading-[140%] opacity-50"
+                    className="work-text absolute left-12 top-[8.2rem] w-154 text-[1.4rem] leading-[140%] opacity-50"
                   >
                     {INTRO_TEXT}
                   </p>

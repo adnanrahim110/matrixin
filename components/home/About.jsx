@@ -292,7 +292,7 @@ const About = () => {
           <h2
             ref={titleRef}
             className={cn(
-              "about-title font-heading text-[24rem] leading-[80%]",
+              "about-title font-heading text-[18rem] leading-[80%]",
               "max-[1099px]:mb-8 max-[1099px]:text-[12.4rem] max-[1099px]:leading-[100%]",
             )}
           >
