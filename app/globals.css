@@ -60,3 +60,76 @@
     display: none;
   }
 }
+
+@layer components {
+  #work .work-grid,
+  #work .work-list {
+    @apply relative w-full transition-opacity duration-400 ease-ease;
+  }
+
+  #work .work-grid:not(.active),
+  #work .work-list:not(.active) {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  #work .work-grid:not(.loaded),
+  #work .work-list:not(.loaded) {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #work .project.inactive {
+    display: none;
+  }
+
+  #work .split-hover {
+    position: relative;
+    display: block;
+    overflow: hidden;
+  }
+
+  #work .split-hover .line {
+    display: block;
+    transition: transform 0.8s var(--ease-ease);
+  }
+
+  #work .split-hover .line-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(110%);
+  }
+
+  #work .work-filter-select-text:hover .line-normal,
+  #work .work-filter-btn:hover .line-normal,
+  #work .work-switcher-option:hover .line-normal {
+    transform: translateY(-110%);
+  }
+
+  #work .work-filter-select-text:hover .line-hover,
+  #work .work-filter-btn:hover .line-hover,
+  #work .work-switcher-option:hover .line-hover {
+    transform: translateY(0%);
+  }
+
+  #work .work-switcher-option.active .work-switcher-bg {
+    background: #fff3;
+  }
+
+  #work .split-lines .word {
+    display: inline-block;
+  }
+
+  #work .split-lines .line {
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #work .split-lines .line-inner {
+    display: block;
+    will-change: transform;
+  }
+}

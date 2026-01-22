@@ -97,7 +97,7 @@ const Header = ({ menuOpen = false, onToggleMenu }) => {
 
   const links = useMemo(
     () => [
-      { label: "Work", href: "/portfolio" },
+      { label: "Work", href: "/work" },
       { label: "About", href: "/about-us" },
       { label: "Services", href: "/services" },
       { label: "Contact", href: "/contact-us" },

@@ -29,47 +29,65 @@ const CloseIcon = () => (
 );
 
 const FOOTER_LETTERS = {
-  E: [
-    { x: 15, y: 56, scale: 2.6 },
-    { x: 34, y: 30, scale: 0.8 },
-    { x: 77, y: 27, scale: 1.6 },
-    { x: 39, y: 14, scale: 0.7 },
-  ],
-  s: [
-    { x: 39, y: 74, scale: 1 },
-    { x: 72, y: 44, scale: 2.7 },
-    { x: 66, y: 65, scale: 1.6 },
-    { x: 66, y: 54, scale: 2.6 },
-  ],
-  t: [
-    { x: 81, y: 61, scale: 1.9 },
-    { x: 53, y: 17, scale: 1.3 },
-    { x: 26, y: 62, scale: 2.5 },
-    { x: 52, y: 70, scale: 0.6 },
-  ],
-  r: [
-    { x: 73, y: 30, scale: 2.5 },
-    { x: 18, y: 30, scale: 1.7 },
-    { x: 74, y: 45, scale: 0.6 },
-    { x: 52, y: 20, scale: 1.8 },
-  ],
-  e: [
-    { x: 60, y: 12, scale: 0.7 },
-    { x: 30, y: 66, scale: 2.2 },
-    { x: 54, y: 26, scale: 1.4 },
-    { x: 33, y: 70, scale: 2 },
-  ],
-  l: [
-    { x: 40, y: 20, scale: 1.4 },
-    { x: 64, y: 71, scale: 1.6 },
-    { x: 36, y: 40, scale: 0.6 },
-    { x: 20, y: 30, scale: 2.5 },
+  M: [
+    { x: 12, y: 58, scale: 2.6 },
+    { x: 30, y: 18, scale: 1.0 },
+    { x: 70, y: 22, scale: 1.9 },
+    { x: 42, y: 10, scale: 0.9 },
   ],
   a: [
-    { x: 55, y: 30, scale: 1.5 },
-    { x: 49, y: 60, scale: 0.6 },
-    { x: 19, y: 20, scale: 2.5 },
-    { x: 80, y: 20, scale: 1 },
+    { x: 22, y: 78, scale: 1.1 },
+    { x: 80, y: 52, scale: 2.4 },
+    { x: 58, y: 62, scale: 1.6 },
+    { x: 66, y: 36, scale: 2.2 },
+  ],
+  r: [
+    { x: 74, y: 30, scale: 2.2 },
+    { x: 18, y: 34, scale: 1.6 },
+    { x: 72, y: 46, scale: 0.9 },
+    { x: 46, y: 18, scale: 1.8 },
+  ],
+  k: [
+    { x: 86, y: 62, scale: 2.0 },
+    { x: 54, y: 20, scale: 1.4 },
+    { x: 26, y: 62, scale: 2.5 },
+    { x: 56, y: 72, scale: 0.8 },
+  ],
+  e: [
+    { x: 60, y: 12, scale: 0.9 },
+    { x: 28, y: 66, scale: 2.3 },
+    { x: 52, y: 28, scale: 1.5 },
+    { x: 36, y: 74, scale: 2.0 },
+  ],
+  t: [
+    { x: 10, y: 22, scale: 1.8 },
+    { x: 64, y: 18, scale: 1.1 },
+    { x: 84, y: 44, scale: 2.4 },
+    { x: 40, y: 12, scale: 0.9 },
+  ],
+  i1: [
+    { x: 42, y: 30, scale: 1.2 },
+    { x: 18, y: 52, scale: 2.0 },
+    { x: 58, y: 46, scale: 1.0 },
+    { x: 30, y: 18, scale: 1.6 },
+  ],
+  n: [
+    { x: 78, y: 70, scale: 1.8 },
+    { x: 40, y: 58, scale: 2.4 },
+    { x: 66, y: 38, scale: 1.2 },
+    { x: 22, y: 66, scale: 2.0 },
+  ],
+  i2: [
+    { x: 56, y: 80, scale: 1.2 },
+    { x: 74, y: 40, scale: 2.0 },
+    { x: 34, y: 24, scale: 1.1 },
+    { x: 84, y: 22, scale: 1.7 },
+  ],
+  x: [
+    { x: 88, y: 18, scale: 1.4 },
+    { x: 22, y: 18, scale: 2.3 },
+    { x: 70, y: 58, scale: 1.2 },
+    { x: 46, y: 44, scale: 2.0 },
   ],
 };
 
@@ -122,7 +140,7 @@ const Footer = () => {
   const links = useMemo(
     () => [
       { label: "Home", href: "/" },
-      { label: "Work", href: "/portfolio" },
+      { label: "Work", href: "/work" },
       { label: "About", href: "/about-us" },
       { label: "Services", href: "/services" },
       { label: "Privacy Policy", href: "/privacy-policy" },
@@ -269,13 +287,16 @@ const Footer = () => {
     const ctx = gsap.context(() => {
       mm.add("(min-width: 1100px)", () => {
         const letterEls = {
-          E: footer.querySelector(".f-letter-E"),
-          s: footer.querySelector(".f-letter-s"),
-          t: footer.querySelector(".f-letter-t"),
-          r: footer.querySelector(".f-letter-r"),
-          e: footer.querySelector(".f-letter-e"),
-          l: footer.querySelector(".f-letter-l"),
+          M: footer.querySelector(".f-letter-M"),
           a: footer.querySelector(".f-letter-a"),
+          r: footer.querySelector(".f-letter-r"),
+          k: footer.querySelector(".f-letter-k"),
+          e: footer.querySelector(".f-letter-e"),
+          t: footer.querySelector(".f-letter-t"),
+          i1: footer.querySelector(".f-letter-i1"),
+          n: footer.querySelector(".f-letter-n"),
+          i2: footer.querySelector(".f-letter-i2"),
+          x: footer.querySelector(".f-letter-x"),
         };
 
         const ensureLetterTl = () => {

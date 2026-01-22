@@ -85,7 +85,15 @@ const Hero = () => {
     const scroll = scrollRef.current;
     const icon = iconRef.current;
 
-    if (!el || !bg || !titleLeft || !titleRight || !lineLeft || !lineRight || !icon)
+    if (
+      !el ||
+      !bg ||
+      !titleLeft ||
+      !titleRight ||
+      !lineLeft ||
+      !lineRight ||
+      !icon
+    )
       return;
 
     const ctx = gsap.context(() => {
@@ -106,7 +114,11 @@ const Hero = () => {
             filter: "blur(2rem)",
           });
           if (!isMobile && scroll) {
-            gsap.set(scroll, { yPercent: 100, autoAlpha: 0, filter: "blur(2rem)" });
+            gsap.set(scroll, {
+              yPercent: 100,
+              autoAlpha: 0,
+              filter: "blur(2rem)",
+            });
           }
           gsap.set(icon, { scale: 1.8 });
 
@@ -119,18 +131,24 @@ const Hero = () => {
             icon,
             { scale: 1.8 },
             { scale: 1, duration: 2, ease: "expo.out" },
-            0
+            0,
           );
 
           introTl.fromTo(
             bg,
             { filter: "blur(2rem)", autoAlpha: 0 },
-            { filter: "blur(0rem)", autoAlpha: 1, duration: 2, ease: "power3.out" },
-            0.2
+            {
+              filter: "blur(0rem)",
+              autoAlpha: 1,
+              duration: 2,
+              ease: "power3.out",
+            },
+            0.2,
           );
 
           introTl.moveBlur([lineLeft, lineRight], { stagger: 0.08 }, 0.1);
-          if (!isMobile && scroll) introTl.moveBlur(scroll, { duration: 1 }, 0.2);
+          if (!isMobile && scroll)
+            introTl.moveBlur(scroll, { duration: 1 }, 0.2);
 
           const stTl = gsap.timeline({
             scrollTrigger: {
@@ -160,7 +178,7 @@ const Hero = () => {
                 x: () => window.innerWidth * 0.45 - titleLeft.offsetWidth,
                 duration: 0.7,
               },
-              0
+              0,
             );
             stTl.to(
               titleRight,
@@ -168,14 +186,14 @@ const Hero = () => {
                 x: () => -(window.innerWidth * 0.45 - titleRight.offsetWidth),
                 duration: 0.7,
               },
-              0
+              0,
             );
             if (scroll) {
               stTl.fromTo(
                 scroll,
                 { autoAlpha: 1 },
                 { autoAlpha: 0, duration: 1, overwrite: "auto" },
-                0
+                0,
               );
             }
           }
@@ -185,7 +203,7 @@ const Hero = () => {
             stTl.kill();
             introTl.kill();
           };
-        }
+        },
       );
 
       return () => {
@@ -222,7 +240,7 @@ const Hero = () => {
         </div>
       </figure>
 
-      <h1 className="relative z-[2] flex w-full justify-between px-[2rem] font-heading text-[5.4rem] leading-[100%] max-[1099px]:absolute max-[1099px]:bottom-[2rem] max-[1099px]:left-0 max-[1099px]:flex-col max-[1099px]:text-center max-[1099px]:leading-[120%]">
+      <h1 className="relative z-2 flex w-full justify-between px-8 font-heading text-[5.4rem] leading-[100%] max-[1099px]:absolute max-[1099px]:bottom-8 max-[1099px]:left-0 max-[1099px]:flex-col max-[1099px]:text-center max-[1099px]:leading-[120%]">
         <span ref={titleLeftRef} className="hero-title-left">
           <span ref={lineLeftRef} className="block">
             A people first
@@ -237,13 +255,13 @@ const Hero = () => {
 
       <div
         ref={iconRef}
-        className="pointer-events-none absolute left-1/2 top-1/2 z-[2] h-[7.2rem] w-[7.2rem] -translate-x-1/2 -translate-y-1/2 text-light [&_path]:fill-light"
+        className="pointer-events-none absolute left-1/2 top-1/2 z-2 h-[7.2rem] w-[7.2rem] -translate-x-1/2 -translate-y-1/2 text-light [&_path]:fill-light"
         aria-hidden="true"
       />
 
       <span
         ref={scrollRef}
-        className="pointer-events-none absolute bottom-[3rem] left-1/2 z-[2] -translate-x-1/2 text-[1.4rem] min-[1100px]:block max-[1099px]:hidden"
+        className="pointer-events-none absolute bottom-12 left-1/2 z-2 -translate-x-1/2 text-[1.4rem] min-[1100px]:block max-[1099px]:hidden"
       >
         Scroll to discover our world
       </span>

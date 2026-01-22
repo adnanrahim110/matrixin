@@ -264,7 +264,7 @@ export default function MegaMenu({ open, onClose }) {
   const links = useMemo(
     () => [
       { label: "Home", href: "/" },
-      { label: "Work", href: "/portfolio" },
+      { label: "Work", href: "/work" },
       { label: "About", href: "/about-us" },
       { label: "Services", href: "/services" },
     ],

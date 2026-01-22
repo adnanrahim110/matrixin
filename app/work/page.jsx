@@ -1,7 +1,5 @@
 import WorkArchive from "@/components/work/WorkArchive";
 
-const PortfolioPage = () => {
+export default function WorkPage() {
   return <WorkArchive />;
-};
-
-export default PortfolioPage;
+}

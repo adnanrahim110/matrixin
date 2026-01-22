@@ -2,7 +2,11 @@
 
 import { useEffect, useRef } from "react";
 
-const BorderGlowCanvas = ({ enabled = true, color = "215, 150, 255", size = 100 }) => {
+const BorderGlowCanvas = ({
+  enabled = true,
+  color = "215, 150, 255",
+  size = 100,
+}) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -110,7 +114,7 @@ const BorderGlowCanvas = ({ enabled = true, color = "215, 150, 255", size = 100 
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-[2] h-full w-full"
+      className="pointer-events-none absolute inset-0 z-2 h-full w-full"
     />
   );
 };
