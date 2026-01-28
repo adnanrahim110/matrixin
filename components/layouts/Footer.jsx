@@ -8,6 +8,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
 
+import Button from "../ui/Button";
 import EstrelaFooterLogo from "./EstrelaFooterLogo";
 import EstrelaFooterOverlay from "./EstrelaFooterOverlay";
 import { useNewsletter } from "./NewsletterContext";
@@ -543,57 +544,9 @@ const Footer = () => {
           </div>
 
           <div className="f-right mt-[2.4rem] mr-8 w-176 max-[1099px]:mt-auto max-[1099px]:mr-0 max-[1099px]:flex max-[1099px]:w-auto max-[1099px]:flex-col max-[1099px]:p-[2rem_2rem_0]">
-            <div
-              data-footer-btn-block
-              className={cn(
-                "btn-block group/btnblock relative mb-8 flex h-48 w-full items-center justify-center overflow-hidden rounded-[0.2rem]",
-                "bg-[rgba(247,247,247,0.1)]",
-                "before:content-[''] before:absolute before:inset-0 before:z-0 before:rounded-[0.2rem] before:bg-green",
-                "before:[clip-path:inset(0_0_102%_0)] before:transition-[clip-path] before:duration-600 before:ease-ease",
-                "[&.active]:before:[clip-path:inset(0_0_0%_0)] active:before:[clip-path:inset(0_0_0%_0)]",
-                "max-[1099px]:order-2 max-[1099px]:mb-0 max-[1099px]:mt-12",
-              )}
-            >
-              <Link
-                href="/contact-us"
-                aria-label="Contact Us"
-                className="btn-block-link absolute inset-0 z-1 block"
-                data-footer-btn-block-link
-              />
-
-              <span
-                data-footer-btn
-                className="btn pointer-events-none relative z-1 inline-flex h-12 items-center overflow-hidden rounded-[0.4rem] bg-transparent px-[2.2rem] text-light"
-              >
-                <span
-                  aria-hidden="true"
-                  className={cn(
-                    "btn-bg absolute left-[-1%] top-[-1%] z-0 h-[102%] w-[102%] bg-dark",
-                    "-translate-y-[102%] transition-transform duration-300 ease-ease",
-                    "group-[.active]/btnblock:translate-y-0 group-active/btnblock:translate-y-0",
-                    "group-[.active]/btnblock:duration-400 group-active/btnblock:duration-400",
-                  )}
-                />
-                <span
-                  className={cn(
-                    "btn-text relative z-1 mr-[2.7rem] transition-transform duration-600 ease-ease",
-                    "group-[.active]/btnblock:translate-x-[2.7rem] group-active/btnblock:translate-x-[2.7rem]",
-                  )}
-                >
-                  Contact Us
-                </span>
-                <span
-                  aria-hidden="true"
-                  className={cn(
-                    "btn-dot absolute left-[1.8rem] top-[calc(50%-0.4rem)] h-[0.8rem] w-[calc(100%-4rem)] transition-transform duration-600 ease-ease",
-                    "group-[.active]/btnblock:translate-x-[calc(-100%+0.4rem)] group-active/btnblock:translate-x-[calc(-100%+0.4rem)]",
-                  )}
-                >
-                  <span className="btn-dot-inner absolute right-0 top-[calc(50%-0.2rem)] block h-[0.4rem] w-[0.4rem] rotate-45 rounded-[0.1rem] bg-green transition-colors duration-600 ease-ease" />
-                </span>
-              </span>
-            </div>
-
+            <Button variant="magnetic" tone="green">
+              Contact Us
+            </Button>
             <div className="f-contact flex justify-between pr-8 max-[1099px]:flex-col max-[1099px]:pr-0">
               <div className="f-contact-inner max-[1099px]:order-2">
                 <p className="f-contact-text mb-[1.8rem] text-[1.6rem] leading-[160%] opacity-50">

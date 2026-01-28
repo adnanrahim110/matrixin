@@ -5,6 +5,7 @@ import { memo, useLayoutEffect, useRef } from "react";
 
 import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
+import Button from "../ui/Button";
 
 const SERVICES_TITLE = "What we do";
 
@@ -406,38 +407,7 @@ const Services = () => {
               </h3>
             </div>
 
-            <a
-              href={CTA.href}
-              className={cn(
-                "btn group relative inline-flex h-16 items-center overflow-hidden rounded-[0.4rem] px-[2.2rem]",
-                "bg-[rgba(188,188,188,0.1)] text-dark transition-colors duration-300 ease-ease",
-                "hover:text-light",
-              )}
-            >
-              <span
-                className={cn(
-                  "btn-bg absolute left-[-1%] top-[-1%] z-0 h-[102%] w-[102%] bg-dark",
-                  "-translate-y-[102%] transition-transform duration-300 ease-ease",
-                  "group-hover:translate-y-0 group-hover:duration-400",
-                )}
-              />
-              <span
-                className={cn(
-                  "btn-text relative z-1 mr-[2.7rem] transition-transform duration-600 ease-ease",
-                  "group-hover:translate-x-[2.7rem]",
-                )}
-              >
-                {CTA.label}
-              </span>
-              <span
-                className={cn(
-                  "btn-dot absolute left-[1.8rem] top-[calc(50%-0.4rem)] h-[0.8rem] w-[calc(100%-4rem)] transition-transform duration-600 ease-ease",
-                  "group-hover:translate-x-[calc(-100%+0.4rem)]",
-                )}
-              >
-                <span className="btn-dot-inner absolute right-0 top-[calc(50%-0.2rem)] block h-[0.4rem] w-[0.4rem] rotate-45 rounded-[0.1rem] bg-yellow transition-colors duration-600 ease-ease" />
-              </span>
-            </a>
+            <Button href={CTA.href}>{CTA.label}</Button>
           </div>
         </div>
       </div>

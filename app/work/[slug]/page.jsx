@@ -1,7 +1,8 @@
 import Link from "next/link";
 
-export default function WorkProjectPage({ params }) {
-  const slug = decodeURIComponent(params?.slug || "");
+export default async function WorkProjectPage({ params }) {
+  const resolvedParams = await params;
+  const slug = decodeURIComponent(resolvedParams?.slug || "");
 
   return (
     <section data-theme="dark" className="px-8 pb-40 pt-40">

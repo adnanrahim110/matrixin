@@ -5,6 +5,7 @@ import { memo, useLayoutEffect, useRef } from "react";
 
 import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
+import Button from "../ui/Button";
 
 const WORK_ITEMS = [
   {
@@ -57,7 +58,6 @@ const Work = () => {
   const sectionRef = useRef(null);
   const cursorBtnRef = useRef(null);
   const gridRef = useRef(null);
-  const allWorkBlockRef = useRef(null);
 
   useLayoutEffect(() => {
     ensureGsap();
@@ -65,7 +65,6 @@ const Work = () => {
     const section = sectionRef.current;
     const cursorBtn = cursorBtnRef.current;
     const grid = gridRef.current;
-    const allWorkBlock = allWorkBlockRef.current;
 
     if (!section || !cursorBtn || !grid) return;
 
@@ -149,7 +148,6 @@ const Work = () => {
       let bounds = section.getBoundingClientRect();
       let cursorBtnBounds = cursorBtn.getBoundingClientRect();
       let tl = null;
-      const btnBlockCleanups = [];
 
       const cols = Array.from(grid.querySelectorAll("[data-work-col]"));
       const wrappers = cols.map((col) => col.querySelector("[data-work-wrap]"));
@@ -245,44 +243,6 @@ const Work = () => {
       reset();
       setActive(0);
 
-      section.querySelectorAll("[data-btn-block]").forEach((block) => {
-        const target = block.querySelector("[data-btn-block-link]");
-        const btn = block.querySelector("[data-btn]");
-        if (!target || !btn) return;
-
-        const x = gsap.quickTo(btn, "x", {
-          duration: 0.6,
-          ease: "power3.out",
-          overwrite: "auto",
-        });
-        const y = gsap.quickTo(btn, "y", {
-          duration: 0.6,
-          ease: "power3.out",
-          overwrite: "auto",
-        });
-
-        const onMove = (event) => {
-          block.classList.add("active");
-          const r = target.getBoundingClientRect();
-          x(event.clientX - r.left - r.width * 0.5);
-          y(event.clientY - r.top - r.height * 0.5);
-        };
-        const onLeave = () => {
-          block.classList.remove("active");
-          x(0);
-          y(0);
-        };
-
-        block.addEventListener("mousemove", onMove);
-        block.addEventListener("mouseleave", onLeave);
-
-        btnBlockCleanups.push(() => {
-          block.removeEventListener("mousemove", onMove);
-          block.removeEventListener("mouseleave", onLeave);
-          block.classList.remove("active");
-        });
-      });
-
       const onMouseMove = (event) => {
         const target = event.target;
         if (!(target instanceof Element)) return;
@@ -343,7 +303,8 @@ const Work = () => {
         section.removeEventListener("mousemove", onMouseMove);
         section.removeEventListener("mouseleave", onMouseLeave);
         window.removeEventListener("resize", onResize);
-        btnBlockCleanups.forEach((cleanup) => cleanup());
+        section.removeEventListener("mouseleave", onMouseLeave);
+        window.removeEventListener("resize", onResize);
         tl?.kill();
         revertFeaturedText?.();
       };
@@ -359,7 +320,7 @@ const Work = () => {
 
     return () => {
       mm.revert();
-      allWorkBlock?.classList.remove("active");
+      mm.revert();
     };
   }, []);
 
@@ -508,55 +469,14 @@ const Work = () => {
                   </p>
                 </div>
 
-                <div
-                  data-btn-block
-                  className={cn(
-                    "btn-block group/btnblock relative mx-4 mb-4 mt-auto flex min-h-80 w-[calc(100%-2rem)] items-center justify-center overflow-hidden rounded-[0.2rem]",
-                    "bg-[rgba(247,247,247,0.1)]",
-                    "before:content-[''] before:absolute before:inset-0 before:z-0 before:rounded-[0.2rem] before:bg-(--hoverColor)",
-                    "before:[clip-path:inset(0_0_102%_0)] before:transition-[clip-path] before:duration-600 before:ease-ease",
-                    "[&.active]:before:[clip-path:inset(0_0_0%_0)] active:before:[clip-path:inset(0_0_0%_0)]",
-                  )}
-                  style={{ "--hoverColor": "var(--color-purple)" }}
+                <Button
+                  href="/work"
+                  variant="magnetic"
+                  tone="purple"
+                  className="mx-4 mb-4 mt-auto min-h-80 w-[calc(100%-2rem)]"
                 >
-                  <a
-                    data-btn-block-link
-                    className="btn-block-link absolute inset-0 z-1 block"
-                    href="/work"
-                    aria-label="All Work"
-                  />
-                  <span
-                    data-btn
-                    className={cn(
-                      "btn pointer-events-none relative z-1 inline-flex h-12 items-center overflow-hidden rounded-[0.4rem] bg-transparent px-[2.2rem] text-light",
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        "btn-bg absolute left-[-1%] top-[-1%] z-0 h-[102%] w-[102%] bg-dark",
-                        "-translate-y-[102%] transition-transform duration-300 ease-ease",
-                        "group-[.active]/btnblock:translate-y-0 group-active/btnblock:translate-y-0",
-                        "group-[.active]/btnblock:duration-400 group-active/btnblock:duration-400",
-                      )}
-                    />
-                    <span
-                      className={cn(
-                        "btn-text relative z-1 mr-[2.7rem] transition-transform duration-600 ease-ease",
-                        "group-[.active]/btnblock:translate-x-[2.7rem] group-active/btnblock:translate-x-[2.7rem]",
-                      )}
-                    >
-                      All Work
-                    </span>
-                    <span
-                      className={cn(
-                        "btn-dot absolute left-[1.8rem] top-[calc(50%-0.4rem)] h-[0.8rem] w-[calc(100%-4rem)] transition-transform duration-600 ease-ease",
-                        "group-[.active]/btnblock:translate-x-[calc(-100%+0.4rem)] group-active/btnblock:translate-x-[calc(-100%+0.4rem)]",
-                      )}
-                    >
-                      <span className="btn-dot-inner absolute right-0 top-[calc(50%-0.2rem)] block h-[0.4rem] w-[0.4rem] rotate-45 rounded-[0.1rem] bg-purple transition-colors duration-600 ease-ease" />
-                    </span>
-                  </span>
-                </div>
+                  All Work
+                </Button>
               </div>
             </div>
           </div>
@@ -615,57 +535,14 @@ const Work = () => {
         </div>
       </div>
 
-      <div
-        ref={allWorkBlockRef}
-        data-btn-block
-        className={cn(
-          "btn-block group/btnblock relative mt-16 hidden min-h-56 w-[calc(100%-4rem)] items-center justify-center overflow-hidden rounded-[0.2rem] max-[1099px]:flex max-[1099px]:ml-8",
-          "bg-[rgba(247,247,247,0.1)]",
-          "before:content-[''] before:absolute before:inset-0 before:z-0 before:rounded-[0.2rem] before:bg-(--hoverColor)",
-          "before:[clip-path:inset(0_0_102%_0)] before:transition-[clip-path] before:duration-600 before:ease-ease",
-          "[&.active]:before:[clip-path:inset(0_0_0%_0)] active:before:[clip-path:inset(0_0_0%_0)]",
-        )}
-        style={{ "--hoverColor": "var(--color-purple)" }}
+      <Button
+        href="/work"
+        variant="magnetic"
+        tone="purple"
+        className="mt-16 ml-8 hidden min-h-56 w-[calc(100%-4rem)] max-[1099px]:flex"
       >
-        <a
-          data-btn-block-link
-          className="btn-block-link absolute inset-0 z-1 block bottom-0"
-          href="/work"
-          aria-label="All Work"
-        >
-          <span
-            data-btn
-            className={cn(
-              "btn pointer-events-none relative z-1 inline-flex h-16 items-center overflow-hidden rounded-[0.4rem] bg-transparent px-[2.2rem] text-light",
-            )}
-          >
-            <span
-              className={cn(
-                "btn-bg absolute left-[-1%] top-[-1%] z-0 h-[102%] w-[102%] bg-dark",
-                "-translate-y-[102%] transition-transform duration-300 ease-ease",
-                "group-[.active]/btnblock:translate-y-0 group-active/btnblock:translate-y-0",
-                "group-[.active]/btnblock:duration-400 group-active/btnblock:duration-400",
-              )}
-            />
-            <span
-              className={cn(
-                "btn-text relative z-1 mr-[2.7rem] transition-transform duration-600 ease-ease",
-                "group-[.active]/btnblock:translate-x-[2.7rem] group-active/btnblock:translate-x-[2.7rem]",
-              )}
-            >
-              All Work
-            </span>
-            <span
-              className={cn(
-                "btn-dot absolute left-[1.8rem] top-[calc(50%-0.4rem)] h-[0.8rem] w-[calc(100%-4rem)] transition-transform duration-600 ease-ease",
-                "group-[.active]/btnblock:translate-x-[calc(-100%+0.4rem)] group-active/btnblock:translate-x-[calc(-100%+0.4rem)]",
-              )}
-            >
-              <span className="btn-dot-inner absolute right-0 top-[calc(50%-0.2rem)] block h-[0.4rem] w-[0.4rem] rotate-45 rounded-[0.1rem] bg-purple transition-colors duration-600 ease-ease" />
-            </span>
-          </span>
-        </a>
-      </div>
+        All Work
+      </Button>
     </section>
   );
 };

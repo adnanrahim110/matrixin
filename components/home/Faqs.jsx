@@ -7,6 +7,7 @@ import { memo, useLayoutEffect, useMemo, useRef, useState } from "react";
 import BorderGlowCanvas from "@/components/ui/BorderGlowCanvas";
 import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
+import { usePrefersReducedMotion } from "@/utils/usePrefersReducedMotion";
 
 const FAQS_TITLE = "FAQs";
 
@@ -112,21 +113,42 @@ const splitLines = (element, innerClassName) => {
   };
 };
 
-const Faqs = () => {
+const Faqs = ({ title, items: itemsProp, light = false }) => {
+  const reducedMotion = usePrefersReducedMotion();
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const itemRefs = useRef([]);
   const splitRefs = useRef([]);
   const tlRefs = useRef([]);
 
-  const [openMap, setOpenMap] = useState(() => FAQS.map(() => false));
+  const isLight = Boolean(light);
+  const glowColor = isLight ? "34, 34, 32" : "251, 251, 244";
+  const borderOuter = isLight ? "border-dark/20" : "border-white/20";
+  const borderInner = isLight ? "border-dark/10" : "border-white/10";
+  const plusColor = isLight ? "bg-dark/60" : "bg-white/60";
+  const answerColor = isLight ? "text-dark/60" : "text-light/50";
+
+  const initialItems =
+    Array.isArray(itemsProp) && itemsProp.length ? itemsProp : FAQS;
+
+  const [openMap, setOpenMap] = useState(() => initialItems.map(() => false));
   const openMapRef = useRef(openMap);
 
-  const items = useMemo(() => FAQS, []);
+  const items = useMemo(() => initialItems, [itemsProp]);
 
   useLayoutEffect(() => {
     openMapRef.current = openMap;
   }, [openMap]);
+
+  useLayoutEffect(() => {
+    setOpenMap(items.map(() => false));
+    openMapRef.current = items.map(() => false);
+    itemRefs.current = [];
+    splitRefs.current.forEach((split) => split?.revert?.());
+    splitRefs.current = [];
+    tlRefs.current.forEach((tl) => tl?.kill?.());
+    tlRefs.current = [];
+  }, [items]);
 
   useLayoutEffect(() => {
     ensureGsap();
@@ -142,7 +164,14 @@ const Faqs = () => {
           start: "top+=30% bottom",
         },
       });
-      titleTl.moveBlur(titleEl, { yPercent: 110 });
+
+      if (reducedMotion) {
+        titleTl.scrollTrigger?.kill?.();
+        titleTl.kill();
+        gsap.set(titleEl, { autoAlpha: 1, filter: "blur(0rem)", yPercent: 0 });
+      } else {
+        titleTl.moveBlur(titleEl, { yPercent: 110 });
+      }
 
       const setupItems = () => {
         itemRefs.current.forEach((faqEl, index) => {
@@ -224,7 +253,7 @@ const Faqs = () => {
     }, section);
 
     return () => ctx.revert();
-  }, []);
+  }, [items, reducedMotion]);
 
   const toggleFaq = (index) => {
     const faqEl = itemRefs.current[index];
@@ -251,6 +280,10 @@ const Faqs = () => {
 
     const collapsedHeight = remToPx(7.5);
 
+    const dur = reducedMotion ? 0.01 : 0.8;
+    const durLong = reducedMotion ? 0.01 : 1.4;
+    const ease = reducedMotion ? "none" : "power4.out";
+
     const tl = gsap.timeline({
       defaults: { overwrite: "auto" },
       onComplete: () => {
@@ -262,17 +295,17 @@ const Faqs = () => {
       tl.add(() => faqEl.classList.add("active"), 0);
       tl.to(
         isMobile ? answerWrapper : inner,
-        { height: "auto", duration: 0.8, ease: "power4.out" },
+        { height: "auto", duration: dur, ease },
         0,
       );
-      tl.to(answer, { yPercent: 0, duration: 1.4, ease: "power4.out" }, 0);
+      tl.to(answer, { yPercent: 0, duration: durLong, ease }, 0);
       tl.to(
         split.inlines,
         {
           yPercent: 0,
-          duration: 1.4,
-          ease: "power4.out",
-          stagger: 0.05,
+          duration: durLong,
+          ease,
+          stagger: reducedMotion ? 0 : 0.05,
         },
         0,
       );
@@ -282,19 +315,19 @@ const Faqs = () => {
         isMobile ? answerWrapper : inner,
         {
           height: isMobile ? 0 : collapsedHeight,
-          duration: 0.8,
-          ease: "power4.out",
+          duration: dur,
+          ease,
         },
         0,
       );
-      tl.to(answer, { yPercent: 10, duration: 1.4, ease: "power4.out" }, 0);
+      tl.to(answer, { yPercent: 10, duration: durLong, ease }, 0);
       tl.to(
         split.inlines,
         {
           yPercent: 110,
-          duration: 1.4,
-          ease: "power4.out",
-          stagger: 0.05,
+          duration: durLong,
+          ease,
+          stagger: reducedMotion ? 0 : 0.05,
         },
         0,
       );
@@ -306,8 +339,13 @@ const Faqs = () => {
   return (
     <section
       ref={sectionRef}
-      data-theme="dark"
-      className={cn("faqs relative", "pt-84 pb-64", "max-[1099px]:py-48")}
+      data-theme={isLight ? "light" : "dark"}
+      className={cn(
+        "faqs relative",
+        isLight && "bg-light text-dark border-t border-dark/10",
+        "pt-84 pb-64",
+        "max-[1099px]:py-48",
+      )}
     >
       <h2
         ref={titleRef}
@@ -317,7 +355,7 @@ const Faqs = () => {
           "max-[1099px]:ml-12 max-[1099px]:mb-[4.2rem] max-[1099px]:text-[7.4rem] max-[1099px]:leading-[110%]",
         )}
       >
-        {FAQS_TITLE}
+        {title || FAQS_TITLE}
       </h2>
 
       <div className={cn("faqs-inner px-[13.7rem]", "max-[1099px]:px-8")}>
@@ -336,11 +374,12 @@ const Faqs = () => {
                 aria-hidden="true"
                 className={cn(
                   "faq-border absolute left-0 top-0 h-0.5 w-full",
-                  "border-t border-white/20",
+                  "border-t",
+                  borderOuter,
                 )}
               >
-                <BorderGlowCanvas color="251, 251, 244" size={140} />
-                <div className="border-inner absolute inset-0 border-t border-white/10" />
+                <BorderGlowCanvas color={glowColor} size={140} />
+                <div className={cn("border-inner absolute inset-0 border-t", borderInner)} />
               </div>
 
               <div
@@ -371,7 +410,8 @@ const Faqs = () => {
                   <p
                     data-faq-answer
                     className={cn(
-                      "faq-answer font-body text-[1.8rem] leading-[140%] opacity-50",
+                      "faq-answer font-body text-[1.8rem] leading-[140%]",
+                      answerColor,
                       "w-206 mr-auto",
                       "max-[1099px]:w-auto max-[1099px]:pt-8 max-[1099px]:text-[1.6rem]",
                     )}
@@ -390,6 +430,7 @@ const Faqs = () => {
                   "faq-toggle group absolute top-0 -right-8 cursor-pointer",
                   "flex items-center p-8",
                   "font-heading italic text-[2.4rem]",
+                  isLight ? "text-dark/70" : "text-light/70",
                   "transition-transform duration-800 ease-[cubic-bezier(.8,0,.17,1)]",
                   isOpen && "rotate-180",
                 )}
@@ -399,10 +440,11 @@ const Faqs = () => {
                 </span>
 
                 <span className="faq-toggle-icon relative mx-[0.4rem] ml-[0.6rem] h-[0.8rem] w-[0.8rem] transition-transform duration-600 ease-ease min-[1100px]:group-hover:scale-[1.2]">
-                  <span className="absolute left-1/2 top-1/2 block h-px w-4 -translate-x-1/2 -translate-y-1/2 bg-white/60" />
+                  <span className={cn("absolute left-1/2 top-1/2 block h-px w-4 -translate-x-1/2 -translate-y-1/2", plusColor)} />
                   <span
                     className={cn(
-                      "absolute left-1/2 top-1/2 block h-4 w-px -translate-x-1/2 -translate-y-1/2 rotate-15 bg-white/60",
+                      "absolute left-1/2 top-1/2 block h-4 w-px -translate-x-1/2 -translate-y-1/2 rotate-15",
+                      plusColor,
                       "transition-opacity duration-400 ease-ease delay-200",
                       isOpen ? "opacity-0" : "opacity-100",
                     )}

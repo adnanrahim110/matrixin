@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 @theme {
+
+  --color-primary: #F47A23;
+
   --color-dark: #020202;
   --color-light: #fbfbf4;
   --color-grey: #666666;
@@ -20,8 +23,8 @@
   --color-n-1: #41413d;
   --color-n-0: #222220;
 
-  --font-body: var(--font-body);
-  --font-heading: var(--font-migra);
+  --font-body: "Inter", sans-serif;
+  --font-heading: var(--font-typold);
   --ease-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -59,9 +62,14 @@
   body::-webkit-scrollbar {
     display: none;
   }
+
+  :is(h1, h2, h3, h4, h5, h6) {
+    @apply font-heading;
+  }
 }
 
 @layer components {
+
   #work .work-grid,
   #work .work-list {
     @apply relative w-full transition-opacity duration-400 ease-ease;

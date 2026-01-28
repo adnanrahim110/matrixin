@@ -1,27 +1,99 @@
 import SiteShell from "@/components/layouts/SiteShell";
 import { cn } from "@/utils/cn";
+import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
-const fontBody = localFont({
-  src: "../public/fonts/ppneuemontreal-regular.woff2",
-  variable: "--font-body",
+const inter = Inter({
+  subsets: ["latin"],
+  weight: "variable",
+  variable: "--font-inter"
 });
 
-const fontMigra = localFont({
+const typold = localFont({
   src: [
     {
-      path: "../public/fonts/ppmigra-regular.woff2",
+      path: "../public/fonts/typold-thin.woff",
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/typold-thin-italic.woff",
+      weight: "100",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/typold-extrathin.woff",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/typold-extrathin-italic.woff",
+      weight: "200",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/typold-light.woff",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/typold-light-italic.woff",
+      weight: "300",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/typold-regular.woff",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../public/fonts/ppmigra-italic.woff2",
+      path: "../public/fonts/typold-italic.woff",
       weight: "400",
       style: "italic",
     },
+    {
+      path: "../public/fonts/typold-medium.woff",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/typold-medium-italic.woff",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/typold-bold.woff",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/typold-bold-italic.woff",
+      weight: "700",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/typold-extrabold.woff",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/typold-extrabold-italic.woff",
+      weight: "800",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/typold-black.woff",
+      weight: "900",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/typold-black-italic.woff",
+      weight: "900",
+      style: "italic",
+    },
   ],
-  variable: "--font-migra",
+  variable: "--font-typold",
 });
 
 export const metadata = {
@@ -33,7 +105,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={cn("antialiased", fontBody.variable, fontMigra.variable)}
+        className={cn("antialiased", typold.variable, inter.variable)}
       >
         <SiteShell>{children}</SiteShell>
       </body>

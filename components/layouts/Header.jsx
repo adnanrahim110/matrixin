@@ -8,6 +8,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import BorderGlowCanvas from "@/components/ui/BorderGlowCanvas";
 import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
+import Image from "next/image";
 
 const SplitHoverText = ({ children }) => {
   return (
@@ -113,7 +114,7 @@ const Header = ({ menuOpen = false, onToggleMenu }) => {
     "transition-[background-color,transform] duration-[400ms] ease-ease",
   );
 
-  const borderColor = theme === "dark" ? "215, 150, 255" : "255, 123, 32";
+  const borderColor = theme === "dark" ? "244, 122, 35" : "244, 122, 35";
 
   useLayoutEffect(() => {
     ensureGsap();
@@ -281,20 +282,21 @@ const Header = ({ menuOpen = false, onToggleMenu }) => {
         href="/"
         aria-label="Home"
         className={cn(
-          pillBase,
-          "mx-[0.15rem] px-[2.2rem]",
+          "mx-[0.15rem] px-[2.2rem] backdrop-blur-sm rounded-lg",
           scrolled
             ? "max-[1099px]:translate-y-0 max-[1099px]:duration-600 max-[1099px]:delay-50"
             : "max-[1099px]:translate-y-[4.4rem] max-[1099px]:duration-200 max-[1099px]:delay-0",
-          theme === "dark" ? "bg-white/10" : "bg-[rgba(188,188,188,0.1)]",
         )}
         data-nav-logo
       >
         <span className="sr-only">Home</span>
-        <BorderGlowCanvas color={borderColor} />
-        <span className="relative z-3 font-heading text-[1.6rem] leading-none tracking-[0.02em]">
-          Matrixin
-        </span>
+        <Image
+          src={theme === "dark" ? "/imgs/logo-w.png" : "/imgs/logo-b.png"}
+          alt="Marketinix"
+          width={500}
+          height={250}
+          className="h-32 w-auto"
+        />
       </Link>
 
       <div

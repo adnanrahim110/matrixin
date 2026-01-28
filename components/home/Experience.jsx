@@ -522,14 +522,14 @@ const Experience = () => {
       data-theme="light"
       ref={sectionRef}
       className={cn(
-        "exp relative z-[1] min-h-[calc(var(--vh,1vh)*100)] bg-light text-dark",
+        "exp relative z-1 min-h-[calc(var(--vh,1vh)*100)] bg-light text-dark",
         "min-[1100px]:pb-[330vh]",
       )}
     >
       <div
         ref={btnBlockWrapperRef}
         className={cn(
-          "exp-btn-block-wrapper absolute inset-0 z-[1] flex h-[calc(var(--vh,1vh)*100)] items-center justify-center",
+          "exp-btn-block-wrapper absolute inset-0 z-1 flex h-[calc(var(--vh,1vh)*100)] items-center justify-center",
           "max-[1099px]:relative max-[1099px]:block max-[1099px]:h-auto max-[1099px]:px-8 max-[1099px]:py-32",
         )}
       >
@@ -553,7 +553,7 @@ const Experience = () => {
               href="#"
               aria-label="Showreel"
               className={cn(
-                "btn-block-link absolute inset-0 z-[1] block",
+                "btn-block-link absolute inset-0 z-1 block",
                 "max-[1099px]:bg-dark max-[1099px]:opacity-20",
               )}
               onClick={(event) => {
@@ -584,7 +584,7 @@ const Experience = () => {
             type="button"
             aria-label="Showreel"
             className={cn(
-              "btn exp-showreel-btn pointer-events-none relative z-[1] inline-flex h-16 items-center overflow-hidden rounded-[0.4rem] px-[2.2rem]",
+              "btn exp-showreel-btn pointer-events-none relative z-1 inline-flex h-16 items-center overflow-hidden rounded-[0.4rem] px-[2.2rem]",
               "bg-[rgba(188,188,188,0.1)] text-dark",
               "min-[1100px]:opacity-0 min-[1100px]:transition-opacity min-[1100px]:duration-400 min-[1100px]:ease-ease",
               "max-[1099px]:bg-light",
@@ -601,7 +601,7 @@ const Experience = () => {
             />
             <span
               className={cn(
-                "btn-text relative z-[1] mr-[2.7rem] transition-transform duration-600 ease-ease",
+                "btn-text relative z-1 mr-[2.7rem] transition-transform duration-600 ease-ease",
                 "group-[.active]:translate-x-[2.7rem]",
               )}
             >

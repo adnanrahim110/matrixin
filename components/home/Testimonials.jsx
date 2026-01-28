@@ -1,11 +1,12 @@
 "use client";
 
 import gsap from "gsap";
-import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import BorderGlowCanvas from "@/components/ui/BorderGlowCanvas";
 import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
+import { usePrefersReducedMotion } from "@/utils/usePrefersReducedMotion";
 
 const TESTIMONIALS_BG =
   "https://images.prismic.io/estrelastudio/aN-dN55xUNkB1cOz_testimonials-bg.jpg?w=3000&h=1800&auto=compress,format";
@@ -133,7 +134,7 @@ const splitLines = (element, innerClassName) => {
   };
 };
 
-const Testimonials = () => {
+const Testimonials = ({ items: itemsProp, title, overline, backgroundSrc }) => {
   const sectionRef = useRef(null);
   const bgRef = useRef(null);
   const overlineRef = useRef(null);
@@ -142,7 +143,18 @@ const Testimonials = () => {
   const trackRef = useRef(null);
   const arrowRef = useRef(null);
 
-  const [activeIndex, setActiveIndex] = useState(TESTIMONIALS.length);
+  const reducedMotion = usePrefersReducedMotion();
+
+  const items = useMemo(() => {
+    if (Array.isArray(itemsProp) && itemsProp.length) return itemsProp;
+    return TESTIMONIALS;
+  }, [itemsProp]);
+
+  const slideCount = items.length;
+
+  const slides = useMemo(() => [...items, ...items, ...items], [items]);
+
+  const [activeIndex, setActiveIndex] = useState(() => slideCount);
   const activeIndexRef = useRef(activeIndex);
 
   const goToRef = useRef(null);
@@ -150,6 +162,11 @@ const Testimonials = () => {
   useEffect(() => {
     activeIndexRef.current = activeIndex;
   }, [activeIndex]);
+
+  useEffect(() => {
+    setActiveIndex(slideCount);
+    activeIndexRef.current = slideCount;
+  }, [slideCount]);
 
   useLayoutEffect(() => {
     ensureGsap();
@@ -173,43 +190,54 @@ const Testimonials = () => {
     )
       return;
 
-    const slideCount = TESTIMONIALS.length;
     const minIndex = slideCount;
     const maxIndex = slideCount * 2 - 1;
 
-    const ctx = gsap.context(() => {
-      gsap.set(bg, { height: "110%", yPercent: -10 });
+    const ctx = gsap.context((self) => {
+      if (reducedMotion) {
+        gsap.set(bg, { height: "100%", yPercent: 0 });
+        gsap.set([overlineEl, titleEl, carousel], {
+          autoAlpha: 1,
+          filter: "blur(0rem)",
+          yPercent: 0,
+        });
+      } else {
+        gsap.set(bg, { height: "110%", yPercent: -10 });
 
-      gsap.to(bg, {
-        yPercent: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-          invalidateOnRefresh: true,
-        },
-      });
+        gsap.to(bg, {
+          yPercent: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
 
-      const titleInnerClassName = cn(
-        "line-inner block relative will-change-transform",
-      );
-      const titleSplit = splitLines(titleEl, titleInnerClassName);
+        const titleInnerClassName = cn(
+          "line-inner block relative will-change-transform",
+        );
+        const titleSplit = splitLines(titleEl, titleInnerClassName);
 
-      const revealTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: titleEl,
-          start: "top+=20% bottom",
-        },
-      });
+        const revealTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: titleEl,
+            start: "top+=20% bottom",
+          },
+        });
 
-      revealTl.moveBlur(overlineEl, { yPercent: 110 }, 0);
-      revealTl.moveBlur(
-        titleSplit.inlines.length ? titleSplit.inlines : titleEl,
-        { stagger: 0.12 },
-        0.1,
-      );
+        revealTl.moveBlur(overlineEl, { yPercent: 110 }, 0);
+        revealTl.moveBlur(
+          titleSplit.inlines.length ? titleSplit.inlines : titleEl,
+          { stagger: 0.12 },
+          0.1,
+        );
+
+        // Ensure split gets reverted on cleanup (only created in non-reduced motion)
+        self.add(() => titleSplit.revert());
+      }
 
       const getSlides = () =>
         Array.from(track.querySelectorAll("[data-carousel-item]"));
@@ -225,7 +253,7 @@ const Testimonials = () => {
         const centerOffset = (bounds.width - slideBounds.width) / 2;
         const x = centerOffset - slide.offsetLeft;
 
-        if (immediate) {
+        if (immediate || reducedMotion) {
           gsap.set(track, { x });
           onComplete?.();
           return;
@@ -281,6 +309,7 @@ const Testimonials = () => {
       // Desktop cursor-follow arrow + click zones.
       const mm = gsap.matchMedia();
       mm.add("(min-width: 1100px)", () => {
+        if (reducedMotion) return () => {};
         let arrowX = null;
         let arrowY = null;
 
@@ -320,15 +349,12 @@ const Testimonials = () => {
 
       return () => {
         window.removeEventListener("resize", onResize);
-        titleSplit.revert();
         mm.revert();
       };
     }, section);
 
     return () => ctx.revert();
-  }, []);
-
-  const slides = [...TESTIMONIALS, ...TESTIMONIALS, ...TESTIMONIALS];
+  }, [reducedMotion, slideCount, title, overline, backgroundSrc]);
 
   const onPrev = () => goToRef.current?.goBy?.(-1);
   const onNext = () => goToRef.current?.goBy?.(1);
@@ -414,7 +440,7 @@ const Testimonials = () => {
         <div className="media-inner absolute inset-0 h-full w-full">
           <img
             className="media image absolute inset-0 h-full w-full object-cover"
-            src={TESTIMONIALS_BG}
+            src={backgroundSrc || TESTIMONIALS_BG}
             alt=""
             loading="lazy"
           />
@@ -436,7 +462,7 @@ const Testimonials = () => {
           "mb-20 font-heading text-[1.8rem] italic leading-[120%]",
         )}
       >
-        {OVERLINE}
+        {overline || OVERLINE}
       </span>
 
       <h2
@@ -447,7 +473,7 @@ const Testimonials = () => {
           "min-[1100px]:w-[81.6rem] min-[1100px]:mb-[6.4rem] min-[1100px]:text-[8.4rem] min-[1100px]:leading-[100%]",
         )}
       >
-        {TITLE}
+        {title || TITLE}
       </h2>
 
       <div

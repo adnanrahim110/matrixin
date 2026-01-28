@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { cn } from "@/utils/cn";
+import Button from "../ui/Button";
 import { useNewsletter } from "./NewsletterContext";
 import { useShowreel } from "./ShowreelContext";
 
@@ -529,14 +530,15 @@ export default function MegaMenu({ open, onClose }) {
                 "max-[1099px]:h-64",
               )}
             >
-              <ButtonBlock
-                label="Contact Us"
+              <Button
+                variant="magnetic"
+                tone="green"
                 href="/contact-us"
-                dotClassName="bg-green"
-                hoverBgClassName="bg-green"
                 className="h-full w-full"
                 onClick={onClose}
-              />
+              >
+                Contact Us
+              </Button>
             </div>
           </div>
         </div>
@@ -695,14 +697,15 @@ export default function MegaMenu({ open, onClose }) {
         <div className="p-8 max-[1099px]:block min-[1100px]:hidden">
           <div className="grid gap-[0.4rem]">
             <div className="h-64 rounded-[0.2rem] bg-grey-dark">
-              <ButtonBlock
-                label="Contact Us"
+              <Button
+                variant="magnetic"
+                tone="green"
                 href="/contact-us"
-                dotClassName="bg-green"
-                hoverBgClassName="bg-green"
                 className="h-full w-full"
                 onClick={onClose}
-              />
+              >
+                Contact Us
+              </Button>
             </div>
             <div className="h-64 rounded-[0.2rem] bg-grey-dark">
               <ButtonBlock

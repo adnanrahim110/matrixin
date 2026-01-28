@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 const BorderGlowCanvas = ({
   enabled = true,
-  color = "215, 150, 255",
+  color = "244, 122, 35",
   size = 100,
 }) => {
   const canvasRef = useRef(null);

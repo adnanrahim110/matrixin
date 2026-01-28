@@ -1,5 +1,5 @@
 "use client";
-import { ReactLenis } from "lenis/react";
+import { ReactLenis, useLenis } from "lenis/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -8,12 +8,22 @@ import NewsletterModal from "./NewsletterModal";
 import Showreel from "./Showreel";
 import { NewsletterProvider } from "./NewsletterContext";
 import { ShowreelProvider } from "./ShowreelContext";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ensureGsap } from "@/utils/gsap";
 
 const SiteShell = ({ children }) => {
   const lenisRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showreelOpen, setShowreelOpen] = useState(false);
   const [newsletterOpen, setNewsletterOpen] = useState(false);
+
+  useEffect(() => {
+    ensureGsap();
+  }, []);
+
+  useLenis(() => {
+    ScrollTrigger.update();
+  }, []);
 
   useEffect(() => {
     const updateVh = () => {

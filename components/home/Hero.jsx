@@ -53,7 +53,7 @@ const Hero = () => {
         renderer: "svg",
         loop: false,
         autoplay: false,
-        path: "/icon.json",
+        path: "/mkrt.json",
       });
       lottieRef.current = anim;
 
