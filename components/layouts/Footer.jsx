@@ -3,8 +3,9 @@
 import gsap from "gsap";
 import lottie from "lottie-web";
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
+import { contactDetails, navlinks, socials } from "@/constants";
 import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
 
@@ -92,31 +93,6 @@ const FOOTER_LETTERS = {
   ],
 };
 
-const ClockText = () => {
-  const [now, setNow] = useState(() => new Date());
-
-  useEffect(() => {
-    const id = window.setInterval(() => setNow(new Date()), 1000);
-    return () => window.clearInterval(id);
-  }, []);
-
-  const time = useMemo(() => {
-    return new Intl.DateTimeFormat("en-GB", {
-      timeZone: "Etc/GMT-2",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    }).format(now);
-  }, [now]);
-
-  return (
-    <>
-      <span className="inline-block min-w-[5.2rem]">{time}</span> (GMT+2)
-    </>
-  );
-};
-
 const Footer = () => {
   const newsletter = useNewsletter();
 
@@ -128,6 +104,7 @@ const Footer = () => {
   const desktopFormRef = useRef(null);
 
   const lottieRef = useRef(null);
+  const iconSvgRef = useRef(null);
   const totalFramesRef = useRef(0);
 
   const letterTlRef = useRef(null);
@@ -138,38 +115,20 @@ const Footer = () => {
   const [newsletterOpen, setNewsletterOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const links = useMemo(
-    () => [
-      { label: "Home", href: "/" },
-      { label: "Work", href: "/work" },
-      { label: "About", href: "/about-us" },
-      { label: "Services", href: "/services" },
-      { label: "Privacy Policy", href: "/privacy-policy" },
-    ],
-    [],
+  const dropdownNav = navlinks.find(
+    (link) => link.href === false && Array.isArray(link.dropdown),
   );
 
-  const socials = useMemo(
-    () => [
-      {
-        label: "Instagram",
-        href: "https://www.instagram.com/estrela_digitalstudio/?hl=en",
-      },
-      {
-        label: "Facebook",
-        href: "https://www.facebook.com/profile.php?id=100091661185714",
-      },
-      {
-        label: "LinkedIn",
-        href: "https://www.linkedin.com/company/estrela-digital-studio",
-      },
-      { label: "Awwwards", href: "https://www.awwwards.com/estrelastudio/" },
-      { label: "Behance", href: "https://www.behance.net/estrelastudio" },
-    ],
-    [],
-  );
+  const siteIndexLinks = [
+    ...navlinks
+      .slice(0, -1)
+      .filter((link) => typeof link.href === "string")
+      .map((link) => ({ label: link.name, href: link.href })),
+  ];
+  const [emailContact, phoneContact] = contactDetails;
 
   useEffect(() => {
+    ensureGsap();
     const host = iconRef.current;
     if (!host) return;
 
@@ -178,22 +137,35 @@ const Footer = () => {
       renderer: "svg",
       loop: false,
       autoplay: false,
-      path: "/icon.json",
+      path: "/mkrt.json",
     });
 
     lottieRef.current = anim;
+
+    const onDomLoaded = () => {
+      const svgEl = anim?.renderer?.svgElement || host.querySelector("svg");
+      if (!svgEl) return;
+      iconSvgRef.current = svgEl;
+      gsap.set(svgEl, {
+        transformOrigin: "50% 50%",
+        willChange: "transform",
+      });
+    };
 
     const onReady = () => {
       totalFramesRef.current = anim.totalFrames || 0;
     };
 
+    anim.addEventListener("DOMLoaded", onDomLoaded);
     anim.addEventListener("data_ready", onReady);
 
     return () => {
+      anim.removeEventListener("DOMLoaded", onDomLoaded);
       anim.removeEventListener("data_ready", onReady);
       anim.destroy();
       lottieRef.current = null;
       totalFramesRef.current = 0;
+      iconSvgRef.current = null;
     };
   }, []);
 
@@ -305,6 +277,7 @@ const Footer = () => {
           const tl = gsap.timeline({
             paused: true,
             repeat: -1,
+            repeatDelay: 0.55,
             defaults: { overwrite: "auto", duration: 1.6, ease: "inOut" },
           });
 
@@ -342,8 +315,15 @@ const Footer = () => {
           if (iconTlRef.current) return;
 
           const anim = lottieRef.current;
-          const totalFrames = totalFramesRef.current;
-          if (!anim || !totalFrames) return;
+          if (!anim) return;
+
+          const svgEl =
+            iconSvgRef.current ||
+            anim?.renderer?.svgElement ||
+            iconRef.current?.querySelector?.("svg");
+          if (!svgEl) return;
+
+          const totalFrames = totalFramesRef.current || anim.totalFrames || 0;
 
           const tl = gsap.timeline({
             paused: true,
@@ -351,22 +331,31 @@ const Footer = () => {
             defaults: { overwrite: "auto", duration: 1.6, ease: "inOut" },
           });
 
-          const frameStep = totalFrames / 6;
-          for (let i = 0; i <= 5; i++) {
-            const frameState = { frame: i * frameStep };
-            tl.to(
-              frameState,
-              {
-                frame: (i + 1) * frameStep,
-                duration: 1.7,
-                ease: "inOut",
-                overwrite: "auto",
-                onUpdate: () => {
-                  anim.goToAndStop(frameState.frame, true);
+          const loopDuration = 1.7 * 6;
+          tl.to(
+            svgEl,
+            { rotation: "+=360", duration: loopDuration, ease: "none" },
+            0,
+          );
+
+          if (totalFrames) {
+            const frameStep = totalFrames / 6;
+            for (let i = 0; i <= 5; i++) {
+              const frameState = { frame: i * frameStep };
+              tl.to(
+                frameState,
+                {
+                  frame: (i + 1) * frameStep,
+                  duration: 1.7,
+                  ease: "inOut",
+                  overwrite: "auto",
+                  onUpdate: () => {
+                    anim.goToAndStop(frameState.frame, true);
+                  },
                 },
-              },
-              i * 1.7,
-            );
+                i * 1.7,
+              );
+            }
           }
 
           iconTlRef.current = tl;
@@ -395,23 +384,58 @@ const Footer = () => {
 
           const anim = lottieRef.current;
           if (!anim) return;
-          const totalFrames = anim.totalFrames || 0;
-          if (!totalFrames) return;
 
-          const current = anim.currentFrame ?? 0;
-          const targetFrame = current < totalFrames * 0.5 ? 0 : totalFrames - 1;
-          const frameState = { frame: current };
+          const svgEl =
+            iconSvgRef.current ||
+            anim?.renderer?.svgElement ||
+            iconRef.current?.querySelector?.("svg");
+
+          const totalFrames = anim.totalFrames || 0;
+          const currentFrame = anim.currentFrame ?? 0;
+          const targetFrame =
+            totalFrames && currentFrame < totalFrames * 0.5
+              ? 0
+              : totalFrames - 1;
+          const frameState = { frame: currentFrame };
+
+          const currentRotation = svgEl
+            ? Number(gsap.getProperty(svgEl, "rotation")) || 0
+            : 0;
+          const normalized = ((currentRotation % 360) + 360) % 360;
+          const base = currentRotation - normalized;
+          const cand0 = base;
+          const cand360 = base + 360;
+          const targetRotation =
+            Math.abs(cand0 - currentRotation) <
+            Math.abs(cand360 - currentRotation)
+              ? cand0
+              : cand360;
 
           hideTweenRef.current?.kill?.();
-          hideTweenRef.current = gsap.to(frameState, {
-            frame: targetFrame,
-            duration: 0.6,
-            ease: "expo.out",
-            overwrite: "auto",
-            onUpdate: () => {
-              anim.goToAndStop(frameState.frame, true);
-            },
+          const tl = gsap.timeline({
+            defaults: { duration: 0.6, ease: "expo.out", overwrite: "auto" },
           });
+
+          if (totalFrames) {
+            tl.to(
+              frameState,
+              {
+                frame: targetFrame,
+                onUpdate: () => {
+                  anim.goToAndStop(frameState.frame, true);
+                },
+              },
+              0,
+            );
+          } else {
+            anim.goToAndStop(0, true);
+          }
+
+          if (svgEl) {
+            tl.to(svgEl, { rotation: targetRotation }, 0);
+          }
+
+          hideTweenRef.current = tl;
         };
 
         iconWrapper.addEventListener("mouseenter", show);
@@ -500,46 +524,72 @@ const Footer = () => {
       <div className="f-inner absolute inset-8 z-1 flex h-[calc(100%-4rem)] w-[calc(100%-4rem)] flex-col items-start overflow-hidden rounded-[0.4rem]">
         <div className="f-top flex w-full justify-between max-[1099px]:flex-1 max-[1099px]:flex-col">
           <div className="f-left mt-[4.4rem] ml-16 flex max-[1099px]:m-0 max-[1099px]:p-[2rem_2rem_0]">
-            <div className="f-menu mr-48 max-[1099px]:mr-40">
+            <div className="f-social mr-48 max-[1099px]:mr-40">
               <h6 className="links-title mb-[2.4rem] font-heading text-[1.6rem] opacity-60">
-                Site index
+                {dropdownNav?.name || "Services"}
               </h6>
-              {links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  aria-label={link.label}
-                  className={cn(
-                    "link relative block w-fit text-[1.6rem] leading-[140%] text-light/50 transition-opacity duration-600 ease-ease hover:text-light hover:opacity-100",
-                    "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
-                    "hover:after:scale-x-100 hover:after:origin-left",
-                  )}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              <div className="space-y-2">
+                {(dropdownNav?.dropdown || []).map((item) => (
+                  <Link
+                    key={item.slug}
+                    href={`/services/${item.slug}`}
+                    aria-label={item.name}
+                    className={cn(
+                      "link relative block w-fit text-[1.5rem] leading-[120%] text-light/50 transition-opacity duration-600 ease-ease hover:text-light hover:opacity-100",
+                      "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
+                      "hover:after:scale-x-100 hover:after:origin-left",
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
             </div>
-
-            <div className="f-social">
+            <div className="f-menu">
               <h6 className="links-title mb-[2.4rem] font-heading text-[1.6rem] opacity-60">
-                Social
+                Quick Links
               </h6>
-              {socials.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={social.label}
-                  className={cn(
-                    "link relative block w-fit text-[1.6rem] leading-[140%] text-light/50 transition-opacity duration-600 ease-ease hover:text-light hover:opacity-100",
-                    "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
-                    "hover:after:scale-x-100 hover:after:origin-left",
-                  )}
-                >
-                  {social.label}
-                </a>
-              ))}
+              <div className="space-y-2">
+                {siteIndexLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-label={link.label}
+                    className={cn(
+                      "link relative block w-fit text-[1.6rem] leading-[140%] text-light/50 transition-opacity duration-600 ease-ease hover:text-light hover:opacity-100",
+                      "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
+                      "hover:after:scale-x-100 hover:after:origin-left",
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+              <h6 className="links-title mt-12 mb-[2.4rem] font-heading text-[1.6rem] opacity-60">
+                Legal &amp; Privacy
+              </h6>
+              <div className="space-y-2">
+                {[
+                  { label: "Privacy Policy", href: "/legal/privacy-policy" },
+                  {
+                    label: "Terms & Conditions",
+                    href: "/legal/terms-and-conditions",
+                  },
+                ].map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-label={link.label}
+                    className={cn(
+                      "link relative block w-fit text-[1.6rem] leading-[140%] text-light/50 transition-opacity duration-600 ease-ease hover:text-light hover:opacity-100",
+                      "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
+                      "hover:after:scale-x-100 hover:after:origin-left",
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -547,7 +597,7 @@ const Footer = () => {
             <Button variant="magnetic" tone="green">
               Contact Us
             </Button>
-            <div className="f-contact flex justify-between pr-8 max-[1099px]:flex-col max-[1099px]:pr-0">
+            <div className="f-contact flex justify-between pr-8 max-[1099px]:flex-col max-[1099px]:pr-0 mt-10">
               <div className="f-contact-inner max-[1099px]:order-2">
                 <p className="f-contact-text mb-[1.8rem] text-[1.6rem] leading-[160%] opacity-50">
                   Tell us about your project.
@@ -562,17 +612,17 @@ const Footer = () => {
                       className="contact-bullet mt-4 mr-4 block h-[0.4rem] w-[0.4rem] rotate-45 bg-light"
                     />
                     <a
-                      href="tel:+27780548476"
+                      href={phoneContact?.href}
                       target="_blank"
                       rel="noreferrer"
-                      aria-label="Phone"
+                      aria-label={phoneContact?.name || "Phone"}
                       className={cn(
                         "contact-link relative z-1 inline-block overflow-hidden text-light",
                         "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
                         "hover:after:scale-x-100 hover:after:origin-left",
                       )}
                     >
-                      +27 (0) 78 054 8476
+                      {phoneContact?.value}
                     </a>
                   </div>
 
@@ -582,216 +632,46 @@ const Footer = () => {
                       className="contact-bullet mt-4 mr-4 block h-[0.4rem] w-[0.4rem] rotate-45 bg-light"
                     />
                     <a
-                      href="mailto:accounts@estrela.studio"
+                      href={emailContact?.href}
                       target="_blank"
                       rel="noreferrer"
-                      aria-label="Email"
+                      aria-label={emailContact?.name || "Email"}
                       className={cn(
                         "contact-link relative z-1 inline-block overflow-hidden text-light",
                         "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
                         "hover:after:scale-x-100 hover:after:origin-left",
                       )}
                     >
-                      Write Us
+                      {emailContact?.value}
                     </a>
-                  </div>
-
-                  <div className="contact-link-wrapper mb-4 flex items-start min-[1100px]:hidden">
-                    <span
-                      aria-hidden="true"
-                      className="contact-bullet mt-4 mr-4 block h-[0.4rem] w-[0.4rem] rotate-45 bg-light"
-                    />
-                    <button
-                      type="button"
-                      aria-label="Newsletter signup"
-                      onClick={() => newsletter.show()}
-                      className={cn(
-                        "contact-link relative z-1 inline-block overflow-hidden text-left text-light",
-                        "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
-                        "hover:after:scale-x-100 hover:after:origin-left",
-                      )}
-                    >
-                      Newsletter Signup
-                    </button>
-                  </div>
-
-                  <div
-                    ref={desktopNewsletterRef}
-                    className={cn(
-                      "contact-link-wrapper newsletter-wrapper relative mb-4 hidden items-start min-[1100px]:flex",
-                      newsletterOpen && "active",
-                    )}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="contact-bullet mt-4 mr-4 block h-[0.4rem] w-[0.4rem] rotate-45 bg-light"
-                    />
-
-                    <button
-                      type="button"
-                      aria-label={
-                        newsletterOpen
-                          ? "Close newsletter signup"
-                          : "Open newsletter signup"
-                      }
-                      onClick={() => setNewsletterOpen((prev) => !prev)}
-                      className="contact-link relative z-1 text-left"
-                    >
-                      <span
-                        className={cn(
-                          "contact-link-text relative flex items-center",
-                          "transition-transform duration-800 ease-ease",
-                          "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
-                          !newsletterOpen &&
-                            "hover:after:scale-x-100 hover:after:origin-left",
-                          newsletterOpen && "overflow-visible after:hidden",
-                          newsletterOpen &&
-                            "-translate-x-6 translate-y-[0.8rem]",
-                        )}
-                      >
-                        <span className="line text-light">
-                          Newsletter Signup
-                        </span>
-                        <span
-                          aria-hidden="true"
-                          className={cn(
-                            "contact-link-close absolute left-[calc(100%+1rem)] top-0 h-[0.9rem] w-[0.9rem]",
-                            "transition-opacity duration-800 ease-ease",
-                            newsletterOpen ? "opacity-100" : "opacity-0",
-                          )}
-                        >
-                          <CloseIcon />
-                        </span>
-                      </span>
-                    </button>
-
-                    <span
-                      aria-hidden="true"
-                      className={cn(
-                        "contact-link-bg absolute -left-6 top-0 h-[3.4rem] w-[calc(100%+3.4rem)] origin-bottom-left rounded-t-[0.4rem] bg-black",
-                        "scale-0 transition-transform duration-600 ease-ease",
-                        newsletterOpen && "scale-100 duration-800",
-                      )}
-                    />
-
-                    <div
-                      className={cn(
-                        "newsletter absolute -left-6 top-[calc(100%+1rem)] w-176",
-                        "transition-[clip-path,visibility] duration-800 ease-ease",
-                        "[clip-path:inset(0_0_100%_0)]",
-                        newsletterOpen
-                          ? "visible pointer-events-auto [clip-path:inset(0_0_0%_0)]"
-                          : "invisible pointer-events-none",
-                      )}
-                    >
-                      <div className="newsletter-bg absolute inset-0 rounded-b-[0.4rem] bg-[#1b1b1b]" />
-                      <div className="newsletter-inner relative">
-                        <p className="newsletter-text px-8 pt-[2.8rem] pb-32 text-[1.6rem] leading-[140%] text-light">
-                          Join our newsletter for fresh updates and exclusive
-                          studio insights.
-                        </p>
-
-                        <form
-                          ref={desktopFormRef}
-                          className="newsletter-form relative"
-                          action="/api/newsletter"
-                          method="POST"
-                          onSubmit={onSubmitDesktop}
-                        >
-                          <label className="form-label block">
-                            <span className="form-label-text sr-only">
-                              First name
-                            </span>
-                            <input
-                              className={cn(
-                                "form-input form-input-text block h-[6.2rem] w-full bg-transparent px-8 pb-2",
-                                "text-[1.6rem] text-light placeholder:text-white/30",
-                                "border-b border-black outline-none",
-                                "transition-[border-color] duration-1000 ease-ease",
-                                "focus:border-white/30",
-                              )}
-                              type="text"
-                              name="first_name"
-                              placeholder="First name"
-                              required
-                            />
-                          </label>
-
-                          <label className="form-label block">
-                            <span className="form-label-text sr-only">
-                              Last name
-                            </span>
-                            <input
-                              className={cn(
-                                "form-input form-input-text block h-[6.2rem] w-full bg-transparent px-8 pb-2",
-                                "text-[1.6rem] text-light placeholder:text-white/30",
-                                "border-b border-black outline-none",
-                                "transition-[border-color] duration-1000 ease-ease",
-                                "focus:border-white/30",
-                              )}
-                              type="text"
-                              name="last_name"
-                              placeholder="Last name"
-                              required
-                            />
-                          </label>
-
-                          <label className="form-label block">
-                            <span className="form-label-text sr-only">
-                              Email Address
-                            </span>
-                            <input
-                              className={cn(
-                                "form-input form-input-text block h-[6.2rem] w-full bg-transparent px-8 pb-2",
-                                "text-[1.6rem] text-light placeholder:text-white/30",
-                                "border-b border-black outline-none",
-                                "transition-[border-color] duration-1000 ease-ease",
-                                "focus:border-white/30",
-                              )}
-                              type="text"
-                              name="email"
-                              placeholder="Email Address"
-                              required
-                            />
-                          </label>
-
-                          <label className="sr-only" aria-hidden="true">
-                            <input
-                              type="text"
-                              name="extra"
-                              tabIndex={-1}
-                              autoComplete="off"
-                            />
-                          </label>
-                          <input type="hidden" name="ts" value="" />
-
-                          <div className="form-btn px-8 py-[0.8rem] text-right">
-                            <button
-                              className={cn(
-                                "btn group relative inline-flex h-24 items-center overflow-hidden rounded-[0.4rem] px-8",
-                                "bg-transparent text-light",
-                                submitting && "pointer-events-none opacity-30",
-                              )}
-                              type="submit"
-                              aria-label="Submit"
-                            >
-                              <span className="btn-text relative z-1 mr-8">
-                                Submit Details
-                              </span>
-                              <span className="btn-dot absolute left-[1.8rem] top-[calc(50%-0.4rem)] h-[0.8rem] w-[calc(100%-3.6rem)]">
-                                <span className="btn-dot-inner absolute right-0 top-[calc(50%-0.2rem)] block h-[0.4rem] w-[0.4rem] rotate-45 rounded-[0.1rem] bg-green" />
-                              </span>
-                            </button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="clock font-heading max-[1099px]:order-1 max-[1099px]:mb-12">
-                <ClockText />
+              <div className="font-heading max-[1099px]:order-1 max-[1099px]:mb-12">
+                <div className="flex flex-col items-start gap-2">
+                  {socials.map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={social.label}
+                      className={cn(
+                        "link relative block w-fit text-[1.6rem] leading-[140%] text-light/50 transition-opacity duration-600 ease-ease hover:text-light hover:opacity-100",
+                        "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
+                        "hover:after:scale-x-100 hover:after:origin-left",
+                      )}
+                    >
+                      <span className="inline-flex items-center gap-4">
+                        {social.Icon && (
+                          <social.Icon className="h-6 w-6 text-current" />
+                        )}
+                        {social.label}
+                      </span>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -807,14 +687,14 @@ const Footer = () => {
             className={cn(
               "f-icon icon absolute left-1/2 top-1/2 h-[7.2rem] w-[7.2rem] -translate-x-1/2 -translate-y-1/2",
               "text-light [&_path]:fill-current",
-              overlayActive && "text-dark",
+              overlayActive && "text-primary",
             )}
           />
         </div>
 
         <div className="f-bottom mt-auto w-full p-8">
           <div ref={logoWrapperRef}>
-            <EstrelaFooterLogo className="f-logo block w-full text-light" />
+            <EstrelaFooterLogo className="f-logo block w-full h-full text-light" />
           </div>
         </div>
 

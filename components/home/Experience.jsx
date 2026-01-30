@@ -7,8 +7,7 @@ import { useShowreel } from "@/components/layouts/ShowreelContext";
 import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
 
-const SHOWREEL_PREVIEW =
-  "https://estrelastudio.cdn.prismic.io/estrelastudio/aN6JiJ5xUNkB1alN_EstrelaShowreelPreviewV2.mp4";
+const SHOWREEL_PREVIEW = "/videos/mega-menu.mp4";
 
 const RIPPLE_IMAGES = [
   "https://images.prismic.io/estrelastudio/aN7NX55xUNkB1bRi_Experiences_01.jpg?w=600&h=810&auto=compress,format",
@@ -662,7 +661,7 @@ const Experience = () => {
           <h2
             ref={titleRef}
             className={cn(
-              "exp-title font-heading text-[12.4rem] leading-[110%] text-center",
+              "exp-title font-heading text-[11rem] leading-[110%] text-center",
               "cursor-default",
               "max-[1099px]:mb-32 max-[1099px]:text-[7.4rem] max-[1099px]:leading-[110%]",
             )}

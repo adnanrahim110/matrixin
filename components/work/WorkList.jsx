@@ -1,5 +1,4 @@
 import { cn } from "@/utils/cn";
-import Link from "next/link";
 import WorkCta from "./WorkCta";
 
 export default function WorkList({ projects }) {
@@ -24,10 +23,9 @@ export default function WorkList({ projects }) {
                   data-services={dataServices}
                   aria-label={project.client}
                 >
-                  <Link
-                    href={project.href}
-                    className="project-link absolute inset-0 z-10"
-                    aria-label={project.ariaLabel}
+                  <div
+                    aria-hidden="true"
+                    className="project-link pointer-events-none absolute inset-0 z-10"
                   />
 
                   <div

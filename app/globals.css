@@ -66,6 +66,14 @@
   :is(h1, h2, h3, h4, h5, h6) {
     @apply font-heading;
   }
+
+  button {
+    @apply cursor-pointer outline-none focus:outline-none;
+  }
+
+  :is(a, input, select, textarea) {
+    @apply outline-none focus:outline-none;
+  }
 }
 
 @layer components {
@@ -139,5 +147,20 @@
   #work .split-lines .line-inner {
     display: block;
     will-change: transform;
+  }
+
+  .scroll_thin::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+
+  .scroll_thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scroll_thin::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 0.4rem;
+    border: 0.2rem solid transparent;
+    background-clip: content-box;
   }
 }

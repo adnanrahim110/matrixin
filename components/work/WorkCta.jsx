@@ -1,5 +1,4 @@
 import { cn } from "@/utils/cn";
-import Link from "next/link";
 import Button from "../ui/Button";
 
 export default function WorkCta({ wrapperClassName }) {
@@ -10,12 +9,17 @@ export default function WorkCta({ wrapperClassName }) {
           className={cn(
             "work-cta-inner",
             "flex w-full flex-col items-center justify-center overflow-hidden rounded-[0.4rem] text-center",
-            "bg-linear-to-b from-[#aff9a8] to-[#b2c0a7]",
+            "bg-linear-to-b from-primary to-orange-300",
             "min-[1100px]:h-[44vw]",
             "max-[1099px]:px-8 max-[1099px]:py-36",
           )}
         >
-          <h2 className={cn("work-cta-title font-heading", "mb-[1.7rem]")}>
+          <h2
+            className={cn(
+              "work-cta-title font-heading text-[8rem] leading-[110%]",
+              "mb-[1.7rem]",
+            )}
+          >
             Lets work together
           </h2>
 
@@ -32,9 +36,9 @@ export default function WorkCta({ wrapperClassName }) {
 
           <Button
             variant="magnetic"
-            tone="green"
             href="/contact"
-            className="min-h-64 bg-grey-light/20 min-[1100px]:h-48 min-[1100px]:min-h-48 min-[1100px]:w-176"
+            tone="dark"
+            className="min-h-64 min-[1100px]:h-48 min-[1100px]:min-h-48 min-[1100px]:w-176"
           >
             Get in touch
           </Button>

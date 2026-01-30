@@ -426,8 +426,15 @@ export function useWorkArchiveEffects({ rootRef, lenisRef }) {
 
       let activeView = 0;
       let workContext = null;
+      const stopAllVideos = () => {
+        if (!grid) return;
+        grid.querySelectorAll("video").forEach((video) => {
+          video.pause?.();
+        });
+      };
 
       const out = () => {
+        stopAllVideos();
         grid?.classList.remove("loaded");
         list?.classList.remove("loaded");
       };

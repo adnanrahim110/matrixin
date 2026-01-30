@@ -76,12 +76,12 @@ const makeService = ({
     testimonials === null
       ? null
       : testimonials || {
-          title: "Testimonials",
-          intro:
-            "A few words from teams we’ve supported — from discovery to launch and everything in between.",
-          items: DEFAULT_TESTIMONIALS,
-          theme: resolvedTheme.testimonials,
-        };
+        title: "Testimonials",
+        intro:
+          "A few words from teams we’ve supported — from discovery to launch and everything in between.",
+        items: DEFAULT_TESTIMONIALS,
+        theme: resolvedTheme.testimonials,
+      };
 
   return {
     name,
@@ -116,19 +116,19 @@ const makeService = ({
     },
     problem: problem
       ? {
-          theme: resolvedTheme.problem,
-          title: problem?.title || "The problem we solve",
-          body: problem?.body || [],
-          points: problem?.points || [],
-        }
+        theme: resolvedTheme.problem,
+        title: problem?.title || "The problem we solve",
+        body: problem?.body || [],
+        points: problem?.points || [],
+      }
       : null,
     approach: approach
       ? {
-          theme: resolvedTheme.approach,
-          title: approach?.title || "Our approach",
-          body: approach?.body || [],
-          steps: approach?.steps || [],
-        }
+        theme: resolvedTheme.approach,
+        title: approach?.title || "Our approach",
+        body: approach?.body || [],
+        steps: approach?.steps || [],
+      }
       : null,
     includes: {
       theme: resolvedTheme.includes,
@@ -147,16 +147,16 @@ const makeService = ({
       cta === null
         ? null
         : {
-            theme: resolvedTheme.cta,
-            title:
-              cta?.title ||
-              "Ready to ship something clean, fast, and conversion-focused?",
-            body:
-              cta?.body ||
-              "Tell us what you’re building. We’ll recommend the right approach, scope the work clearly, and help you move with confidence.",
-            primary: cta?.primary || { label: "Contact us", href: "/contact-us" },
-            secondary: cta?.secondary || { label: "View work", href: "/work" },
-          },
+          theme: resolvedTheme.cta,
+          title:
+            cta?.title ||
+            "Ready to ship something clean, fast, and conversion-focused?",
+          body:
+            cta?.body ||
+            "Tell us what you’re building. We’ll recommend the right approach, scope the work clearly, and help you move with confidence.",
+          primary: cta?.primary || { label: "Contact us", href: "/contact-us" },
+          secondary: cta?.secondary || { label: "View work", href: "/work" },
+        },
     testimonials: resolvedTestimonials,
     caseStudies: {
       theme: resolvedTheme.caseStudies,
@@ -171,11 +171,11 @@ const makeService = ({
     },
     results: results
       ? {
-          theme: resolvedTheme.caseStudies,
-          title: results?.title || "Results you can measure",
-          intro: results?.intro || "",
-          items: results?.items || [],
-        }
+        theme: resolvedTheme.caseStudies,
+        title: results?.title || "Results you can measure",
+        intro: results?.intro || "",
+        items: results?.items || [],
+      }
       : null,
     faqs: {
       theme: resolvedTheme.faqs,
@@ -192,7 +192,7 @@ export const SERVICES = [
   makeService({
     name: "Web Development",
     slug: "web-development",
-    tone: "blue",
+    tone: "orange",
     shortDescription:
       "Fast, responsive websites engineered for performance, accessibility, and SEO.",
     description:
@@ -391,7 +391,7 @@ export const SERVICES = [
   makeService({
     name: "E-Commerce Solutions",
     slug: "e-commerce-solutions",
-    tone: "green",
+    tone: "orange",
     shortDescription:
       "Conversion-focused storefront experiences designed to build trust and increase sales.",
     description:
@@ -558,7 +558,7 @@ export const SERVICES = [
   makeService({
     name: "Web Applications",
     slug: "web-applications",
-    tone: "purple",
+    tone: "orange",
     shortDescription:
       "Product-grade web app UX and UI that stays clear as complexity grows.",
     description:
@@ -843,7 +843,7 @@ export const SERVICES = [
   makeService({
     name: "Mobile Applications",
     slug: "mobile-applications",
-    tone: "pink",
+    tone: "orange",
     shortDescription:
       "Mobile UX and UI for apps that feel fast, familiar, and genuinely useful.",
     description:
@@ -972,7 +972,7 @@ export const SERVICES = [
   makeService({
     name: "Branding & Design",
     slug: "branding-and-design",
-    tone: "teal",
+    tone: "orange",
     shortDescription:
       "Brand identity and visual systems that feel modern, consistent, and instantly recognizable.",
     description:
@@ -1102,7 +1102,7 @@ export const SERVICES = [
   makeService({
     name: "Digital Marketing",
     slug: "digital-marketing",
-    tone: "yellow",
+    tone: "orange",
     shortDescription:
       "Campaign-driven marketing built around clarity, creative consistency, and measurable growth.",
     description:
@@ -1223,7 +1223,7 @@ export const SERVICES = [
   makeService({
     name: "SEO Services",
     slug: "seo-services",
-    tone: "cyan",
+    tone: "orange",
     shortDescription:
       "Technical SEO and content foundations that compound long-term visibility.",
     description:
@@ -1352,7 +1352,7 @@ export const SERVICES = [
   makeService({
     name: "Social Media Management",
     slug: "social-media-management",
-    tone: "indigo",
+    tone: "orange",
     shortDescription:
       "Consistent, on-brand social content with strategy behind every post.",
     description:
@@ -1465,7 +1465,7 @@ export const SERVICES = [
   makeService({
     name: "White Label Services",
     slug: "white-label-services",
-    tone: "slate",
+    tone: "orange",
     shortDescription:
       "A behind-the-scenes delivery partner for agencies that want to scale without hiring.",
     description:
@@ -1589,123 +1589,6 @@ export const SERVICES = [
     ],
   }),
 
-  makeService({
-    name: "Services",
-    slug: "services",
-    tone: "dark",
-    shortDescription:
-      "Flexible packages and retainers for teams who need consistent support and fast iteration.",
-    description:
-      "Ongoing service packages and retainers for product, design, and growth teams — predictable delivery, clear priorities, and premium polish.",
-    keywords: [
-      "retainer",
-      "design retainer",
-      "development retainer",
-      "product support",
-      "ongoing services",
-      "sprints",
-    ],
-    hero: {
-      subtitle: "A delivery model that fits how your team actually works.",
-      lede: [
-        "Some teams don’t need a big project — they need consistent momentum. We offer flexible packages that keep work moving without chaos.",
-        "From focused sprints to ongoing retainers, we help you iterate quickly while maintaining the same quality standards across everything you ship.",
-      ],
-      bullets: [
-        "Sprints, retainers, or project-based delivery",
-        "Clear backlog and prioritization",
-        "Consistent quality across iterations",
-      ],
-      facts: [
-        { label: "Ideal for", value: "Teams needing ongoing design/dev support" },
-        { label: "Rhythm", value: "Weekly or sprint-based delivery cycles" },
-        { label: "Focus", value: "Prioritization, predictability, quality" },
-      ],
-      image: { src: DEFAULT_HERO_IMAGES[1], alt: "Service delivery visuals" },
-    },
-    overview: {
-      lede: "Consistency is a competitive advantage.",
-      body: [
-        "Retainers and packages work best when priorities are clear and delivery is predictable. We help you maintain momentum while keeping quality high.",
-        "This model is ideal for teams that want to ship improvements continuously — across product, web, marketing, and design systems.",
-      ],
-      highlights: [
-        {
-          title: "Flexible engagement",
-          text: "Choose a rhythm that fits your roadmap: sprints, monthly, or project-based.",
-        },
-        {
-          title: "Clear prioritization",
-          text: "A backlog that stays focused on impact and effort — with full transparency.",
-        },
-        {
-          title: "Consistent quality",
-          text: "The same standards and polish across every iteration.",
-        },
-      ],
-    },
-    approach: {
-      steps: [
-        { title: "Align on goals", text: "Define what success looks like and how to measure it." },
-        { title: "Build a backlog", text: "Create a clear queue of work and priorities." },
-        { title: "Ship in cycles", text: "Deliver predictably with built-in review and QA." },
-        { title: "Improve continuously", text: "Refine the system and raise the baseline over time." },
-      ],
-    },
-    includes: {
-      groups: [
-        {
-          title: "Planning",
-          items: [
-            "Sprint planning and prioritization",
-            "Weekly delivery cadence (optional)",
-            "Reporting and handover documentation",
-          ],
-        },
-        {
-          title: "Execution",
-          items: [
-            "Design + dev support across touchpoints",
-            "Optimization and improvement backlog",
-            "Performance and UX enhancement roadmap",
-          ],
-        },
-      ],
-    },
-    process: {
-      steps: [
-        { title: "Kickoff", text: "Align on priorities, scope, and cadence." },
-        { title: "Backlog", text: "Maintain a clear, structured backlog." },
-        { title: "Delivery", text: "Ship in predictable cycles with quality checks." },
-        { title: "Review", text: "Evaluate outcomes and plan what’s next." },
-      ],
-    },
-    results: {
-      items: [
-        "More output without losing quality",
-        "Faster iteration through clear prioritization",
-        "Better consistency across product and marketing",
-        "A smoother workflow between teams",
-      ],
-    },
-    faqs: [
-      {
-        question: "Can we start with a small sprint first?",
-        answer:
-          "Yes. Many teams start with a sprint to validate the workflow, then scale to ongoing support once it’s proven.",
-      },
-      {
-        question: "How do you prioritize work?",
-        answer:
-          "We prioritize by impact, effort, and dependencies — with transparency so you always know what’s next.",
-      },
-      {
-        question: "Can you integrate with our in-house team?",
-        answer:
-          "Yes. We can plug into your existing workflow and collaborate smoothly with designers and developers.",
-      },
-    ],
-  }),
 ];
 
 export const getServiceBySlug = (slug) => {

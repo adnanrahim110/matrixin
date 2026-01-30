@@ -1,4 +1,5 @@
 import SiteShell from "@/components/layouts/SiteShell";
+import { navlinks } from "@/constants";
 import { cn } from "@/utils/cn";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
@@ -107,7 +108,7 @@ export default function RootLayout({ children }) {
       <body
         className={cn("antialiased", typold.variable, inter.variable)}
       >
-        <SiteShell>{children}</SiteShell>
+        <SiteShell navlinks={navlinks}>{children}</SiteShell>
       </body>
     </html>
   );

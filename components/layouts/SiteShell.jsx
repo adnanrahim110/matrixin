@@ -1,17 +1,17 @@
 "use client";
+import { ensureGsap } from "@/utils/gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ReactLenis, useLenis } from "lenis/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import MegaMenu from "./MegaMenu";
+import { NewsletterProvider } from "./NewsletterContext";
 import NewsletterModal from "./NewsletterModal";
 import Showreel from "./Showreel";
-import { NewsletterProvider } from "./NewsletterContext";
 import { ShowreelProvider } from "./ShowreelContext";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ensureGsap } from "@/utils/gsap";
 
-const SiteShell = ({ children }) => {
+const SiteShell = ({ children, navlinks = [] }) => {
   const lenisRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showreelOpen, setShowreelOpen] = useState(false);
@@ -88,21 +88,34 @@ const SiteShell = ({ children }) => {
     <ReactLenis
       root
       ref={lenisRef}
-      options={{ lerp: 0.1, smoothWheel: true, syncTouch: true }}
+      options={{
+        lerp: 0.1,
+        allowNestedScroll: true,
+        smoothWheel: true,
+        syncTouch: true,
+      }}
     >
       <ShowreelProvider value={showreel}>
         <NewsletterProvider value={newsletter}>
           <Header
+            navlinks={navlinks}
             menuOpen={menuOpen}
             onToggleMenu={() => setMenuOpen((prev) => !prev)}
           />
-          <MegaMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
-          <Showreel open={showreelOpen} onClose={() => setShowreelOpen(false)} />
+          <MegaMenu
+            navlinks={navlinks}
+            open={menuOpen}
+            onClose={() => setMenuOpen(false)}
+          />
+          <Showreel
+            open={showreelOpen}
+            onClose={() => setShowreelOpen(false)}
+          />
           <NewsletterModal
             open={newsletterOpen}
             onClose={() => setNewsletterOpen(false)}
           />
-          <main>{children}</main>
+          <main className="relative z-1">{children}</main>
           <Footer />
         </NewsletterProvider>
       </ShowreelProvider>

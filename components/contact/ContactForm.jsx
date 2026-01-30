@@ -3,14 +3,17 @@
 import { useLenis } from "lenis/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import BorderGlowCanvas from "@/components/ui/BorderGlowCanvas";
 import Button from "@/components/ui/Button";
+import { contactDetails } from "@/constants";
 import { cn } from "@/utils/cn";
+import { usePrefersReducedMotion } from "@/utils/usePrefersReducedMotion";
 
 const Toast = ({ message, error, active }) => {
   return (
     <div
       className={cn(
-        "fixed bottom-[4rem] left-[2rem] z-[90] w-[calc(100%-4rem)]",
+        "fixed bottom-16 left-8 z-90 w-[calc(100%-4rem)]",
         "transition-transform duration-1000 ease-ease",
         active ? "translate-y-0" : "translate-y-[calc(110%+4rem)]",
       )}
@@ -19,11 +22,19 @@ const Toast = ({ message, error, active }) => {
     >
       <div
         className={cn(
-          "flex h-[5rem] items-center rounded-[0.4rem] bg-green px-[3rem] text-dark",
-          error && "bg-yellow",
-          "max-[1099px]:h-auto max-[1099px]:p-[2rem]",
+          "pointer-events-auto flex items-center gap-5 rounded-[0.6rem] border px-8 py-6",
+          "bg-dark/80 text-light backdrop-blur-[1.2rem]",
+          error ? "border-yellow/40" : "border-green/40",
+          "shadow-[0_2.4rem_8rem_rgba(0,0,0,0.35)]",
         )}
       >
+        <span
+          aria-hidden="true"
+          className={cn(
+            "h-4 w-4 rotate-45 rounded-[0.12rem]",
+            error ? "bg-yellow" : "bg-green",
+          )}
+        />
         {message}
       </div>
     </div>
@@ -35,6 +46,8 @@ export default function ContactForm() {
   const tsInputRef = useRef(null);
 
   const lenis = useLenis();
+  const reducedMotion = usePrefersReducedMotion();
+  const [emailContact, phoneContact] = contactDetails;
 
   const [submitting, setSubmitting] = useState(false);
   const [toast, setToast] = useState({
@@ -120,130 +133,222 @@ export default function ContactForm() {
     <>
       <section
         data-theme="dark"
-        className="w-full border-t border-white/15 bg-dark px-[2rem] pb-[10rem] pt-[4rem] text-light min-[1100px]:mt-[10rem] min-[1100px]:px-[4rem]"
+        className={cn(
+          "relative w-full bg-dark px-8 py-24 text-light",
+          "min-[1100px]:py-46",
+        )}
       >
-        <h2 className="mb-[3rem] w-[24.8rem] text-[2.6rem] leading-[120%] min-[1100px]:mb-[4rem] min-[1100px]:ml-[2rem] min-[1100px]:w-auto min-[1100px]:text-[2.4rem]">
-          We would love to hear from you.
-        </h2>
+        <div className="mx-auto w-full max-w-480">
+          <div className="grid grid-cols-[auto_52%] max-[1099px]:grid-cols-1 gap-20 items-start">
+            <header className="w-full">
+              <p className="text-[1.4rem] uppercase tracking-[0.12em] text-light/60">
+                Contact
+              </p>
+              <h2 className="mt-8 font-heading text-[6rem] leading-[105%] tracking-[-0.02em] max-[1099px]:text-[4.2rem]">
+                Let&apos;s build something clean, fast, and premium.
+              </h2>
+              <p className="mt-8 max-w-216 leading-[170%] text-light/70">
+                Share a few details and we’ll come back with clear next steps, a
+                practical scope, and a timeline that makes sense.
+              </p>
 
-        <form
-          ref={formRef}
-          className={cn(submitting && "loading")}
-          action="/api/contact"
-          method="POST"
-          onSubmit={onSubmit}
-        >
-          <label className="sr-only" aria-hidden="true">
-            <input type="text" name="extra" tabIndex={-1} autoComplete="off" />
-          </label>
+              <div className="mt-16 grid gap-6">
+                <a
+                  href={emailContact?.href}
+                  className={cn(
+                    "group flex items-start gap-5 rounded-[0.6rem] border border-white/10 bg-white/5 p-8",
+                    "transition-[background-color,border-color] duration-600 ease-ease hover:bg-white/10 hover:border-white/20",
+                  )}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="mt-4 h-[0.6rem] w-[0.6rem] rotate-45 rounded-[0.12rem] bg-primary"
+                  />
+                  <div className="min-w-0">
+                    <p className="text-[1.4rem] uppercase tracking-[0.12em] text-light/60">
+                      Email
+                    </p>
+                    <p className="mt-3 font-heading text-[2.4rem] leading-[110%]">
+                      {emailContact?.value}
+                    </p>
+                    <p className="mt-4 text-light/70">
+                      Send a brief — or just say hello.
+                    </p>
+                  </div>
+                </a>
 
-          <input ref={tsInputRef} type="hidden" name="ts" defaultValue="" />
+                <a
+                  href={phoneContact?.href}
+                  className={cn(
+                    "group flex items-start gap-5 rounded-[0.6rem] border border-white/10 bg-white/5 p-8",
+                    "transition-[background-color,border-color] duration-600 ease-ease hover:bg-white/10 hover:border-white/20",
+                  )}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="mt-4 h-[0.6rem] w-[0.6rem] rotate-45 rounded-[0.12rem] bg-green"
+                  />
+                  <div className="min-w-0">
+                    <p className="text-[1.4rem] uppercase tracking-[0.12em] text-light/60">
+                      Phone
+                    </p>
+                    <p className="mt-3 font-heading text-[2.4rem] leading-[110%]">
+                      {phoneContact?.value}
+                    </p>
+                    <p className="mt-4 text-light/70">
+                      Prefer a call? We’re happy to chat.
+                    </p>
+                  </div>
+                </a>
+              </div>
+            </header>
 
-          <div className="min-[1100px]:mb-[2rem] min-[1100px]:grid min-[1100px]:grid-cols-2 min-[1100px]:gap-[2rem]">
-            <label>
-              <span className="sr-only">First name</span>
-              <input
-                className="mb-[1rem] h-[8rem] w-full rounded-[0.4rem] border border-white/10 bg-[#131313] px-[3rem] text-light outline-none transition-colors duration-800 ease-ease placeholder:text-white/30 focus:border-white/30 min-[1100px]:mb-0"
-                type="text"
-                name="first_name"
-                placeholder="First name*"
-                required
-              />
-            </label>
+            <div className="w-full">
+              <form
+                ref={formRef}
+                className={cn(
+                  "relative overflow-hidden rounded-[0.8rem] border border-white/10 bg-white/5 p-10",
+                  "max-[1099px]:p-8",
+                )}
+                action="/api/contact"
+                method="POST"
+                onSubmit={onSubmit}
+              >
+                <BorderGlowCanvas
+                  enabled={!reducedMotion}
+                  color="244, 122, 35"
+                  size={160}
+                />
 
-            <label>
-              <span className="sr-only">Last name</span>
-              <input
-                className="mb-[1rem] h-[8rem] w-full rounded-[0.4rem] border border-white/10 bg-[#131313] px-[3rem] text-light outline-none transition-colors duration-800 ease-ease placeholder:text-white/30 focus:border-white/30 min-[1100px]:mb-0"
-                type="text"
-                name="last_name"
-                placeholder="Last name*"
-                required
-              />
-            </label>
+                <div className="relative z-3">
+                  <div className="flex flex-wrap items-center justify-between gap-6 border-b border-white/10 pb-6">
+                    <p className="text-[1.4rem] uppercase tracking-[0.12em] text-light/60">
+                      Project inquiry
+                    </p>
+                    <p className="text-[1.4rem] text-light/60">
+                      Fields marked * are required
+                    </p>
+                  </div>
+
+                  <label className="sr-only" aria-hidden="true">
+                    <input
+                      type="text"
+                      name="extra"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </label>
+
+                  <input
+                    ref={tsInputRef}
+                    type="hidden"
+                    name="ts"
+                    defaultValue=""
+                  />
+
+                  <div className="mt-10 grid gap-8">
+                    <fieldset className="grid gap-6 grid-cols-2 max-[1099px]:grid-cols-1">
+                      <legend className="sr-only">Your details</legend>
+                      <input
+                        id="contact-first-name"
+                        className={cn(
+                          "h-20 w-full rounded-[0.4rem] border border-white/10 bg-grey-dark px-8",
+                          "text-light outline-none transition-colors duration-600 ease-ease",
+                          "placeholder:text-white/30 focus:border-white/25",
+                        )}
+                        type="text"
+                        name="first_name"
+                        placeholder="Your first name *"
+                        autoComplete="given-name"
+                        required
+                      />
+                      <input
+                        id="contact-last-name"
+                        className={cn(
+                          "h-20 w-full rounded-[0.4rem] border border-white/10 bg-grey-dark px-8",
+                          "text-light outline-none transition-colors duration-600 ease-ease",
+                          "placeholder:text-white/30 focus:border-white/25",
+                        )}
+                        type="text"
+                        name="last_name"
+                        placeholder="Your last name *"
+                        autoComplete="family-name"
+                        required
+                      />
+                    </fieldset>
+
+                    <fieldset className="grid gap-6 grid-cols-2 max-[1099px]:grid-cols-1">
+                      <legend className="sr-only">
+                        Contact Details details
+                      </legend>
+                      <input
+                        id="contact-email"
+                        className={cn(
+                          "h-20 w-full rounded-[0.4rem] border border-white/10 bg-grey-dark px-8",
+                          "text-light outline-none transition-colors duration-600 ease-ease",
+                          "placeholder:text-white/30 focus:border-white/25",
+                        )}
+                        type="email"
+                        name="email"
+                        placeholder="Your email address *"
+                        autoComplete="email"
+                        required
+                      />
+                      <input
+                        id="contact-phone"
+                        className={cn(
+                          "h-20 w-full rounded-[0.4rem] border border-white/10 bg-grey-dark px-8",
+                          "text-light outline-none transition-colors duration-600 ease-ease",
+                          "placeholder:text-white/30 focus:border-white/25",
+                        )}
+                        type="text"
+                        name="company_phone"
+                        placeholder="Your phone number"
+                        autoComplete="tel"
+                        required
+                      />
+                    </fieldset>
+
+                    <fieldset className="grid gap-6">
+                      <legend className="sr-only">Project details</legend>
+                      <textarea
+                        id="contact-message"
+                        className={cn(
+                          "h-70 w-full resize-none rounded-[0.4rem] border border-white/10 bg-grey-dark px-8 py-7",
+                          "text-light outline-none transition-colors duration-600 ease-ease",
+                          "placeholder:text-white/30 focus:border-white/25",
+                          "leading-[170%]",
+                        )}
+                        name="message"
+                        placeholder="Tell us about scope, timeline, budget, and any links we should see."
+                        required
+                      />
+                    </fieldset>
+                  </div>
+
+                  <div className="mt-12 flex flex-col gap-10 border-t border-white/10 pt-10">
+                    <div
+                      className={cn(
+                        submitting && "pointer-events-none opacity-60",
+                      )}
+                    >
+                      <Button
+                        type="submit"
+                        variant="magnetic"
+                        tone="green"
+                        className="h-50 w-full min-h-0"
+                        loading={submitting}
+                        disabled={submitting}
+                      >
+                        Submit form
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
-
-          <div className="min-[1100px]:mb-[2rem] min-[1100px]:grid min-[1100px]:grid-cols-2 min-[1100px]:gap-[2rem]">
-            <label>
-              <span className="sr-only">Company name*</span>
-              <input
-                className="mb-[1rem] h-[8rem] w-full rounded-[0.4rem] border border-white/10 bg-[#131313] px-[3rem] text-light outline-none transition-colors duration-800 ease-ease placeholder:text-white/30 focus:border-white/30 min-[1100px]:mb-0"
-                type="text"
-                name="company"
-                placeholder="Company name*"
-                required
-              />
-            </label>
-
-            <label>
-              <span className="sr-only">Company email*</span>
-              <input
-                className="mb-[1rem] h-[8rem] w-full rounded-[0.4rem] border border-white/10 bg-[#131313] px-[3rem] text-light outline-none transition-colors duration-800 ease-ease placeholder:text-white/30 focus:border-white/30 min-[1100px]:mb-0"
-                type="email"
-                name="email"
-                placeholder="Company email*"
-                required
-              />
-            </label>
-          </div>
-
-          <div className="min-[1100px]:mb-[2rem]">
-            <label>
-              <span className="sr-only">Company website url*</span>
-              <input
-                className="mb-[1rem] h-[8rem] w-full rounded-[0.4rem] border border-white/10 bg-[#131313] px-[3rem] text-light outline-none transition-colors duration-800 ease-ease placeholder:text-white/30 focus:border-white/30"
-                type="text"
-                name="company_website_url"
-                placeholder="Company website url*"
-                required
-              />
-            </label>
-          </div>
-
-          <div className="mt-[4rem]">
-            <label>
-              <span className="mb-[2.4rem] ml-[3rem] block text-[1.8rem] leading-[140%] max-[1099px]:mb-[2rem] max-[1099px]:ml-0 max-[1099px]:w-[28rem]">
-                Tell us about the project (Scope, Timeline, Budget):*
-              </span>
-              <textarea
-                className="h-[22rem] w-full resize-none rounded-[0.4rem] border border-white/10 bg-[#131313] px-[3rem] py-[2.6rem] text-light outline-none transition-colors duration-800 ease-ease placeholder:text-white/30 focus:border-white/30 leading-[140%]"
-                name="message"
-                placeholder="Type us a message"
-                required
-              />
-            </label>
-          </div>
-
-          <div className="mb-[3rem] mt-[9rem] max-[1099px]:mb-[2rem] max-[1099px]:mt-[6rem]">
-            <label className="group inline-flex cursor-pointer items-center min-[1100px]:ml-[3rem]">
-              <input name="newsletter" type="checkbox" className="peer sr-only" />
-
-              <span className="relative mr-[1.4rem] h-[2.5rem] w-[2.5rem] rounded-[1rem] border border-white/50 transition-colors duration-1000 ease-ease group-hover:border-white">
-                <span className="absolute left-[0.65rem] top-[0.65rem] h-[1.2rem] w-[1.2rem] rounded-[0.4rem] bg-light opacity-0 transition-opacity duration-800 ease-ease peer-checked:opacity-100" />
-              </span>
-
-              <span className="text-[1.8rem] leading-[140%]">
-                Yes, sign me up to newsletter
-              </span>
-            </label>
-          </div>
-
-          <div
-            className={cn(
-              "min-[1100px]:ml-[2rem]",
-              submitting && "pointer-events-none opacity-40",
-            )}
-          >
-            <Button
-              type="submit"
-              variant="magnetic"
-              tone="green"
-              className="h-[18rem] w-full min-h-0 min-[1100px]:w-[67.5rem]"
-            >
-              Submit Form
-            </Button>
-          </div>
-        </form>
+        </div>
       </section>
 
       <Toast {...toast} />

@@ -1,14 +1,13 @@
 "use client";
 
 import gsap from "gsap";
-import Link from "next/link";
 import { useLayoutEffect, useMemo, useRef } from "react";
 
 import ContactForm from "@/components/contact/ContactForm";
 import Faqs from "@/components/home/Faqs";
 import Testimonials from "@/components/home/Testimonials";
-import Button from "@/components/ui/Button";
 import BorderGlowCanvas from "@/components/ui/BorderGlowCanvas";
+import Button from "@/components/ui/Button";
 import { WORK_PROJECTS } from "@/constants/workProjects";
 import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
@@ -366,7 +365,7 @@ export default function ServiceDetailPage({ service }) {
                   <figure
                     data-parallax
                     data-parallax-y="14"
-                    className="relative aspect-[7/8] w-full overflow-hidden"
+                    className="relative aspect-7/8 w-full overflow-hidden"
                   >
                     <img
                       src={service?.hero?.image?.src}
@@ -398,7 +397,10 @@ export default function ServiceDetailPage({ service }) {
               {overview?.lede && (
                 <p
                   data-reveal
-                  className={cn("text-[2.4rem] leading-[150%]", overviewT.subtle)}
+                  className={cn(
+                    "text-[2.4rem] leading-[150%]",
+                    overviewT.subtle,
+                  )}
                 >
                   {overview.lede}
                 </p>
@@ -415,7 +417,10 @@ export default function ServiceDetailPage({ service }) {
               )}
 
               {(overview?.highlights || []).length > 0 && (
-                <div data-reveal-group className="mt-16 grid grid-cols-12 gap-6">
+                <div
+                  data-reveal-group
+                  className="mt-16 grid grid-cols-12 gap-6"
+                >
                   {(overview.highlights || []).map((h) => (
                     <article
                       key={h.title}
@@ -427,7 +432,9 @@ export default function ServiceDetailPage({ service }) {
                     >
                       <BorderGlowCanvas
                         enabled={!reducedMotion}
-                        color={overviewT.isDark ? "251, 251, 244" : "34, 34, 32"}
+                        color={
+                          overviewT.isDark ? "251, 251, 244" : "34, 34, 32"
+                        }
                         size={140}
                       />
                       <div className="relative z-3">
@@ -437,10 +444,19 @@ export default function ServiceDetailPage({ service }) {
                           </h3>
                           <OrbitIcon
                             tone={tone}
-                            className={overviewT.isDark ? "border-white/10 bg-white/10" : ""}
+                            className={
+                              overviewT.isDark
+                                ? "border-white/10 bg-white/10"
+                                : ""
+                            }
                           />
                         </div>
-                        <p className={cn("mt-5 leading-[170%]", overviewT.subtle)}>
+                        <p
+                          className={cn(
+                            "mt-5 leading-[170%]",
+                            overviewT.subtle,
+                          )}
+                        >
                           {h.text}
                         </p>
                       </div>
@@ -460,7 +476,7 @@ export default function ServiceDetailPage({ service }) {
                     overviewT.panel,
                   )}
                 >
-                  <div className="relative aspect-[16/10] w-full overflow-hidden">
+                  <div className="relative aspect-16/10 w-full overflow-hidden">
                     <img
                       src={
                         service?.caseStudies?.image?.src ||
@@ -499,8 +515,16 @@ export default function ServiceDetailPage({ service }) {
                       >
                         What you get
                       </p>
-                      <p className={cn("mt-4 max-w-6xl leading-[170%]", overviewT.subtle)}>
-                        A cohesive system of components, editorial spacing, and motion that turns your service into a clear narrative \u2014 so visitors understand value fast and act with confidence.
+                      <p
+                        className={cn(
+                          "mt-4 max-w-6xl leading-[170%]",
+                          overviewT.subtle,
+                        )}
+                      >
+                        A cohesive system of components, editorial spacing, and
+                        motion that turns your service into a clear narrative
+                        \u2014 so visitors understand value fast and act with
+                        confidence.
                       </p>
                     </div>
                   </div>
@@ -554,8 +578,15 @@ export default function ServiceDetailPage({ service }) {
                   >
                     Pain points
                   </div>
-                  <p className={cn("relative z-2 leading-[170%]", problemT.subtle)}>
-                    We isolate the friction that stops users from understanding, trusting, or converting \u2014 then remove it with structure, clarity, and performance.
+                  <p
+                    className={cn(
+                      "relative z-2 leading-[170%]",
+                      problemT.subtle,
+                    )}
+                  >
+                    We isolate the friction that stops users from understanding,
+                    trusting, or converting \u2014 then remove it with
+                    structure, clarity, and performance.
                   </p>
                 </div>
               </header>
@@ -583,7 +614,7 @@ export default function ServiceDetailPage({ service }) {
                         problemT.panel,
                       )}
                     >
-                      <div className="relative aspect-[4/5] w-full overflow-hidden">
+                      <div className="relative aspect-4/5 w-full overflow-hidden">
                         <img
                           src={
                             service?.caseStudies?.image?.src ||
@@ -612,15 +643,23 @@ export default function ServiceDetailPage({ service }) {
                         >
                           <BorderGlowCanvas
                             enabled={!reducedMotion}
-                            color={problemT.isDark ? "251, 251, 244" : "34, 34, 32"}
+                            color={
+                              problemT.isDark ? "251, 251, 244" : "34, 34, 32"
+                            }
                             size={120}
                           />
                           <div className="relative z-3 flex items-start gap-4">
                             <OrbitIcon
                               tone={tone}
-                              className={problemT.isDark ? "border-white/10 bg-white/10" : ""}
+                              className={
+                                problemT.isDark
+                                  ? "border-white/10 bg-white/10"
+                                  : ""
+                              }
                             />
-                            <p className={cn("leading-[170%]", problemT.subtle2)}>
+                            <p
+                              className={cn("leading-[170%]", problemT.subtle2)}
+                            >
                               {point}
                             </p>
                           </div>
@@ -672,7 +711,7 @@ export default function ServiceDetailPage({ service }) {
                     data-parallax
                     data-parallax-y="10"
                     className={cn(
-                      "relative aspect-[16/12] w-full overflow-hidden",
+                      "relative aspect-16/12 w-full overflow-hidden",
                       approachT.panel,
                     )}
                   >
@@ -700,7 +739,9 @@ export default function ServiceDetailPage({ service }) {
                 </div>
 
                 {(approach?.body || []).length > 0 && (
-                  <div className={cn("relative z-1 space-y-6", approachT.subtle)}>
+                  <div
+                    className={cn("relative z-1 space-y-6", approachT.subtle)}
+                  >
                     {(approach.body || []).map((p) => (
                       <p key={p} data-reveal className="leading-[170%]">
                         {p}
@@ -743,7 +784,9 @@ export default function ServiceDetailPage({ service }) {
                         >
                           <BorderGlowCanvas
                             enabled={!reducedMotion}
-                            color={approachT.isDark ? "251, 251, 244" : "34, 34, 32"}
+                            color={
+                              approachT.isDark ? "251, 251, 244" : "34, 34, 32"
+                            }
                             size={140}
                           />
                           <div className="relative z-3 flex items-start gap-6 max-[1099px]:gap-4">
@@ -758,14 +801,23 @@ export default function ServiceDetailPage({ service }) {
                               </p>
                               <OrbitIcon
                                 tone={tone}
-                                className={approachT.isDark ? "border-white/10 bg-white/10" : ""}
+                                className={
+                                  approachT.isDark
+                                    ? "border-white/10 bg-white/10"
+                                    : ""
+                                }
                               />
                             </div>
                             <div className="min-w-0">
                               <h3 className="font-heading text-[2.8rem] leading-[120%]">
                                 {step.title}
                               </h3>
-                              <p className={cn("mt-4 leading-[170%]", approachT.subtle)}>
+                              <p
+                                className={cn(
+                                  "mt-4 leading-[170%]",
+                                  approachT.subtle,
+                                )}
+                              >
                                 {step.text}
                               </p>
                             </div>
@@ -826,7 +878,7 @@ export default function ServiceDetailPage({ service }) {
                   includesT.panel,
                 )}
               >
-                <div className="relative aspect-[16/10] w-full overflow-hidden">
+                <div className="relative aspect-16/10 w-full overflow-hidden">
                   <img
                     src={service?.hero?.image?.src}
                     alt={service?.hero?.image?.alt || ""}
@@ -845,7 +897,7 @@ export default function ServiceDetailPage({ service }) {
                   includesT.panel,
                 )}
               >
-                <div className="relative aspect-[16/10] w-full overflow-hidden">
+                <div className="relative aspect-16/10 w-full overflow-hidden">
                   <img
                     src={
                       service?.caseStudies?.image?.src ||
@@ -874,10 +926,15 @@ export default function ServiceDetailPage({ service }) {
                 >
                   Scope
                 </div>
-                <p className={cn("relative z-2 leading-[170%]", includesT.subtle)}>
-                  A structured scope that keeps momentum high: clear deliverables,
-                  predictable collaboration, and enough flexibility to iterate
-                  without losing direction.
+                <p
+                  className={cn(
+                    "relative z-2 leading-[170%]",
+                    includesT.subtle,
+                  )}
+                >
+                  A structured scope that keeps momentum high: clear
+                  deliverables, predictable collaboration, and enough
+                  flexibility to iterate without losing direction.
                 </p>
               </div>
             </div>
@@ -903,7 +960,7 @@ export default function ServiceDetailPage({ service }) {
                         "grid grid-cols-12 gap-6",
                         idx % 2 === 0
                           ? ""
-                          : "min-[1100px]:[&_[data-media]]:order-2",
+                          : "min-[1100px]:**:data-media:order-2",
                       )}
                     >
                       <figure
@@ -917,7 +974,7 @@ export default function ServiceDetailPage({ service }) {
                           includesT.panel,
                         )}
                       >
-                        <div className="relative aspect-[4/3] w-full overflow-hidden">
+                        <div className="relative aspect-4/3 w-full overflow-hidden">
                           <img
                             src={mediaSrc}
                             alt={mediaAlt}
@@ -937,7 +994,9 @@ export default function ServiceDetailPage({ service }) {
                       >
                         <BorderGlowCanvas
                           enabled={!reducedMotion}
-                          color={includesT.isDark ? "251, 251, 244" : "34, 34, 32"}
+                          color={
+                            includesT.isDark ? "251, 251, 244" : "34, 34, 32"
+                          }
                           size={160}
                         />
                         <div className="relative z-3">
@@ -945,7 +1004,11 @@ export default function ServiceDetailPage({ service }) {
                             <div className="flex items-center gap-4">
                               <OrbitIcon
                                 tone={tone}
-                                className={includesT.isDark ? "border-white/10 bg-white/10" : ""}
+                                className={
+                                  includesT.isDark
+                                    ? "border-white/10 bg-white/10"
+                                    : ""
+                                }
                               />
                               <h3 className="font-heading text-[3.2rem] leading-[110%]">
                                 {group.title}
@@ -1035,7 +1098,10 @@ export default function ServiceDetailPage({ service }) {
                 {process?.intro && (
                   <p
                     data-reveal
-                    className={cn("mt-8 max-w-6xl leading-[170%]", processT.subtle)}
+                    className={cn(
+                      "mt-8 max-w-6xl leading-[170%]",
+                      processT.subtle,
+                    )}
                   >
                     {process.intro}
                   </p>
@@ -1051,7 +1117,12 @@ export default function ServiceDetailPage({ service }) {
                 )}
               >
                 <span aria-hidden="true" className={toneDot(tone)} />
-                <span className={cn("text-[1.2rem] uppercase tracking-[0.12em]", processT.overline)}>
+                <span
+                  className={cn(
+                    "text-[1.2rem] uppercase tracking-[0.12em]",
+                    processT.overline,
+                  )}
+                >
                   Scroll to follow the steps
                 </span>
               </div>
@@ -1069,7 +1140,7 @@ export default function ServiceDetailPage({ service }) {
                     processT.panel,
                   )}
                 >
-                  <div className="relative aspect-[4/5] w-full overflow-hidden">
+                  <div className="relative aspect-4/5 w-full overflow-hidden">
                     <img
                       src={service?.hero?.image?.src}
                       alt={service?.hero?.image?.alt || ""}
@@ -1096,15 +1167,25 @@ export default function ServiceDetailPage({ service }) {
                   >
                     Delivery
                   </div>
-                  <p className={cn("relative z-2 leading-[170%]", processT.subtle)}>
-                    A lightweight cadence designed for speed: crisp checkpoints, clear feedback loops, and scope control that keeps quality high without slowing decisions.
+                  <p
+                    className={cn(
+                      "relative z-2 leading-[170%]",
+                      processT.subtle,
+                    )}
+                  >
+                    A lightweight cadence designed for speed: crisp checkpoints,
+                    clear feedback loops, and scope control that keeps quality
+                    high without slowing decisions.
                   </p>
                 </div>
               </aside>
 
               <div className="col-span-7 max-[1099px]:col-span-12">
                 {(process?.steps || []).length > 0 && (
-                  <div data-progress className="relative pl-12 max-[1099px]:pl-0">
+                  <div
+                    data-progress
+                    className="relative pl-12 max-[1099px]:pl-0"
+                  >
                     <div
                       aria-hidden="true"
                       className={cn(
@@ -1134,7 +1215,9 @@ export default function ServiceDetailPage({ service }) {
                         >
                           <BorderGlowCanvas
                             enabled={!reducedMotion}
-                            color={processT.isDark ? "251, 251, 244" : "34, 34, 32"}
+                            color={
+                              processT.isDark ? "251, 251, 244" : "34, 34, 32"
+                            }
                             size={160}
                           />
                           <div className="relative z-3 flex items-start gap-6">
@@ -1142,23 +1225,39 @@ export default function ServiceDetailPage({ service }) {
                               <span
                                 className={cn(
                                   "inline-flex h-12 w-12 items-center justify-center rounded-full border",
-                                  processT.isDark ? "border-white/10 bg-white/5" : "border-dark/10 bg-dark/5",
+                                  processT.isDark
+                                    ? "border-white/10 bg-white/5"
+                                    : "border-dark/10 bg-dark/5",
                                 )}
                               >
-                                <span className={cn("text-[1.4rem] uppercase tracking-[0.08em]", processT.overline)}>
+                                <span
+                                  className={cn(
+                                    "text-[1.4rem] uppercase tracking-[0.08em]",
+                                    processT.overline,
+                                  )}
+                                >
                                   {(index + 1).toString().padStart(2, "0")}
                                 </span>
                               </span>
                               <OrbitIcon
                                 tone={tone}
-                                className={processT.isDark ? "border-white/10 bg-white/10" : ""}
+                                className={
+                                  processT.isDark
+                                    ? "border-white/10 bg-white/10"
+                                    : ""
+                                }
                               />
                             </div>
                             <div className="min-w-0">
                               <h3 className="font-heading text-[3.2rem] leading-[110%]">
                                 {step.title}
                               </h3>
-                              <p className={cn("mt-4 leading-[170%]", processT.subtle)}>
+                              <p
+                                className={cn(
+                                  "mt-4 leading-[170%]",
+                                  processT.subtle,
+                                )}
+                              >
                                 {step.text}
                               </p>
                             </div>
@@ -1220,7 +1319,7 @@ export default function ServiceDetailPage({ service }) {
                 <div data-reveal-item>
                   <Button
                     href={cta.secondary?.href}
-                    tone="dark"
+                    tone="light"
                     className={cn("h-24", ctaT.isDark && "text-light")}
                   >
                     {cta.secondary?.label}
@@ -1348,9 +1447,8 @@ export default function ServiceDetailPage({ service }) {
 
             <div data-reveal-group className="mt-18 grid grid-cols-12 gap-6">
               {relatedProjects.map((p) => (
-                <Link
+                <div
                   key={p.href}
-                  href={p.href}
                   data-reveal-item
                   className={cn(
                     "group col-span-4 overflow-hidden rounded-[0.4rem] border max-[1099px]:col-span-12",
@@ -1397,7 +1495,7 @@ export default function ServiceDetailPage({ service }) {
                       View project
                     </span>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           </div>

@@ -1,13 +1,23 @@
 "use client";
 
 import gsap from "gsap";
+import {
+  ArrowUpRight,
+  Clock as ClockIcon,
+  Mail,
+  MoveRight,
+  Phone,
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
+import { contactDetails, socials } from "@/constants";
 import { cn } from "@/utils/cn";
 import Button from "../ui/Button";
 import { useNewsletter } from "./NewsletterContext";
 import { useShowreel } from "./ShowreelContext";
+
+// --- Sub-components ---
 
 const MenuLine = ({ children, className }) => {
   return (
@@ -19,24 +29,22 @@ const MenuLine = ({ children, className }) => {
   );
 };
 
+// Reused the Dot Icon for the close button as it's a specific brand element
 const MenuCloseIcon = () => {
   const dotBase = cn(
     "absolute block h-[0.3rem] w-[0.3rem] rounded-[0.1rem] bg-light",
     "opacity-100",
     "transition-[transform,opacity,background-color] duration-[600ms] ease-ease",
-    "group-hover:bg-dark",
+    "group-hover/close:bg-dark",
   );
-
   const forced = "max-[1099px]:opacity-100";
-
   return (
     <div className="relative h-[1.3rem] w-[1.9rem] pointer-events-none">
       <span
         className={cn(
           dotBase,
           "left-0 top-2",
-          "group-hover:translate-x-[0.38rem] group-hover:-translate-y-1",
-          "max-[1099px]:translate-x-[0.38rem] max-[1099px]:-translate-y-1",
+          "group-hover/close:translate-x-[0.38rem] group-hover/close:-translate-y-1",
         )}
       />
       <span className={cn(dotBase, "left-[calc(50%-0.15rem)] top-2")} />
@@ -44,17 +52,14 @@ const MenuCloseIcon = () => {
         className={cn(
           dotBase,
           "left-[calc(100%-0.3rem)] top-2",
-          "group-hover:-translate-x-[0.38rem] group-hover:-translate-y-1",
-          "max-[1099px]:-translate-x-[0.38rem] max-[1099px]:-translate-y-1",
+          "group-hover/close:-translate-x-[0.38rem] group-hover/close:-translate-y-1",
         )}
       />
-
       <span
         className={cn(
           dotBase,
           "left-0 top-2 opacity-0",
-          "group-hover:-translate-y-2 group-hover:opacity-100",
-          "max-[1099px]:-translate-y-2",
+          "group-hover/close:-translate-y-2 group-hover/close:opacity-100",
           forced,
         )}
       />
@@ -62,8 +67,7 @@ const MenuCloseIcon = () => {
         className={cn(
           dotBase,
           "left-0 top-2 opacity-0",
-          "group-hover:translate-y-2 group-hover:opacity-100",
-          "max-[1099px]:translate-y-2",
+          "group-hover/close:translate-y-2 group-hover/close:opacity-100",
           forced,
         )}
       />
@@ -71,8 +75,7 @@ const MenuCloseIcon = () => {
         className={cn(
           dotBase,
           "left-0 top-2 opacity-0",
-          "group-hover:translate-x-[0.38rem] group-hover:trny1-translate-y-1 group-hover:opacity-100",
-          "max-[1099px]:translate-x-[0.38rem] max-[1099px]:trny1-translate-y-1",
+          "group-hover/close:translate-x-[0.38rem] group-hover/close:translate-y-1 group-hover/close:opacity-100",
           forced,
         )}
       />
@@ -80,8 +83,7 @@ const MenuCloseIcon = () => {
         className={cn(
           dotBase,
           "left-[calc(100%-0.3rem)] top-2 opacity-0",
-          "group-hover:-translate-x-[0.38rem] group-hover:translate-y-[0.2rem] group-hover:opacity-100",
-          "max-[1099px]:-translate-x-[0.38rem] max-[1099px]:translate-y-[0.2rem]",
+          "group-hover/close:-translate-x-[0.38rem] group-hover/close:translate-y-[0.2rem] group-hover/close:opacity-100",
           forced,
         )}
       />
@@ -89,8 +91,7 @@ const MenuCloseIcon = () => {
         className={cn(
           dotBase,
           "left-[calc(100%-0.3rem)] top-2 opacity-0",
-          "group-hover:-translate-y-2 group-hover:opacity-100",
-          "max-[1099px]:-translate-y-2",
+          "group-hover/close:-translate-y-2 group-hover/close:opacity-100",
           forced,
         )}
       />
@@ -98,8 +99,7 @@ const MenuCloseIcon = () => {
         className={cn(
           dotBase,
           "left-[calc(100%-0.3rem)] top-2 opacity-0",
-          "group-hover:translate-y-2 group-hover:opacity-100",
-          "max-[1099px]:translate-y-2",
+          "group-hover/close:translate-y-2 group-hover/close:opacity-100",
           forced,
         )}
       />
@@ -107,24 +107,16 @@ const MenuCloseIcon = () => {
   );
 };
 
-const MenuCardButton = ({ label, dotClassName, className }) => {
+const MenuCardButton = ({ label, className }) => {
   return (
     <div
       className={cn(
         "pointer-events-none relative inline-flex h-12 items-center rounded-[0.2rem] px-8",
-        "text-[1.6rem] leading-none text-light",
+        "text-[1.6rem] leading-none text-light font-medium tracking-tight",
         className,
       )}
     >
       <span className="relative z-1">{label}</span>
-      <span className="ml-[1.2rem] inline-flex h-[0.9rem] w-[0.9rem] items-center justify-center">
-        <span
-          className={cn(
-            "block h-[0.3rem] w-[0.3rem] rounded-[0.1rem] bg-light transition-colors duration-400 ease-ease",
-            dotClassName,
-          )}
-        />
-      </span>
     </div>
   );
 };
@@ -133,7 +125,6 @@ const ButtonBlock = ({
   href,
   label,
   hideButton = false,
-  dotClassName,
   hoverBgClassName,
   className,
   children,
@@ -144,12 +135,11 @@ const ButtonBlock = ({
   const activeRef = useRef(false);
   const [active, setActive] = useState(false);
 
+  // Mouse follow logic...
   useLayoutEffect(() => {
     if (window.matchMedia("(max-width: 1099px)").matches) return;
-
     const btn = btnRef.current;
     if (!btn) return;
-
     const xTo = gsap.quickTo(btn, "x", {
       duration: 0.6,
       ease: "power3.out",
@@ -172,7 +162,6 @@ const ButtonBlock = ({
       xTo(0);
       yTo(0);
     };
-
     const onMove = (event) => {
       const wrapper = wrapperRef.current;
       if (!wrapper) return;
@@ -181,7 +170,6 @@ const ButtonBlock = ({
       yTo(event.clientY - bounds.top - bounds.height * 0.5);
       setActiveSafe(true);
     };
-
     const onLeave = () => {
       setActiveSafe(false);
       xTo(0);
@@ -192,7 +180,6 @@ const ButtonBlock = ({
     wrapper?.addEventListener("mouseenter", onEnter);
     wrapper?.addEventListener("mousemove", onMove);
     wrapper?.addEventListener("mouseleave", onLeave);
-
     return () => {
       wrapper?.removeEventListener("mouseenter", onEnter);
       wrapper?.removeEventListener("mousemove", onMove);
@@ -209,7 +196,7 @@ const ButtonBlock = ({
         aria-hidden="true"
         className={cn(
           "absolute inset-0 z-0 rounded-[0.2rem] [clip-path:inset(0_0_102%_0)]",
-          "transition-[clip-path] duration-600 ease-ease",
+          "transition-[clip-path] duration-700 ease-[cubic-bezier(0.76,0,0.24,1)]", // Smoother editorial easing
           hoverBgClassName ?? "bg-light",
           active && "[clip-path:inset(0_0_0%_0)]",
         )}
@@ -230,14 +217,13 @@ const ButtonBlock = ({
           onClick={onClick}
         />
       )}
-
       <div
         ref={btnRef}
         className={cn(
           "absolute left-1/2 top-1/2 z-3 -translate-x-1/2 -translate-y-1/2",
           hideButton &&
             cn(
-              "opacity-0 transition-opacity duration-400 ease-ease",
+              "opacity-0 transition-opacity duration-400",
               active && "opacity-100",
               "max-[1099px]:opacity-100",
             ),
@@ -245,41 +231,82 @@ const ButtonBlock = ({
       >
         <MenuCardButton
           label={label}
-          dotClassName={dotClassName}
-          className="bg-transparent"
+          className="bg-transparent mix-blend-difference"
         />
       </div>
     </div>
   );
 };
 
-export default function MegaMenu({ open, onClose }) {
+const ClockText = () => {
+  const [now, setNow] = useState(null);
+  useEffect(() => {
+    setNow(new Date());
+    const id = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const time = useMemo(() => {
+    if (!now) return "";
+    return new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Etc/GMT-2",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    }).format(now);
+  }, [now]);
+
+  if (!now) return <span className="opacity-0">00:00:00</span>;
+
+  return (
+    <div className="flex items-center gap-3 opacity-60">
+      <ClockIcon className="w-5 h-5" />
+      <span className="tabular-nums tracking-wider">
+        {time} <span className="text-[0.8em] opacity-60 ml-1">GMT+2</span>
+      </span>
+    </div>
+  );
+};
+
+export default function MegaMenu({ open, onClose, navlinks = [] }) {
   const showreel = useShowreel();
   const newsletter = useNewsletter();
   const menuRef = useRef(null);
   const innerRef = useRef(null);
-
+  const bottomRef = useRef(null);
+  const navListRef = useRef(null);
+  const servicesTriggerRef = useRef(null);
+  const servicesPanelRef = useRef(null);
   const inTlRef = useRef(null);
   const outTlRef = useRef(null);
+  const servicesTlRef = useRef(null);
+  const prevDropdownRef = useRef(null);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [emailContact, phoneContact] = contactDetails;
+  const EmailIcon = emailContact?.Icon || Mail;
+  const PhoneIcon = phoneContact?.Icon || Phone;
 
-  const links = useMemo(
-    () => [
+  const links = useMemo(() => {
+    const services = Array.isArray(navlinks)
+      ? navlinks.find((l) => l?.href === false && Array.isArray(l?.dropdown))
+      : null;
+    return [
       { label: "Home", href: "/" },
       { label: "Work", href: "/work" },
       { label: "About", href: "/about-us" },
-      { label: "Services", href: "/services" },
-    ],
-    [],
-  );
+      { label: "Services", href: false, dropdown: services?.dropdown || [] },
+      { label: "Blogs", href: "/blogs" },
+    ];
+  }, [navlinks]);
 
+  // --- GSAP Setup (Unchanged) ---
   useLayoutEffect(() => {
     const menu = menuRef.current;
     if (!menu) return;
-
     const topCols = menu.querySelectorAll("[data-menu-top-col]");
     const menuLinks = menu.querySelectorAll("[data-menu-link]");
-    const lines = menu.querySelectorAll("[data-menu-line]");
-    const contactBullets = menu.querySelectorAll("[data-menu-bullet]");
+    const rightCol = menu.querySelector("[data-menu-right-col]");
 
     const ctx = gsap.context(() => {
       gsap.set(menu, {
@@ -288,19 +315,16 @@ export default function MegaMenu({ open, onClose }) {
         backgroundColor: "#0e0e0e",
         clipPath: "polygon(0 0, 100% 0, 100% 0, 0 -50%)",
       });
-
       gsap.set(topCols, { yPercent: -120 });
       gsap.set(menuLinks, { autoAlpha: 0, yPercent: 80, filter: "blur(2rem)" });
-      gsap.set(lines, { yPercent: 105 });
-      gsap.set(contactBullets, { scale: 0, yPercent: 105 });
+      gsap.set(rightCol, { autoAlpha: 0, x: 20 });
 
       inTlRef.current = gsap
         .timeline({ paused: true, defaults: { overwrite: "auto" } })
         .add(() => {
           document.documentElement.classList.add("menu-active");
         })
-        .set(menu, { visibility: "visible" }, 0)
-        .set(menu, { pointerEvents: "auto" }, 0)
+        .set(menu, { visibility: "visible", pointerEvents: "auto" }, 0)
         .fromTo(
           menu,
           { backgroundColor: "#0e0e0e" },
@@ -341,25 +365,15 @@ export default function MegaMenu({ open, onClose }) {
           0.2,
         )
         .to(
-          contactBullets,
-          {
-            scale: 1,
-            yPercent: 0,
-            duration: 1,
-            ease: "power3.out",
-            stagger: 0.03,
-          },
-          0.5,
-        )
-        .to(
-          lines,
-          { yPercent: 0, duration: 0.8, ease: "power3.out", stagger: 0.03 },
-          0.6,
+          rightCol,
+          { autoAlpha: 1, x: 0, duration: 1, ease: "power3.out" },
+          0.4,
         );
 
       outTlRef.current = gsap
         .timeline({ paused: true, defaults: { overwrite: "auto" } })
         .set(menu, { pointerEvents: "none" }, 0)
+        .to(rightCol, { autoAlpha: 0, x: 10, duration: 0.4 }, 0)
         .to(
           topCols,
           {
@@ -380,16 +394,6 @@ export default function MegaMenu({ open, onClose }) {
             ease: "power3.inOut",
             stagger: 0.03,
           },
-          0,
-        )
-        .to(
-          contactBullets,
-          { scale: 0, duration: 0.3, ease: "power1.out", stagger: 0.03 },
-          0,
-        )
-        .to(
-          lines,
-          { yPercent: 105, duration: 0.6, ease: "power3.inOut", stagger: 0.03 },
           0,
         )
         .fromTo(
@@ -413,7 +417,6 @@ export default function MegaMenu({ open, onClose }) {
         }, 0.6)
         .set(menu, { visibility: "hidden" });
     }, menu);
-
     return () => {
       ctx.revert();
       document.documentElement.classList.remove("menu-active");
@@ -422,57 +425,177 @@ export default function MegaMenu({ open, onClose }) {
 
   useEffect(() => {
     if (!inTlRef.current || !outTlRef.current) return;
-
     if (open) {
       outTlRef.current.pause(0);
       outTlRef.current.invalidate();
       inTlRef.current.invalidate();
       requestAnimationFrame(() => inTlRef.current.restart());
-      return;
+    } else {
+      inTlRef.current.pause(0);
+      inTlRef.current.invalidate();
+      outTlRef.current.invalidate();
+      if (window.matchMedia("(max-width: 1099px)").matches && innerRef.current)
+        innerRef.current.scrollTop = 0;
+      requestAnimationFrame(() => outTlRef.current.restart());
     }
-
-    inTlRef.current.pause(0);
-    inTlRef.current.invalidate();
-    outTlRef.current.invalidate();
-    if (window.matchMedia("(max-width: 1099px)").matches && innerRef.current) {
-      innerRef.current.scrollTop = 0;
-    }
-    requestAnimationFrame(() => outTlRef.current.restart());
   }, [open]);
 
   useEffect(() => {
+    if (!open) setActiveDropdown(null);
+  }, [open]);
+  useEffect(() => {
     if (!open) return;
-
     const onKeyDown = (event) => {
       if (event.key === "Escape") onClose?.();
     };
-
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open, onClose]);
+
+  // --- Services Logic ---
+  useLayoutEffect(() => {
+    const nav = navListRef.current;
+    const servicesTrigger = servicesTriggerRef.current;
+    const panel = servicesPanelRef.current;
+    const bottom = bottomRef.current;
+
+    if (!nav || !servicesTrigger || !panel) return;
+    servicesTlRef.current?.kill?.();
+
+    if (!open) {
+      prevDropdownRef.current = null;
+      gsap.set(nav, { y: 0 });
+      gsap.set(
+        Array.from(nav.querySelectorAll("[data-menu-nav-item]")).filter(
+          (el) => el !== servicesTrigger,
+        ),
+        { autoAlpha: 1, yPercent: 0, pointerEvents: "auto" },
+      );
+      gsap.set(panel, {
+        display: "none",
+        height: 0,
+        autoAlpha: 0,
+        yPercent: 10,
+        pointerEvents: "none",
+      });
+      return;
+    }
+
+    const prevDropdown = prevDropdownRef.current;
+    prevDropdownRef.current = activeDropdown;
+    const items = Array.from(nav.querySelectorAll("[data-menu-nav-item]"));
+    const otherItems = items.filter((el) => el !== servicesTrigger);
+
+    const toServicesMode = () => {
+      const isMobile = window.matchMedia("(max-width: 1099px)").matches;
+      const wrapBounds =
+        !isMobile && bottom
+          ? bottom.getBoundingClientRect()
+          : nav.getBoundingClientRect();
+      const triggerBounds = servicesTrigger.getBoundingClientRect();
+      const offset = triggerBounds.top - wrapBounds.top;
+
+      const tl = gsap.timeline({ defaults: { overwrite: "auto" } });
+      tl.to(nav, { y: -offset, duration: 1, ease: "expo.out" }, 0);
+      tl.to(
+        otherItems,
+        {
+          autoAlpha: 0,
+          yPercent: -30,
+          duration: 0.6,
+          ease: "power3.out",
+          stagger: 0.03,
+        },
+        0,
+      );
+      tl.set(otherItems, { pointerEvents: "none" }, 0.05);
+      tl.set(
+        panel,
+        {
+          display: "block",
+          height: 0,
+          autoAlpha: 0,
+          yPercent: 10,
+          pointerEvents: "none",
+        },
+        0.1,
+      );
+      tl.to(
+        panel,
+        {
+          height: "auto",
+          autoAlpha: 1,
+          yPercent: 0,
+          duration: 0.8,
+          ease: "expo.out",
+        },
+        0.2,
+      );
+      tl.set(panel, { pointerEvents: "auto" }, 0.2);
+      servicesTlRef.current = tl;
+    };
+
+    const toDefaultMode = () => {
+      const tl = gsap.timeline({ defaults: { overwrite: "auto" } });
+      tl.set(otherItems, { pointerEvents: "auto" }, 0);
+      tl.to(nav, { y: 0, duration: 1, ease: "expo.out" }, 0);
+      tl.to(
+        otherItems,
+        {
+          autoAlpha: 1,
+          yPercent: 0,
+          duration: 0.8,
+          ease: "expo.out",
+          stagger: 0.03,
+        },
+        0.05,
+      );
+      tl.to(
+        panel,
+        {
+          height: 0,
+          autoAlpha: 0,
+          yPercent: 10,
+          duration: 0.5,
+          ease: "power3.out",
+        },
+        0,
+      );
+      tl.set(panel, { pointerEvents: "none" }, 0);
+      tl.set(panel, { display: "none" }, 0.55);
+      servicesTlRef.current = tl;
+    };
+
+    if (activeDropdown === "services") toServicesMode();
+    else if (prevDropdown === "services") toDefaultMode();
+    else {
+      gsap.set(nav, { y: 0 });
+      gsap.set(panel, {
+        display: "none",
+        height: 0,
+        autoAlpha: 0,
+        yPercent: 10,
+        pointerEvents: "none",
+      });
+      gsap.set(otherItems, { pointerEvents: "auto" });
+    }
+  }, [activeDropdown, open]);
 
   return (
     <div
       ref={menuRef}
       id="mega-menu"
-      className={cn(
-        "fixed inset-0 z-30 flex bg-dark",
-        "pointer-events-none invisible",
-        "will-change-[clip-path] translate-z-0",
-      )}
+      className="fixed inset-0 z-30 flex bg-dark pointer-events-none invisible will-change-[clip-path] translate-z-0"
       aria-hidden={!open}
     >
       <div
         ref={innerRef}
-        className={cn(
-          "relative flex w-full flex-col",
-          "max-[1099px]:block max-[1099px]:overflow-y-auto",
-        )}
+        className="relative h-full w-full grid p-8 overflow-hidden max-[1099px]:block max-[1099px]:overflow-y-auto max-[1099px]:p-0"
       >
         <div
           className={cn(
-            "relative grid grid-cols-3 gap-[0.4rem] p-8 overflow-hidden",
-            "max-[1099px]:flex max-[1099px]:justify-end max-[1099px]:pb-0",
+            "relative shrink-0 grid h-80 grid-cols-3 gap-[0.4rem] items-stretch",
+            "max-[1099px]:flex max-[1099px]:p-8 max-[1099px]:pb-0 max-[1099px]:justify-end",
           )}
         >
           <div
@@ -481,7 +604,7 @@ export default function MegaMenu({ open, onClose }) {
           >
             <div
               className={cn(
-                "h-[13.3rem] rounded-[0.2rem] bg-grey-dark transition-[height,background-color] duration-800 ease-ease",
+                "h-[13.3rem] rounded-[0.2rem] transition-[height,background-color] duration-700 ease-[cubic-bezier(0.76,0,0.24,1)]",
                 "min-[1100px]:hover:h-80",
                 "max-[1099px]:h-64",
               )}
@@ -492,13 +615,21 @@ export default function MegaMenu({ open, onClose }) {
                 hideButton
                 hoverBgClassName="bg-transparent"
                 className="h-full w-full"
-                onClick={(event) => {
-                  event.preventDefault();
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActiveDropdown(null);
                   onClose?.();
                   showreel.show();
                 }}
               >
-                <div className="absolute inset-0 z-0 bg-dark/40" />
+                <video
+                  src="/videos/mega-menu.mp4"
+                  muted
+                  autoPlay
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover"
+                />
               </ButtonBlock>
             </div>
           </div>
@@ -507,10 +638,13 @@ export default function MegaMenu({ open, onClose }) {
             <button
               type="button"
               aria-label="Close menu"
-              onClick={onClose}
+              onClick={() => {
+                setActiveDropdown(null);
+                onClose?.();
+              }}
               className={cn(
-                "group relative flex h-[13.3rem] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[0.2rem]",
-                "bg-grey-dark transition-[height,background-color] duration-800 ease-ease",
+                "group/close relative flex h-[13.3rem] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[0.2rem]",
+                "bg-grey-dark transition-[height,background-color] duration-700 ease-[cubic-bezier(0.76,0,0.24,1)]",
                 "min-[1100px]:hover:h-80 min-[1100px]:hover:bg-light",
                 "max-[1099px]:h-48 max-[1099px]:w-48",
               )}
@@ -525,7 +659,7 @@ export default function MegaMenu({ open, onClose }) {
           >
             <div
               className={cn(
-                "h-[13.3rem] rounded-[0.2rem] bg-grey-dark transition-[height,background-color] duration-800 ease-ease",
+                "h-[13.3rem] rounded-[0.2rem] bg-grey-dark transition-[height,background-color] duration-700 ease-[cubic-bezier(0.76,0,0.24,1)]",
                 "min-[1100px]:hover:h-80",
                 "max-[1099px]:h-64",
               )}
@@ -535,7 +669,10 @@ export default function MegaMenu({ open, onClose }) {
                 tone="green"
                 href="/contact-us"
                 className="h-full w-full"
-                onClick={onClose}
+                onClick={() => {
+                  setActiveDropdown(null);
+                  onClose?.();
+                }}
               >
                 Contact Us
               </Button>
@@ -543,26 +680,26 @@ export default function MegaMenu({ open, onClose }) {
           </div>
         </div>
 
-        <div className="relative flex flex-1 items-end overflow-hidden max-[1099px]:flex-col max-[1099px]:items-start max-[1099px]:pb-16">
-          <div
-            className={cn(
-              "mb-16 ml-16",
-              "max-[1099px]:mb-60 max-[1099px]:ml-8",
-            )}
-          >
-            <nav className="flex flex-col">
-              {links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  aria-label={link.label}
-                  onClick={onClose}
-                  className={cn(
-                    "group relative block font-heading text-[8.4rem] leading-[120%] text-light",
-                    "max-[1099px]:text-[5.4rem]",
-                  )}
-                  data-menu-link
-                >
+        <div
+          ref={bottomRef}
+          className={cn(
+            "relative z-10  min-h-0 h-full grid grid-cols-[1fr_minmax(400px,30%)] gap-20 overflow-hidden",
+            "max-[1099px]:flex max-[1099px]:flex-col max-[1099px]:overflow-visible max-[1099px]:gap-0 max-[1099px]:pb-16",
+          )}
+        >
+          <div className="relative flex flex-col h-full justify-end items-start max-[1099px]:mb-40 max-[1099px]:ml-8">
+            <nav
+              ref={navListRef}
+              className="relative flex flex-col h-full w-full justify-end pb-1.5"
+            >
+              {links.map((link) => {
+                const isDropdown =
+                  link.href === false && Array.isArray(link.dropdown);
+                const shared = cn(
+                  "group relative block font-heading text-[7.8rem] leading-[110%] text-light",
+                  "max-[1099px]:text-[5.4rem]",
+                );
+                const indicator = (
                   <span
                     className={cn(
                       "absolute left-0 top-1/2 h-[1.2rem] w-[1.2rem] -translate-y-1/2 rounded-[0.2rem] bg-light",
@@ -571,125 +708,181 @@ export default function MegaMenu({ open, onClose }) {
                     )}
                     aria-hidden="true"
                   />
-                  <span className="block transition-transform duration-1000 ease-ease group-hover:translate-x-16">
-                    {link.label}
-                  </span>
-                </Link>
-              ))}
+                );
+
+                if (isDropdown) {
+                  return (
+                    <div key={link.label} className="relative">
+                      <button
+                        ref={servicesTriggerRef}
+                        type="button"
+                        aria-label={link.label}
+                        onClick={() =>
+                          setActiveDropdown((prev) =>
+                            prev === "services" ? null : "services",
+                          )
+                        }
+                        className={cn(
+                          "flex! items-center justify-between gap-10 w-full",
+                          shared,
+                        )}
+                        data-menu-link
+                        data-menu-nav-item
+                      >
+                        {indicator}
+                        <span className="block transition-transform duration-1000 ease-ease group-hover:translate-x-16">
+                          {link.label}
+                        </span>
+                        {activeDropdown && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveDropdown(null);
+                            }}
+                            className="group/close flex h-20 w-20 items-center justify-center overflow-hidden rounded-[0.2rem] bg-white/5 hover:bg-light transition-colors duration-600"
+                          >
+                            <MenuCloseIcon />
+                          </button>
+                        )}
+                      </button>
+                      <div
+                        ref={servicesPanelRef}
+                        role="region"
+                        style={{ display: "none" }}
+                        className="absolute left-0 top-full z-10 w-full mt-0.5 max-w-[calc(100vw-6.4rem)] overflow-hidden rounded-[0.2rem] border border-white/10 bg-grey-dark shadow-2xl max-[1099px]:static max-[1099px]:w-full"
+                      >
+                        <div className="max-h-[51vh] h-full max-[1099px]:max-h-none overflow-y-auto p-4 scroll_thin">
+                          <div className="grid divide-y divide-white/10">
+                            {(link.dropdown || []).map((service) => (
+                              <Link
+                                key={service.slug}
+                                href={`/services/${service.slug}`}
+                                onClick={() => {
+                                  setActiveDropdown(null);
+                                  onClose?.();
+                                }}
+                                className="group/service flex items-start justify-between gap-8 rounded-[0.2rem] p-6 transition-colors duration-600 hover:bg-white/10"
+                              >
+                                <span className="font-heading text-[2.2rem] leading-[110%]">
+                                  {service.name}
+                                </span>
+                                <ArrowUpRight className="h-6 w-6 opacity-0 transition-all duration-500 group-hover/service:opacity-100 group-hover/service:translate-x-1 group-hover/service:-translate-y-1" />
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => {
+                      setActiveDropdown(null);
+                      onClose?.();
+                    }}
+                    className={shared}
+                    data-menu-link
+                    data-menu-nav-item
+                  >
+                    {indicator}
+                    <span className="block transition-transform duration-1000 ease-ease group-hover:translate-x-16">
+                      {link.label}
+                    </span>
+                  </Link>
+                );
+              })}
             </nav>
           </div>
 
           <div
             className={cn(
-              "relative z-1 mb-24 mr-24 w-2xl",
-              "max-[1099px]:mb-0 max-[1099px]:mr-0 max-[1099px]:flex max-[1099px]:w-full max-[1099px]:justify-between",
+              "relative flex flex-col justify-between h-full py-4 pl-16 border-l border-white/10",
+              "max-[1099px]:w-full max-[1099px]:pl-0 max-[1099px]:border-l-0 max-[1099px]:px-8 max-[1099px]:py-8",
             )}
+            data-menu-right-col
           >
-            <div
-              className={cn(
-                "relative mb-32",
-                "max-[1099px]:mb-0 max-[1099px]:pt-[3.6rem] max-[1099px]:pr-[4.8rem]",
-              )}
-            >
-              <div className="flex items-start" data-menu-contact>
-                <span
-                  className="mt-4 mr-4 block h-[0.4rem] w-[0.4rem] rotate-45 bg-light"
-                  data-menu-bullet
-                />
-                <a
-                  href="tel:+27780548476"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Phone"
-                  className={cn(
-                    "relative inline-block overflow-hidden text-light",
-                    "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
-                    "hover:after:scale-x-100 hover:after:origin-left",
-                  )}
-                >
-                  <MenuLine>(+27) 78 054 8476</MenuLine>
-                </a>
-              </div>
+            <div className="flex flex-col gap-10">
+              <span className="text-[1.2rem] uppercase tracking-widest text-white/40 font-medium">
+                Get in Touch
+              </span>
 
-              <div className="mt-4 flex items-start">
-                <span
-                  className="mt-4 mr-4 block h-[0.4rem] w-[0.4rem] rotate-45 bg-light"
-                  data-menu-bullet
-                />
+              <div className="flex flex-col gap-6">
                 <a
-                  href="mailto:accounts@matrixin.example"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Email"
-                  className={cn(
-                    "relative inline-block overflow-hidden text-light",
-                    "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
-                    "hover:after:scale-x-100 hover:after:origin-left",
-                  )}
+                  href={emailContact?.href}
+                  className="group flex items-center justify-between py-2 border-b border-white/10 hover:border-white/40 transition-colors duration-500"
                 >
-                  <MenuLine>Write Us</MenuLine>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 text-white/60 group-hover:bg-white group-hover:text-dark transition-all duration-500">
+                      <EmailIcon className="w-5 h-5" />
+                    </div>
+                    <span className="text-[1.8rem] text-light font-light group-hover:translate-x-2 transition-transform duration-500">
+                      {emailContact?.value}
+                    </span>
+                  </div>
+                  <ArrowUpRight className="w-6 h-6 text-white/40 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-500" />
                 </a>
-              </div>
 
-              <div className="mt-4 flex items-start">
-                <span
-                  className="mt-4 mr-4 block h-[0.4rem] w-[0.4rem] rotate-45 bg-light"
-                  data-menu-bullet
-                />
-                <button
-                  type="button"
-                  aria-label="Newsletter signup"
-                  onClick={() => {
-                    if (!window.matchMedia("(max-width: 1099px)").matches)
-                      return;
-                    onClose?.();
-                    newsletter.show();
-                  }}
-                  className={cn(
-                    "relative inline-block overflow-hidden text-left text-light",
-                    "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
-                    "hover:after:scale-x-100 hover:after:origin-left",
-                  )}
+                <a
+                  href={phoneContact?.href}
+                  className="group flex items-center justify-between py-2 border-b border-white/10 hover:border-white/40 transition-colors duration-500"
                 >
-                  <MenuLine>Newsletter Signup</MenuLine>
-                </button>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 text-white/60 group-hover:bg-white group-hover:text-dark transition-all duration-500">
+                      <PhoneIcon className="w-5 h-5" />
+                    </div>
+                    <span className="text-[1.8rem] text-light font-light group-hover:translate-x-2 transition-transform duration-500">
+                      {phoneContact?.value}
+                    </span>
+                  </div>
+                  <ArrowUpRight className="w-6 h-6 text-white/40 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-500" />
+                </a>
               </div>
             </div>
 
-            <div
-              className={cn("links", "max-[1099px]:-order-1 max-[1099px]:pl-8")}
-            >
-              <MenuLine className="mb-[2.4rem] opacity-60">Social</MenuLine>
-              <div className="flex flex-col">
-                {[
-                  { label: "Instagram", href: "https://instagram.com" },
-                  { label: "Facebook", href: "https://facebook.com" },
-                  { label: "LinkedIn", href: "https://linkedin.com" },
-                  { label: "Behance", href: "https://behance.net" },
-                ].map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={social.label}
-                    className="opacity-50 transition-opacity duration-600 ease-ease hover:opacity-100"
-                  >
-                    <MenuLine>{social.label}</MenuLine>
-                  </a>
-                ))}
-              </div>
-            </div>
+            <div className="flex flex-col gap-10">
+              <Link href="/contact-us" className="group w-full text-left">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[1.2rem] uppercase tracking-widest text-white/40 font-medium">
+                    Contact us
+                  </span>
+                  <MoveRight className="w-5 h-5 text-white/40 group-hover:text-green-400 group-hover:translate-x-0 -translate-x-2 transition-all duration-500" />
+                </div>
+                <div className="text-[2.2rem] leading-tight text-light font-heading group-hover:text-white/80 transition-colors">
+                  Let&apos;s work together
+                </div>
+              </Link>
 
-            <div
-              className={cn(
-                "absolute bottom-24 right-[7.8rem] font-heading text-light",
-                "max-[1099px]:bottom-0",
-              )}
-            >
-              <MenuLine>
-                <ClockText />
-              </MenuLine>
+              <div className="h-px w-full bg-white/10" />
+
+              <div className="flex items-end justify-between">
+                <div className="flex gap-4">
+                  {socials.map((social) => {
+                    const Icon = social?.Icon || ArrowUpRight;
+                    return (
+                    <a
+                      key={social.href}
+                      href={social.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={social.label}
+                      className="flex items-center justify-center w-12 h-12 rounded-full border border-white/10 text-white/60 hover:bg-white hover:text-dark hover:border-white transition-all duration-500 ease-out"
+                    >
+                      <Icon className="w-5 h-5" />
+                    </a>
+                    );
+                  })}
+                </div>
+
+                <div className="text-[1.4rem] text-right">
+                  <MenuLine>
+                    <ClockText />
+                  </MenuLine>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -707,50 +900,9 @@ export default function MegaMenu({ open, onClose }) {
                 Contact Us
               </Button>
             </div>
-            <div className="h-64 rounded-[0.2rem] bg-grey-dark">
-              <ButtonBlock
-                label="Showreel"
-                href="#"
-                hideButton={false}
-                hoverBgClassName="bg-transparent"
-                className="h-full w-full"
-                onClick={(event) => {
-                  event.preventDefault();
-                  onClose?.();
-                  showreel.show();
-                }}
-              >
-                <div className="absolute inset-0 z-0 bg-dark/40" />
-              </ButtonBlock>
-            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
-
-const ClockText = () => {
-  const [now, setNow] = useState(() => new Date());
-
-  useEffect(() => {
-    const id = window.setInterval(() => setNow(new Date()), 1000);
-    return () => window.clearInterval(id);
-  }, []);
-
-  const time = useMemo(() => {
-    return new Intl.DateTimeFormat("en-GB", {
-      timeZone: "Etc/GMT-2",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    }).format(now);
-  }, [now]);
-
-  return (
-    <>
-      <span className="inline-block min-w-[5.2rem]">{time}</span> (GMT+2)
-    </>
-  );
-};

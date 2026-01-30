@@ -67,11 +67,12 @@ const Hero = () => {
   const framesDesktopRef = useRef(0);
 
   const mouseXRef = useRef(0);
+  const mouseYRef = useRef(0);
 
   const titleAnimRef = useRef({
     topX: 0,
     bottomX: 0,
-    frame: 0,
+    rotation: 0,
   });
 
   const sizesAttr = useMemo(() => "(max-width: 1100px) 450px, 900px", []);
@@ -85,12 +86,13 @@ const Hero = () => {
       renderer: "svg",
       loop: false,
       autoplay: false,
-      path: "/icon.json",
+      path: "/mkrt.json",
     });
     lottieMobileRef.current = anim;
 
     const onReady = () => {
       framesMobileRef.current = anim.totalFrames || 0;
+      anim.goToAndStop(0, true);
     };
     anim.addEventListener("data_ready", onReady);
 
@@ -111,12 +113,13 @@ const Hero = () => {
       renderer: "svg",
       loop: false,
       autoplay: false,
-      path: "/icon.json",
+      path: "/mkrt.json",
     });
     lottieDesktopRef.current = anim;
 
     const onReady = () => {
       framesDesktopRef.current = anim.totalFrames || 0;
+      anim.goToAndStop(0, true);
     };
     anim.addEventListener("data_ready", onReady);
 
@@ -166,9 +169,46 @@ const Hero = () => {
           const cleanups = [];
 
           let active = true;
+          const iconEl = isMobile ? iconMobileRef.current : iconDesktopRef.current;
+          const iconRotateTo = iconEl
+            ? gsap.quickTo(iconEl, "rotation", {
+                duration: 0.55,
+                ease: "power3.out",
+                overwrite: "auto",
+              })
+            : null;
+
+          let hasMouse = false;
+          let rotTarget = 0;
 
           const onMouseMove = (e) => {
-            mouseXRef.current = e.clientX;
+            const x = e.clientX;
+            const y = e.clientY;
+
+            if (!active) {
+              hasMouse = false;
+              mouseXRef.current = x;
+              mouseYRef.current = y;
+              return;
+            }
+
+            if (!hasMouse) {
+              hasMouse = true;
+              mouseXRef.current = x;
+              mouseYRef.current = y;
+              return;
+            }
+
+            const prevX = mouseXRef.current;
+            const prevY = mouseYRef.current;
+            mouseXRef.current = x;
+            mouseYRef.current = y;
+
+            const dx = x - prevX;
+            const dy = y - prevY;
+            const dist = Math.hypot(dx, dy);
+            rotTarget += dist * 0.25;
+            iconRotateTo?.(rotTarget);
           };
 
           if (!isMobile) {
@@ -263,9 +303,7 @@ const Hero = () => {
           // Mobile: scroll reveal + dim stack + scrub icon frames
           if (isMobile) {
             const cols = imageColsRef.current.filter(Boolean);
-            const iconAnim = lottieMobileRef.current;
-            const totalFrames = framesMobileRef.current;
-            const iconObj = { frame: iconAnim?.currentFrame ?? 0 };
+            const iconEl = iconMobileRef.current;
 
             const mobileTl = gsap.timeline({
               scrollTrigger: {
@@ -276,17 +314,8 @@ const Hero = () => {
               },
             });
 
-            if (iconAnim && totalFrames) {
-              mobileTl.to(
-                iconObj,
-                {
-                  frame: totalFrames * 0.5,
-                  duration: 1,
-                  ease: "none",
-                  onUpdate: () => iconAnim.goToAndStop(iconObj.frame, true),
-                },
-                0,
-              );
+            if (iconEl) {
+              mobileTl.to(iconEl, { rotation: 360, duration: 1, ease: "none" }, 0);
             }
 
             const denom = Math.max(1, cols.length - 2);
@@ -470,7 +499,7 @@ const Hero = () => {
             if (!active) return;
 
             const xPercent = (mouseXRef.current / window.innerWidth) * 100;
-            const { topX, bottomX, frame } = titleAnimRef.current;
+            const { topX, bottomX } = titleAnimRef.current;
 
             const nextTopX = lerp(
               topX,
@@ -485,15 +514,6 @@ const Hero = () => {
 
             topSet(nextTopX);
             bottomSet(nextBottomX);
-
-            const anim = lottieDesktopRef.current;
-            const totalFrames = framesDesktopRef.current;
-            if (anim && totalFrames) {
-              const target = (totalFrames * 0.5 * xPercent) / 100;
-              const nextFrame = lerp(frame, target, 0.025);
-              anim.goToAndStop(nextFrame, true);
-              titleAnimRef.current.frame = nextFrame;
-            }
 
             titleAnimRef.current.topX = nextTopX;
             titleAnimRef.current.bottomX = nextBottomX;

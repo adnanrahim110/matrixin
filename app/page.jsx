@@ -1,3 +1,4 @@
+import ContactForm from "@/components/contact/ContactForm";
 import About from "@/components/home/About";
 import Experience from "@/components/home/Experience";
 import Faqs from "@/components/home/Faqs";
@@ -20,7 +21,8 @@ export default function Home() {
       <About />
       <Services />
       <Testimonials />
-      <Faqs />
+      <Faqs light />
+      <ContactForm />
       <PreFooter />
     </div>
   );

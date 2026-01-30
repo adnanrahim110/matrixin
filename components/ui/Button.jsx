@@ -33,6 +33,7 @@ const Loader = () => (
 const TONES = {
   default: "bg-primary",
   dark: "bg-dark",
+  light: "bg-light",
   green: "bg-green",
   purple: "bg-purple",
   blue: "bg-blue",
@@ -41,6 +42,7 @@ const TONES = {
 const BEFORE_TONES = {
   default: "before:bg-primary",
   dark: "before:bg-dark",
+  light: "before:bg-light",
   green: "before:bg-green",
   purple: "before:bg-purple",
   blue: "before:bg-blue",
@@ -96,10 +98,7 @@ const Button = ({
 
     const onMove = (event) => {
       block.classList.add("active");
-      const r = block.getBoundingClientRect(); // Use block rect for center calculation relative to cursor in block
-      // Ideally we want the button to follow the mouse.
-      // The original code calculated offset based on the target link rect.
-      // Here we will use the block's center.
+      const r = block.getBoundingClientRect();
       x(event.clientX - r.left - r.width * 0.5);
       y(event.clientY - r.top - r.height * 0.5);
     };
@@ -126,26 +125,30 @@ const Button = ({
       <span
         className={cn(
           "btn-bg absolute left-[-1%] top-[-1%] z-0 h-[102%] w-[102%]",
-          isMagnetic ? "bg-dark" : toneClass,
+          isMagnetic
+            ? effectiveTone === "dark"
+              ? "bg-white"
+              : "bg-dark"
+            : toneClass,
           "-translate-y-[102%] transition-transform duration-300 ease-ease",
-          "group-[.active]/btnblock:translate-y-0 group-active/btnblock:translate-y-0", // For Magnetic
+          "group-[.active]/btnblock:translate-y-0 group-active/btnblock:translate-y-0",
           "group-[.active]/btnblock:duration-400 group-active/btnblock:duration-400",
-          !isMagnetic && "group-hover:translate-y-0 group-hover:duration-400", // For Static
+          !isMagnetic &&
+            "group-hover/btn:translate-y-0 group-hover/btn:duration-400",
         )}
       />
 
       <span
         className={cn(
           "btn-text relative z-1 mr-[2.7rem] transition-transform duration-600 ease-ease flex items-center justify-center",
-          "group-[.active]/btnblock:translate-x-[2.7rem] group-active/btnblock:translate-x-[2.7rem]", // For Magnetic
-          !isMagnetic && "group-hover:translate-x-[2.7rem]", // For Static
-          loading && "opacity-0", // Hide text when loading
+          "group-[.active]/btnblock:translate-x-[2.7rem] group-active/btnblock:translate-x-[2.7rem]",
+          !isMagnetic && "group-hover/btn:translate-x-[2.7rem]",
+          loading && "opacity-0",
         )}
       >
         {children}
       </span>
 
-      {/* Loading Spinner */}
       {loading && (
         <span className="absolute z-2 inset-0 flex items-center justify-center text-current">
           <Loader />
@@ -155,8 +158,8 @@ const Button = ({
       <span
         className={cn(
           "btn-dot absolute left-[1.8rem] top-[calc(50%-0.4rem)] h-[0.8rem] w-[calc(100%-4rem)] transition-transform duration-600 ease-ease",
-          "group-[.active]/btnblock:translate-x-[calc(-100%+0.4rem)] group-active/btnblock:translate-x-[calc(-100%+0.4rem)]", // For Magnetic
-          !isMagnetic && "group-hover:translate-x-[calc(-100%+0.4rem)]", // For Static
+          "group-[.active]/btnblock:translate-x-[calc(-100%+0.4rem)] group-active/btnblock:translate-x-[calc(-100%+0.4rem)]",
+          !isMagnetic && "group-hover/btn:translate-x-[calc(-100%+0.4rem)]",
         )}
       >
         <span
@@ -207,6 +210,9 @@ const Button = ({
           ref={btnRef}
           className={cn(
             "btn pointer-events-none relative z-1 inline-flex h-12 items-center overflow-hidden rounded-[0.4rem] bg-transparent px-[2.2rem] text-light",
+            isMagnetic &&
+              effectiveTone === "dark" &&
+              "group-[.active]/btnblock:text-dark group-active/btnblock:text-dark",
           )}
         >
           {renderInner()}
@@ -222,9 +228,13 @@ const Button = ({
       type={!href ? type : undefined}
       disabled={!href ? isDisabled : undefined}
       className={cn(
-        "btn group relative inline-flex h-16 items-center overflow-hidden rounded-[0.4rem] px-[2.2rem]",
-        "bg-[rgba(188,188,188,0.1)] text-dark transition-colors duration-300 ease-ease",
-        !isDisabled && "hover:text-light",
+        "btn group/btn relative inline-flex h-16 items-center overflow-hidden rounded-[0.4rem] px-[2.2rem]",
+        effectiveTone === "light"
+          ? "bg-[rgba(255,255,255,0.1)] text-light"
+          : "bg-[rgba(188,188,188,0.1)] text-dark",
+        "transition-colors duration-300 ease-ease",
+        !isDisabled &&
+          (effectiveTone === "light" ? "hover:text-dark" : "hover:text-light"),
         isDisabled && "opacity-50 cursor-not-allowed bg-gray-200 text-gray-500",
         className,
       )}

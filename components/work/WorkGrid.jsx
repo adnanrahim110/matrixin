@@ -1,5 +1,4 @@
 import { cn } from "@/utils/cn";
-import Link from "next/link";
 import WorkCta from "./WorkCta";
 
 export default function WorkGrid({ projects }) {
@@ -14,6 +13,7 @@ export default function WorkGrid({ projects }) {
         {projects.map((project, index) => {
           const dataServices = JSON.stringify(project.serviceSlugs.join(","));
           const eager = index < 2;
+          const videoPreload = eager ? "auto" : "metadata";
 
           return (
             <div
@@ -25,11 +25,18 @@ export default function WorkGrid({ projects }) {
                 "max-[1099px]:mb-8",
               )}
               data-services={dataServices}
+              onMouseEnter={(event) => {
+                const video = event.currentTarget.querySelector("video");
+                video?.play?.();
+              }}
+              onMouseLeave={(event) => {
+                const video = event.currentTarget.querySelector("video");
+                video?.pause?.();
+              }}
             >
-              <Link
-                href={project.href}
-                aria-label={project.ariaLabel}
-                className="project-link absolute inset-0 z-10"
+              <div
+                aria-hidden="true"
+                className="project-link pointer-events-none absolute inset-0 z-10"
               />
 
               <div className="project-media absolute inset-0 overflow-hidden rounded-[0.4rem]">
@@ -50,11 +57,12 @@ export default function WorkGrid({ projects }) {
                     <video
                       className="media video h-full w-full object-cover"
                       src={project.video}
-                      autoPlay
                       muted
                       playsInline
                       loop
-                      preload="auto"
+                      preload={videoPreload}
+                      poster={project.image}
+                      disablePictureInPicture
                     />
                   </div>
                 </figure>

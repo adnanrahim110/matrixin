@@ -504,9 +504,8 @@ const Work = () => {
                 )}
               >
                 <a
-                  className="work-link absolute inset-0 z-1"
-                  href={item.href}
-                  aria-label={item.ariaLabel}
+                  aria-hidden="true"
+                  className="work-link pointer-events-none absolute inset-0 z-1"
                 />
 
                 <div className="work-inner absolute left-2 top-0 h-full w-[calc(100%-1rem)] overflow-hidden rounded-[0.2rem]">

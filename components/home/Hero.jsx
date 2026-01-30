@@ -5,9 +5,9 @@ import lottie from "lottie-web";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { ensureGsap } from "@/utils/gsap";
+import { usePrefersReducedMotion } from "@/utils/usePrefersReducedMotion";
 
-const ESTRELA_HERO_VIDEO =
-  "https://estrelastudio.cdn.prismic.io/estrelastudio/aK8JRWGNHVfTOXgT_estrela-hero.mp4";
+const ESTRELA_HERO_VIDEO = "/videos/home-hero.mp4";
 
 const Hero = () => {
   const sectionRef = useRef(null);
@@ -19,11 +19,13 @@ const Hero = () => {
   const lineRightRef = useRef(null);
   const scrollRef = useRef(null);
   const iconRef = useRef(null);
+  const iconSvgRef = useRef(null);
 
   const lottieRef = useRef(null);
   const totalFramesRef = useRef(0);
 
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const video = videoRef.current;
@@ -57,17 +59,32 @@ const Hero = () => {
       });
       lottieRef.current = anim;
 
+      const onDomLoaded = () => {
+        const svgEl =
+          anim?.renderer?.svgElement || iconHost.querySelector("svg");
+        if (svgEl) {
+          iconSvgRef.current = svgEl;
+          gsap.set(svgEl, {
+            transformOrigin: "50% 50%",
+            willChange: "transform",
+          });
+        }
+      };
+
       const onDataReady = () => {
         totalFramesRef.current = anim.totalFrames || 0;
       };
 
+      anim.addEventListener("DOMLoaded", onDomLoaded);
       anim.addEventListener("data_ready", onDataReady);
 
       return () => {
+        anim.removeEventListener("DOMLoaded", onDomLoaded);
         anim.removeEventListener("data_ready", onDataReady);
         anim.destroy();
         lottieRef.current = null;
         totalFramesRef.current = 0;
+        iconSvgRef.current = null;
       };
     }
   }, []);
@@ -107,9 +124,11 @@ const Hero = () => {
         ({ conditions }) => {
           const isMobile = Boolean(conditions?.isMobile);
 
+          gsap.set([titleLeft, titleRight], { y: 0, yPercent: 0 });
           gsap.set(bg, { autoAlpha: 0, filter: "blur(2rem)" });
           gsap.set([lineLeft, lineRight], {
             yPercent: 100,
+            y: 0,
             autoAlpha: 0,
             filter: "blur(2rem)",
           });
@@ -147,6 +166,11 @@ const Hero = () => {
           );
 
           introTl.moveBlur([lineLeft, lineRight], { stagger: 0.08 }, 0.1);
+          introTl.set(
+            [lineLeft, lineRight],
+            { y: 0, yPercent: 0, clearProps: "transform" },
+            ">",
+          );
           if (!isMobile && scroll)
             introTl.moveBlur(scroll, { duration: 1 }, 0.2);
 
@@ -167,6 +191,17 @@ const Hero = () => {
 
                 const frame = self.progress * 0.5 * (totalFrames - 1);
                 anim.goToAndStop(frame, true);
+
+                if (!reducedMotion) {
+                  const svgEl =
+                    iconSvgRef.current ||
+                    anim?.renderer?.svgElement ||
+                    icon?.querySelector?.("svg");
+                  if (svgEl) {
+                    iconSvgRef.current = svgEl;
+                    gsap.set(svgEl, { rotation: self.progress * 360 });
+                  }
+                }
               },
             },
           });
@@ -237,6 +272,7 @@ const Hero = () => {
             loop
             preload="auto"
           />
+          <div className="absolute inset-0 bg-black/25" />
         </div>
       </figure>
 

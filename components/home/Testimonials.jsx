@@ -1,15 +1,21 @@
 "use client";
 
 import gsap from "gsap";
-import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  memo,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import BorderGlowCanvas from "@/components/ui/BorderGlowCanvas";
 import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
 import { usePrefersReducedMotion } from "@/utils/usePrefersReducedMotion";
 
-const TESTIMONIALS_BG =
-  "https://images.prismic.io/estrelastudio/aN-dN55xUNkB1cOz_testimonials-bg.jpg?w=3000&h=1800&auto=compress,format";
+const TESTIMONIALS_BG = "/imgs/testi.jpg";
 
 const TESTIMONIALS = [
   {

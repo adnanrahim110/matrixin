@@ -113,7 +113,7 @@ const splitLines = (element, innerClassName) => {
   };
 };
 
-const Faqs = ({ title, items: itemsProp, light = false }) => {
+const Faqs = ({ title, items: itemsProp, light = false, className = "" }) => {
   const reducedMotion = usePrefersReducedMotion();
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
@@ -122,7 +122,7 @@ const Faqs = ({ title, items: itemsProp, light = false }) => {
   const tlRefs = useRef([]);
 
   const isLight = Boolean(light);
-  const glowColor = isLight ? "34, 34, 32" : "251, 251, 244";
+  const glowColor = isLight ? "244, 122, 35" : "251, 251, 244";
   const borderOuter = isLight ? "border-dark/20" : "border-white/20";
   const borderInner = isLight ? "border-dark/10" : "border-white/10";
   const plusColor = isLight ? "bg-dark/60" : "bg-white/60";
@@ -345,6 +345,7 @@ const Faqs = ({ title, items: itemsProp, light = false }) => {
         isLight && "bg-light text-dark border-t border-dark/10",
         "pt-84 pb-64",
         "max-[1099px]:py-48",
+        className,
       )}
     >
       <h2
@@ -379,7 +380,12 @@ const Faqs = ({ title, items: itemsProp, light = false }) => {
                 )}
               >
                 <BorderGlowCanvas color={glowColor} size={140} />
-                <div className={cn("border-inner absolute inset-0 border-t", borderInner)} />
+                <div
+                  className={cn(
+                    "border-inner absolute inset-0 border-t",
+                    borderInner,
+                  )}
+                />
               </div>
 
               <div
@@ -440,7 +446,12 @@ const Faqs = ({ title, items: itemsProp, light = false }) => {
                 </span>
 
                 <span className="faq-toggle-icon relative mx-[0.4rem] ml-[0.6rem] h-[0.8rem] w-[0.8rem] transition-transform duration-600 ease-ease min-[1100px]:group-hover:scale-[1.2]">
-                  <span className={cn("absolute left-1/2 top-1/2 block h-px w-4 -translate-x-1/2 -translate-y-1/2", plusColor)} />
+                  <span
+                    className={cn(
+                      "absolute left-1/2 top-1/2 block h-px w-4 -translate-x-1/2 -translate-y-1/2",
+                      plusColor,
+                    )}
+                  />
                   <span
                     className={cn(
                       "absolute left-1/2 top-1/2 block h-4 w-px -translate-x-1/2 -translate-y-1/2 rotate-15",
