@@ -513,18 +513,18 @@ const Footer = () => {
       className={cn(
         "footer relative w-full overflow-hidden bg-dark text-light",
         "h-[calc(var(--vh,1vh)*100)]",
-        "max-[1099px]:h-auto max-[1099px]:min-h-[calc(var(--vh,1vh)*100)]",
+        "max-[1099px]:h-auto max-[1099px]:min-h-[calc(var(--vh,1vh)*100)] max-[1099px]:overflow-visible",
       )}
     >
       <div
         aria-hidden="true"
-        className="f-bg absolute inset-8 rounded-[0.4rem] bg-white/10"
+        className="f-bg absolute inset-8 rounded-[0.4rem] bg-white/10 max-[1099px]:inset-4"
       />
 
-      <div className="f-inner absolute inset-8 z-1 flex h-[calc(100%-4rem)] w-[calc(100%-4rem)] flex-col items-start overflow-hidden rounded-[0.4rem]">
-        <div className="f-top flex w-full justify-between max-[1099px]:flex-1 max-[1099px]:flex-col">
-          <div className="f-left mt-[4.4rem] ml-16 flex max-[1099px]:m-0 max-[1099px]:p-[2rem_2rem_0]">
-            <div className="f-social mr-48 max-[1099px]:mr-40">
+      <div className="f-inner absolute inset-8 z-1 flex h-[calc(100%-4rem)] w-[calc(100%-4rem)] flex-col items-start overflow-hidden rounded-[0.4rem] max-[1099px]:static max-[1099px]:mx-4 max-[1099px]:my-4 max-[1099px]:h-auto max-[1099px]:w-auto max-[1099px]:overflow-visible">
+        <div className="f-top flex w-full justify-between max-[1099px]:flex-col max-[1099px]:gap-16">
+          <div className="f-left mt-[4.4rem] ml-16 flex max-[1099px]:m-0 max-[1099px]:w-full max-[1099px]:grid max-[1099px]:grid-cols-2 max-[1099px]:gap-14 max-[1099px]:p-[2rem_2rem_0] max-[699px]:grid-cols-1">
+            <div className="f-social mr-48 max-[1099px]:mr-0">
               <h6 className="links-title mb-[2.4rem] font-heading text-[1.6rem] opacity-60">
                 {dropdownNav?.name || "Services"}
               </h6>
@@ -545,14 +545,14 @@ const Footer = () => {
                 ))}
               </div>
             </div>
-            <div className="f-menu">
+            <div className="f-menu max-[1099px]:w-full">
               <h6 className="links-title mb-[2.4rem] font-heading text-[1.6rem] opacity-60">
                 Quick Links
               </h6>
               <div className="space-y-2">
                 {siteIndexLinks.map((link) => (
                   <Link
-                    key={link.href}
+                    key={`${link.label}-${link.href}`}
                     href={link.href}
                     aria-label={link.label}
                     className={cn(
@@ -577,7 +577,7 @@ const Footer = () => {
                   },
                 ].map((link) => (
                   <Link
-                    key={link.href}
+                    key={`${link.label}-${link.href}`}
                     href={link.href}
                     aria-label={link.label}
                     className={cn(
@@ -593,11 +593,16 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="f-right mt-[2.4rem] mr-8 w-176 max-[1099px]:mt-auto max-[1099px]:mr-0 max-[1099px]:flex max-[1099px]:w-auto max-[1099px]:flex-col max-[1099px]:p-[2rem_2rem_0]">
-            <Button variant="magnetic" tone="green">
+          <div className="f-right mt-[2.4rem] mr-8 w-176 max-[1099px]:m-0 max-[1099px]:w-full max-[1099px]:p-[0_2rem_2rem]">
+            <Button
+              href="/contact-us"
+              variant="magnetic"
+              tone="green"
+              className="max-[1099px]:min-h-40"
+            >
               Contact Us
             </Button>
-            <div className="f-contact flex justify-between pr-8 max-[1099px]:flex-col max-[1099px]:pr-0 mt-10">
+            <div className="f-contact mt-10 flex justify-between pr-8 max-[1099px]:flex-col max-[1099px]:gap-12 max-[1099px]:pr-0">
               <div className="f-contact-inner max-[1099px]:order-2">
                 <p className="f-contact-text mb-[1.8rem] text-[1.6rem] leading-[160%] opacity-50">
                   Tell us about your project.

@@ -295,7 +295,7 @@ export default function BlogDetailPage({ blog, related = [] }) {
                         Work with us
                       </Button>
                       <Button
-                        href="/services/web-development"
+                        href="/services/web-development-services"
                         className="h-16"
                         tone="green"
                       >

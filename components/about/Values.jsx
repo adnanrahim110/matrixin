@@ -223,7 +223,7 @@ const Values = () => {
       data-theme="light"
       className={cn(
         "relative z-1 bg-light text-dark",
-        "p-8",
+        "p-8 max-[449px]:p-6",
         "min-[1100px]:px-0 min-[1100px]:pb-96 min-[1100px]:pt-8",
       )}
     >
@@ -231,22 +231,24 @@ const Values = () => {
         ref={titleRef}
         className={cn(
           "mv-title font-heading leading-[100%]",
-          "mb-40 text-[7.4rem] max-[1099px]:leading-[110%]",
+          "mb-40 text-[7.4rem] max-[1099px]:mb-24 max-[1099px]:leading-[115%] max-[699px]:text-[6.4rem] max-[449px]:text-[5.4rem]",
           "min-[1100px]:mb-[7.3rem] min-[1100px]:pl-8 min-[1100px]:text-[12.4rem] min-[1100px]:leading-[100%]",
         )}
       >
         Our Mission &amp; Values
       </h2>
 
-      <div className="mv-mission mb-40 min-[1100px]:mb-[15.1rem] min-[1100px]:ml-[72.6rem] min-[1100px]:w-184">
+      <div className="mv-mission mb-40 max-[1099px]:mb-28 min-[1100px]:mb-[15.1rem] min-[1100px]:ml-[72.6rem] min-[1100px]:w-184">
         <h3 className="mv-mission-title mb-16 text-[1.8rem] italic leading-[120%] min-[1100px]:mb-10 min-[1100px]:text-[2.2rem]">
           Why We Create
         </h3>
-        <p className="mv-mission-text text-grey">{MISSION}</p>
+        <p className="mv-mission-text text-grey max-[1099px]:text-[1.8rem] max-[1099px]:leading-[160%] max-[449px]:text-[1.6rem]">
+          {MISSION}
+        </p>
       </div>
 
       <div className="m-values">
-        <h3 className="mv-values-title mb-12 text-[1.8rem] italic leading-[120%] min-[1100px]:mb-10 min-[1100px]:ml-[72.6rem] min-[1100px]:text-[2.2rem]">
+        <h3 className="mv-values-title mb-12 max-[1099px]:mb-8 text-[1.8rem] italic leading-[120%] min-[1100px]:mb-10 min-[1100px]:ml-[72.6rem] min-[1100px]:text-[2.2rem]">
           Our Values
         </h3>
 
@@ -259,7 +261,7 @@ const Values = () => {
               }}
               className={cn(
                 "value group relative hover:z-1",
-                "max-[1099px]:block max-[1099px]:border-t max-[1099px]:border-dark/10 max-[1099px]:py-12",
+                "max-[1099px]:block max-[1099px]:border-t max-[1099px]:border-dark/10 max-[1099px]:py-12 max-[449px]:py-10",
                 "min-[1100px]:flex min-[1100px]:h-[7.6rem] min-[1100px]:cursor-default min-[1100px]:items-center min-[1100px]:justify-end",
                 // active / inactive styling (mirrors Estrela CSS)
                 "[&.active_.value-title]:opacity-100 [&.inactive_.value-title]:opacity-20",
@@ -305,7 +307,7 @@ const Values = () => {
                 <h3
                   className={cn(
                     "value-title font-body leading-[100%] transition-opacity duration-1200 ease-ease",
-                    "text-[3.8rem] max-[1099px]:mb-4",
+                    "text-[3.8rem] max-[1099px]:mb-4 max-[1099px]:leading-[115%] max-[699px]:text-[3.4rem] max-[449px]:text-[3.0rem]",
                     "min-[1100px]:w-286 min-[1100px]:text-[5.4rem]",
                   )}
                 >
@@ -317,6 +319,7 @@ const Values = () => {
                 data-value-text
                 className={cn(
                   "value-text text-grey",
+                  "max-[1099px]:text-[1.8rem] max-[1099px]:leading-[160%] max-[449px]:text-[1.6rem]",
                   "min-[1100px]:absolute min-[1100px]:left-8 min-[1100px]:top-6 min-[1100px]:w-[34.3rem]",
                   "min-[1100px]:opacity-0 min-[1100px]:transition-opacity min-[1100px]:duration-800 min-[1100px]:ease-ease",
                   "min-[1100px]:group-hover:opacity-100",

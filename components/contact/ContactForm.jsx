@@ -335,7 +335,6 @@ export default function ContactForm() {
                       <Button
                         type="submit"
                         variant="magnetic"
-                        tone="green"
                         className="h-50 w-full min-h-0"
                         loading={submitting}
                         disabled={submitting}

@@ -778,7 +778,7 @@ export default function MegaMenu({ open, onClose, navlinks = [] }) {
                 }
                 return (
                   <Link
-                    key={link.href}
+                    key={`${link.label}-${link.href}`}
                     href={link.href}
                     onClick={() => {
                       setActiveDropdown(null);
@@ -864,7 +864,7 @@ export default function MegaMenu({ open, onClose, navlinks = [] }) {
                     const Icon = social?.Icon || ArrowUpRight;
                     return (
                     <a
-                      key={social.href}
+                      key={social.label}
                       href={social.href}
                       target="_blank"
                       rel="noreferrer"

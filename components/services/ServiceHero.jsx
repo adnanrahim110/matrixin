@@ -33,6 +33,8 @@ export default function ServiceHero({ service }) {
   const tone = service?.tone || "default";
 
   const hero = service?.hero || {};
+  const primaryCta = hero?.primaryCta || service?.cta?.primary;
+  const secondaryCta = hero?.secondaryCta || service?.cta?.secondary;
   const theme = hero?.theme || "dark";
   const isDark = theme === "dark";
 
@@ -218,6 +220,12 @@ export default function ServiceHero({ service }) {
 
   const borderClass = isDark ? "border-white/10" : "border-dark/10";
   const subtleText = isDark ? "text-light/70" : "text-dark/70";
+  const trustText = isDark ? "text-light/60" : "text-dark/60";
+
+  const hasMedia = Boolean(hero?.image?.src);
+  const hasBullets = bullets.length > 0;
+  const hasFacts = facts.length > 0;
+  const hasAside = hasMedia || hasBullets || hasFacts;
 
   return (
     <header
@@ -242,15 +250,33 @@ export default function ServiceHero({ service }) {
         }}
       />
 
-      <div className="px-8 pt-44 pb-32 max-[1099px]:pt-28">
+      <div className="px-8 pt-48 pb-32 max-[1099px]:pt-28 max-[1099px]:pb-24 max-[699px]:pt-24 max-[699px]:pb-20 max-[449px]:px-6 max-[449px]:pt-20">
         <div className="mx-auto w-full max-w-480">
-          <div className="mt-10 grid grid-cols-12 gap-12 max-[1099px]:gap-10">
-            <div className="col-span-6 min-w-0 relative z-2 max-[1099px]:col-span-12">
+          <div className="mt-10 grid grid-cols-12 gap-12 max-[1099px]:gap-10 max-[699px]:mt-8 max-[449px]:mt-6 max-[449px]:gap-8">
+            <div
+              className={cn(
+                "min-w-0 relative z-2 max-[1099px]:col-span-12",
+                hasAside ? "col-span-6" : "col-span-12",
+              )}
+            >
+              {hero?.eyebrow && (
+                <p
+                  data-hero-eyebrow
+                  className={cn(
+                    "text-[1.4rem] uppercase tracking-[0.08em]",
+                    trustText,
+                  )}
+                >
+                  {hero.eyebrow}
+                </p>
+              )}
               <h1
                 ref={titleRef}
                 className={cn(
-                  "font-heading text-[clamp(6.2rem,5.5vw+2rem,11.2rem)] leading-[90%] tracking-[-0.03em]",
+                  "font-heading text-[clamp(6.2rem,5vw+2rem,7.5rem)] leading-[105%] tracking-[-0.03em]",
                   "max-w-240 max-[1099px]:max-w-none",
+                  "max-[1099px]:text-[5.4rem] max-[1099px]:leading-[110%] max-[699px]:text-[4.4rem] max-[449px]:text-[3.8rem]",
+                  hero?.eyebrow && "mt-6",
                 )}
               >
                 {hero?.title || service?.name}
@@ -260,6 +286,7 @@ export default function ServiceHero({ service }) {
                 ref={subtitleRef}
                 className={cn(
                   "mt-8 text-[2.4rem] leading-[140%] max-w-208",
+                  "max-[1099px]:mt-6 max-[1099px]:max-w-none max-[699px]:text-[2rem] max-[449px]:text-[1.8rem]",
                   subtleText,
                 )}
               >
@@ -267,7 +294,12 @@ export default function ServiceHero({ service }) {
               </p>
 
               {lede.length > 0 && (
-                <div className={cn("mt-10 space-y-6", subtleText)}>
+                <div
+                  className={cn(
+                    "mt-10 space-y-6 max-[1099px]:mt-8 max-[449px]:space-y-5",
+                    subtleText,
+                  )}
+                >
                   {lede.map((p, idx) => (
                     <p
                       key={p}
@@ -282,90 +314,131 @@ export default function ServiceHero({ service }) {
                 </div>
               )}
 
-              <div className="mt-12 grid">
-                <Button
-                  href="/contact-us"
-                  variant="magnetic"
-                  tone={tone}
-                  className="h-24"
-                >
-                  Start a project
-                </Button>
+              <div className="mt-12 grid gap-4 max-[1099px]:mt-10 max-[449px]:mt-8">
+                {primaryCta?.href && primaryCta?.label && (
+                  <Button
+                    href={primaryCta.href}
+                    variant="magnetic"
+                    tone={tone}
+                    className="h-24 max-[449px]:h-20"
+                  >
+                    {primaryCta.label}
+                  </Button>
+                )}
+                {secondaryCta?.href && secondaryCta?.label && (
+                  <Button
+                    href={secondaryCta.href}
+                    tone="light"
+                    className={cn("h-24 max-[449px]:h-20")}
+                  >
+                    {secondaryCta.label}
+                  </Button>
+                )}
               </div>
             </div>
 
-            <div className="col-span-6 min-w-0 relative z-1 max-[1099px]:col-span-12">
-              <figure
-                ref={mediaWrapRef}
-                className={cn(
-                  "relative aspect-16/10 w-full overflow-hidden rounded-[0.4rem] border",
-                  borderClass,
-                  isDark ? "bg-white/5" : "bg-dark/5",
+            {hasAside && (
+              <div className="col-span-6 min-w-0 relative z-1 max-[1099px]:col-span-12">
+                {hasMedia && (
+                  <figure
+                    ref={mediaWrapRef}
+                    className={cn(
+                      "relative aspect-16/10 w-full overflow-hidden rounded-[0.4rem] border",
+                      borderClass,
+                      isDark ? "bg-white/5" : "bg-dark/5",
+                    )}
+                  >
+                    <img
+                      ref={mediaImgRef}
+                      className="absolute inset-0 h-full w-full object-cover will-change-transform"
+                      src={hero?.image?.src}
+                      alt={hero?.image?.alt}
+                      loading="lazy"
+                    />
+                  </figure>
                 )}
-              >
-                <img
-                  ref={mediaImgRef}
-                  className="absolute inset-0 h-full w-full object-cover will-change-transform"
-                  src={hero?.image?.src}
-                  alt={hero?.image?.alt || ""}
-                  loading="lazy"
-                />
-              </figure>
 
-              {bullets.length > 0 && (
-                <ul
-                  ref={bulletsRef}
-                  className={cn(
-                    "mt-8 space-y-4 rounded-[0.4rem] border p-8",
-                    borderClass,
-                    isDark ? "bg-white/5" : "bg-dark/5",
-                  )}
-                >
-                  {bullets.map((b) => (
-                    <li key={b} className="flex items-start gap-4">
-                      <span className={toneDotClass(tone)} aria-hidden="true" />
-                      <span className={cn("leading-[160%]", subtleText)}>
-                        {b}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
+                {hasBullets && (
+                  <ul
+                    ref={bulletsRef}
+                    className={cn(
+                      hasMedia ? "mt-8" : "mt-0",
+                      "space-y-4 rounded-[0.4rem] border p-8 max-[449px]:p-6",
+                      borderClass,
+                      isDark ? "bg-white/5" : "bg-dark/5",
+                    )}
+                  >
+                    {bullets.map((b) => (
+                      <li key={b} className="flex items-start gap-4">
+                        <span
+                          className={toneDotClass(tone)}
+                          aria-hidden="true"
+                        />
+                        <span className={cn("leading-[160%]", subtleText)}>
+                          {b}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
-              {facts.length > 0 && (
-                <dl
-                  ref={factsRef}
-                  className={cn(
-                    "mt-8 grid grid-cols-3 gap-8 border-t pt-10 max-[1099px]:grid-cols-1",
-                    borderClass,
-                  )}
-                >
-                  {facts.map((f) => (
-                    <div key={f.label} className="space-y-3">
-                      <dt
-                        className={cn(
-                          "text-[1.2rem] uppercase tracking-[0.08em]",
-                          isDark ? "text-light/60" : "text-dark/60",
-                        )}
-                      >
-                        {f.label}
-                      </dt>
-                      <dd
-                        className={cn(
-                          "text-[1.3rem] leading-[160%]",
-                          subtleText,
-                        )}
-                      >
-                        {f.value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              )}
-            </div>
+                {hasFacts && (
+                  <dl
+                    ref={factsRef}
+                    className={cn(
+                      "mt-8 grid grid-cols-3 gap-8 border-t pt-10 max-[1099px]:grid-cols-1 max-[449px]:gap-6 max-[449px]:pt-8",
+                      borderClass,
+                    )}
+                  >
+                    {facts.map((f) => (
+                      <div key={f.label} className="space-y-3">
+                        <dt
+                          className={cn(
+                            "text-[1.2rem] uppercase tracking-[0.08em]",
+                            isDark ? "text-light/60" : "text-dark/60",
+                          )}
+                        >
+                          {f.label}
+                        </dt>
+                        <dd
+                          className={cn(
+                            "text-[1.3rem] leading-[160%]",
+                            subtleText,
+                          )}
+                        >
+                          {f.value}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      {hero?.trustBarText && (
+        <div
+          data-reveal
+          className={cn(
+            "border-t px-8 py-6 max-[449px]:px-6",
+            borderClass,
+            isDark ? "bg-white/5" : "bg-dark/5",
+          )}
+        >
+          <div className="mx-auto w-full max-w-480">
+            <p
+              className={cn(
+                "text-[1.2rem] uppercase tracking-[0.12em] leading-[160%]",
+                trustText,
+              )}
+            >
+              {hero.trustBarText}
+            </p>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

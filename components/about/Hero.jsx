@@ -545,12 +545,18 @@ const Hero = () => {
         "relative z-1 bg-light text-dark",
         "min-h-[calc(var(--vh,1vh)*100)]",
         "max-[1099px]:flex max-[1099px]:min-h-320 max-[1099px]:flex-col max-[1099px]:justify-end max-[1099px]:px-8 max-[1099px]:pb-8",
+        "max-[449px]:px-6 max-[449px]:pb-6",
       )}
     >
       <div
         ref={iconMobileRef}
         aria-hidden="true"
-        className="mx-auto mb-16 h-[7.2rem] w-[7.2rem] max-[1099px]:block min-[1100px]:hidden [&_path]:fill-dark"
+        className={cn(
+          "mx-auto mb-16 h-[7.2rem] w-[7.2rem] [&_path]:fill-dark",
+          "max-[1099px]:block min-[1100px]:hidden",
+          "max-[699px]:mb-12",
+          "max-[449px]:mb-10 max-[449px]:h-[6.4rem] max-[449px]:w-[6.4rem]",
+        )}
       />
 
       <div className="w-full min-[1100px]:absolute min-[1100px]:left-0 min-[1100px]:top-[32vh]">
@@ -558,7 +564,9 @@ const Hero = () => {
           className={cn(
             "font-heading text-[8.4rem] leading-[120%]",
             "min-[1100px]:flex min-[1100px]:flex-col min-[1100px]:items-start",
-            "max-[1099px]:mb-4 max-[1099px]:block max-[1099px]:text-center max-[1099px]:text-[5.4rem]",
+            "max-[1099px]:mb-4 max-[1099px]:block max-[1099px]:text-center max-[1099px]:text-[5.4rem] max-[1099px]:leading-[125%]",
+            "max-[699px]:text-[4.4rem]",
+            "max-[449px]:text-[3.8rem]",
           )}
         >
           <span

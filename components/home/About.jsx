@@ -294,7 +294,9 @@ const About = () => {
             ref={titleRef}
             className={cn(
               "about-title font-heading text-[18rem] leading-[80%]",
-              "max-[1099px]:mb-8 max-[1099px]:text-[12.4rem] max-[1099px]:leading-[100%]",
+              "max-[1099px]:mb-8 max-[1099px]:text-[7.4rem] max-[1099px]:leading-[110%]",
+              "max-[699px]:text-[6.4rem]",
+              "max-[449px]:text-[5.4rem]",
             )}
           >
             Who we are

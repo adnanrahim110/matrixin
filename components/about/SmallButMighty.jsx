@@ -55,14 +55,14 @@ const SmallButMighty = () => {
       data-theme="light"
       className={cn(
         "relative z-0 bg-light text-dark",
-        "pt-184 max-[1099px]:pt-48",
+        "pt-184 max-[1099px]:pt-48 max-[449px]:pt-40",
       )}
     >
-      <div className="info-content max-[1099px]:p-8 min-[1100px]:flex min-[1100px]:mb-12 min-[1100px]:pl-8">
-        <h2 className="info-title italic text-[1.8rem] leading-[120%] max-[1099px]:mb-16 min-[1100px]:w-176 min-[1100px]:shrink-0 min-[1100px]:pr-8">
+      <div className="info-content max-[1099px]:p-8 max-[449px]:p-6 min-[1100px]:flex min-[1100px]:mb-12 min-[1100px]:pl-8">
+        <h2 className="info-title italic text-[1.8rem] leading-[120%] max-[1099px]:mb-12 max-[449px]:mb-10 min-[1100px]:w-176 min-[1100px]:shrink-0 min-[1100px]:pr-8">
           Small but Mighty
         </h2>
-        <p className="info-text max-[1099px]:pr-[4.4rem] max-[1099px]:text-grey min-[1100px]:w-[81.3rem] min-[1100px]:text-[3.4rem] min-[1100px]:leading-[120%]">
+        <p className="info-text max-[1099px]:pr-0 max-[1099px]:text-grey max-[1099px]:text-[1.8rem] max-[1099px]:leading-[160%] max-[449px]:text-[1.6rem] min-[1100px]:w-[81.3rem] min-[1100px]:text-[3.4rem] min-[1100px]:leading-[120%]">
           {CONTENT}
         </p>
       </div>
@@ -71,7 +71,7 @@ const SmallButMighty = () => {
         ref={wrapperRef}
         className={cn(
           "media-wrapper relative overflow-hidden rounded-[0.4rem]",
-          "max-[1099px]:aspect-[4/3.8]",
+          "max-[1099px]:aspect-[4/3.8] max-[1099px]:mx-8 max-[699px]:mx-6 max-[449px]:mx-4",
           "min-[1100px]:mx-auto min-[1100px]:h-[72.4rem] min-[1100px]:w-[calc(100vw-4rem)]",
         )}
       >

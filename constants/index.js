@@ -10,29 +10,29 @@ export const navlinks = [
   { name: "Work", href: "/work" },
   { name: "About", href: "/about-us" },
   { name: "Services", href: false, dropdown: SERVICES_DROPDOWN },
-  { name: "Blogs", href: "/blogs" },
+  // { name: "Blogs", href: "/blogs" },
   { name: "Contact", href: "/contact-us" },
 ];
 
 export const socials = [
   {
     label: "Instagram",
-    href: "#",
+    href: "https://instagram.com/",
     Icon: Instagram,
   },
   {
     label: "Facebook",
-    href: "#",
+    href: "https://facebook.com/",
     Icon: Facebook,
   },
   {
     label: "LinkedIn",
-    href: "#",
+    href: "https://linkedin.com/",
     Icon: Linkedin,
   },
   {
     label: "X (Twitter)",
-    href: "#",
+    href: "https://x.com/",
     Icon: Twitter,
   },
 ];

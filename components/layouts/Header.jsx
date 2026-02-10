@@ -361,6 +361,7 @@ const Header = ({ menuOpen = false, onToggleMenu, navlinks = [] }) => {
       style={{ visibility: "hidden" }}
       className={cn(
         "pointer-events-none fixed left-0 top-0 z-11 flex w-full items-center justify-center pt-8",
+        "max-[1099px]:justify-between max-[1099px]:px-8 max-[1099px]:pt-6",
         theme === "dark" ? "text-light" : "text-dark",
       )}
     >
@@ -369,9 +370,7 @@ const Header = ({ menuOpen = false, onToggleMenu, navlinks = [] }) => {
         aria-label="Home"
         className={cn(
           "pointer-events-auto mx-[0.15rem] px-[2.2rem] backdrop-blur-sm rounded-lg relative",
-          scrolled
-            ? "max-[1099px]:translate-y-0 max-[1099px]:duration-600 max-[1099px]:delay-50"
-            : "max-[1099px]:translate-y-[4.4rem] max-[1099px]:duration-200 max-[1099px]:delay-0",
+          "max-[1099px]:mx-0 max-[1099px]:px-0 max-[1099px]:backdrop-blur-0",
         )}
         data-nav-logo
       >
@@ -380,14 +379,14 @@ const Header = ({ menuOpen = false, onToggleMenu, navlinks = [] }) => {
           alt="Marketinix"
           width={500}
           height={250}
-          className="h-32 w-auto"
+          className="h-32 w-auto max-[1099px]:h-28"
         />
       </Link>
 
       <div
         className={cn(
           "relative mx-[0.15rem] pointer-events-auto",
-          "max-[1099px]:absolute max-[1099px]:left-1/2 max-[1099px]:top-8 max-[1099px]:-translate-x-1/2",
+          "max-[1099px]:hidden",
         )}
       >
         <div
@@ -453,7 +452,7 @@ const Header = ({ menuOpen = false, onToggleMenu, navlinks = [] }) => {
 
               return (
                 <Link
-                  key={link.href}
+                  key={`${link.label}-${link.href}`}
                   href={link.href}
                   aria-label={link.label}
                   onClick={() => setDropdownOpen(false)}
@@ -581,9 +580,7 @@ const Header = ({ menuOpen = false, onToggleMenu, navlinks = [] }) => {
         className={cn(
           pillBase,
           "group mx-[0.15rem] w-[6.3rem] cursor-pointer",
-          scrolled
-            ? "max-[1099px]:translate-y-0 max-[1099px]:duration-600 max-[1099px]:delay-50"
-            : "max-[1099px]:translate-y-[4.4rem] max-[1099px]:duration-200 max-[1099px]:delay-0",
+          "max-[1099px]:mx-0",
           theme === "dark" ? "bg-white/10" : "bg-[rgba(188,188,188,0.1)]",
         )}
         data-nav-toggle
