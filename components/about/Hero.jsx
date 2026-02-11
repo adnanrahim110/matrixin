@@ -19,27 +19,29 @@ const lerp = (a, b, t) => a + (b - a) * t;
 
 const HERO_IMAGES = [
   {
-    src: "https://images.prismic.io/estrelastudio/aN6L155xUNkB1anY_Grid_01.jpg?w=1350&h=840&auto=compress,format",
+    src: "/imgs/a1.jpg",
     width: 900,
     height: 560,
   },
   {
-    src: "https://images.prismic.io/estrelastudio/aN6L2J5xUNkB1anZ_Grid_02.jpg?w=1350&h=840&auto=compress,format",
+    src: "/imgs/a2.jpg",
     width: 900,
     height: 560,
   },
   {
-    src: "https://images.prismic.io/estrelastudio/aN6L2Z5xUNkB1ana_Grid_03.jpg?w=1350&h=840&auto=compress,format",
+    src: "/imgs/a3.jpg",
     width: 900,
     height: 560,
   },
   {
-    src: "https://images.prismic.io/estrelastudio/aN6L2p5xUNkB1anb_Grid_04.jpg?w=1350&h=840&auto=compress,format",
+    src: "/imgs/a4.jpg",
+    width: 900,
+    height: 560,
     width: 900,
     height: 560,
   },
   {
-    src: "https://images.prismic.io/estrelastudio/aN6L3J5xUNkB1anc_Grid_05.jpg?w=1350&h=840&auto=compress,format",
+    src: "/imgs/a5.jpg",
     width: 900,
     height: 560,
   },
@@ -169,7 +171,9 @@ const Hero = () => {
           const cleanups = [];
 
           let active = true;
-          const iconEl = isMobile ? iconMobileRef.current : iconDesktopRef.current;
+          const iconEl = isMobile
+            ? iconMobileRef.current
+            : iconDesktopRef.current;
           const iconRotateTo = iconEl
             ? gsap.quickTo(iconEl, "rotation", {
                 duration: 0.55,
@@ -220,7 +224,6 @@ const Hero = () => {
             );
           }
 
-          // Intro animation (closest equivalent to Estrela's Site.introTl)
           const introTl = gsap.timeline({ delay: 0.05 });
           introTl.moveBlur(
             [titleTopLeft, titleTopRight],
@@ -315,7 +318,11 @@ const Hero = () => {
             });
 
             if (iconEl) {
-              mobileTl.to(iconEl, { rotation: 360, duration: 1, ease: "none" }, 0);
+              mobileTl.to(
+                iconEl,
+                { rotation: 360, duration: 1, ease: "none" },
+                0,
+              );
             }
 
             const denom = Math.max(1, cols.length - 2);
@@ -562,7 +569,7 @@ const Hero = () => {
       <div className="w-full min-[1100px]:absolute min-[1100px]:left-0 min-[1100px]:top-[32vh]">
         <h1
           className={cn(
-            "font-heading text-[8.4rem] leading-[120%]",
+            "font-heading text-[7rem] leading-[120%]",
             "min-[1100px]:flex min-[1100px]:flex-col min-[1100px]:items-start",
             "max-[1099px]:mb-4 max-[1099px]:block max-[1099px]:text-center max-[1099px]:text-[5.4rem] max-[1099px]:leading-[125%]",
             "max-[699px]:text-[4.4rem]",
@@ -578,7 +585,7 @@ const Hero = () => {
             )}
           >
             <span ref={titleTopLeftRef} className="inline-block">
-              A people-first{" "}
+              A growth-focused{" "}
             </span>
             <span
               ref={iconDesktopRef}
@@ -587,13 +594,13 @@ const Hero = () => {
             />
             <span ref={titleTopRightRef} className="inline-block">
               {" "}
-              digital studio
+              digital marketing
             </span>
           </span>
 
           <span ref={titleBottomRef} className={cn("block min-[1100px]:px-8")}>
             <span ref={titleBottomInnerRef} className="inline-block">
-              who build with heart.
+              agency for USA businesses.
             </span>
           </span>
         </h1>

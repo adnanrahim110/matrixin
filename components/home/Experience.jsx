@@ -90,11 +90,11 @@ const Experience = () => {
       });
 
       const words = Array.from(element.querySelectorAll(".word"));
-      const lastWord = words[words.length - 1] ?? null;
+      const highlightWords = words.slice(-2);
 
       return {
         words,
-        lastWord,
+        highlightWords,
         revert: () => {
           element.textContent = text;
         },
@@ -163,13 +163,13 @@ const Experience = () => {
 
           const split = splitWords(titleEl);
           const lineInners = isMobile ? [] : wrapLines(titleEl);
-          const lastWord = split.lastWord;
-          if (lastWord) {
-            lastWord.className = cn(
-              lastWord.className,
+          const highlightWords = split.highlightWords;
+          highlightWords.forEach((word) => {
+            word.className = cn(
+              word.className,
               isMobile ? hoverMobile : hoverDesktop,
             );
-          }
+          });
 
           const cleanups = [];
 
@@ -299,16 +299,6 @@ const Experience = () => {
               0.3,
             )
             .fromTo(
-              lastWord,
-              { background: "linear-gradient(45deg, #020202, #020202)" },
-              {
-                background: "linear-gradient(45deg, #F4803A, #FBCB6E)",
-                duration: 2.5,
-                ease: "power3.out",
-              },
-              1.5,
-            )
-            .fromTo(
               subtitle,
               { y: () => window.innerHeight * 0.8 },
               { y: () => window.innerHeight * -1, duration: 10 },
@@ -330,6 +320,19 @@ const Experience = () => {
               },
               4.85,
             );
+
+          if (highlightWords.length) {
+            contentTl.fromTo(
+              highlightWords,
+              { background: "linear-gradient(45deg, #020202, #020202)" },
+              {
+                background: "linear-gradient(45deg, #F4803A, #FBCB6E)",
+                duration: 2.5,
+                ease: "power3.out",
+              },
+              1.5,
+            );
+          }
 
           cleanups.push(() => {
             btnTl.scrollTrigger?.kill?.();
@@ -459,14 +462,26 @@ const Experience = () => {
             hovered = true;
             wrapBounds = rippleWrap.getBoundingClientRect();
           };
-          const onRippleLeave = () => {
+          const onRippleLeave = (event) => {
+            const relatedTarget = event.relatedTarget;
+            if (
+              relatedTarget instanceof Node &&
+              highlightWords.some(
+                (word) =>
+                  word === relatedTarget || word.contains(relatedTarget),
+              )
+            ) {
+              return;
+            }
             hovered = false;
             cache.x = mouse.x;
             cache.y = mouse.y;
           };
 
-          lastWord?.addEventListener("mouseover", onRippleEnter);
-          lastWord?.addEventListener("mouseleave", onRippleLeave);
+          highlightWords.forEach((word) => {
+            word.addEventListener("mouseover", onRippleEnter);
+            word.addEventListener("mouseleave", onRippleLeave);
+          });
 
           const onResize = () => {
             wrapBounds = rippleWrap.getBoundingClientRect();
@@ -499,8 +514,10 @@ const Experience = () => {
             window.cancelAnimationFrame(rafId);
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("resize", onResize);
-            lastWord?.removeEventListener("mouseover", onRippleEnter);
-            lastWord?.removeEventListener("mouseleave", onRippleLeave);
+            highlightWords.forEach((word) => {
+              word.removeEventListener("mouseover", onRippleEnter);
+              word.removeEventListener("mouseleave", onRippleLeave);
+            });
             figures.forEach((item) => gsap.killTweensOf(item.el));
           });
 
@@ -661,13 +678,13 @@ const Experience = () => {
           <h2
             ref={titleRef}
             className={cn(
-              "exp-title font-heading text-[11rem] leading-[110%] text-center",
+              "exp-title font-heading text-[10rem] leading-[110%] text-center",
               "cursor-default",
               "max-[1099px]:mb-32 max-[1099px]:text-[7.4rem] max-[1099px]:leading-[110%]",
             )}
             data-exp-title
           >
-            Crafting competitive digital experiences
+            Digital Solutions That Drive Real Growth
           </h2>
 
           <span
@@ -676,12 +693,12 @@ const Experience = () => {
               "exp-subtitle pointer-events-none absolute top-1/2 left-[4.3rem] w-182 rounded-[0.2rem] bg-[rgba(251,251,244,0.5)] p-12",
               "[-webkit-backdrop-filter:blur(1.2rem)] backdrop-blur-[1.2rem]",
               "shadow-[inset_0_0_.8rem_rgba(255,255,255,0.02),inset_0_0_.2rem_rgba(255,255,255,0.2)]",
-              "font-heading text-[1.8rem] leading-[120%] italic",
+              "font-heading text-[2rem] leading-[120%] italic font-medium",
               "max-[1099px]:relative max-[1099px]:top-auto max-[1099px]:left-0 max-[1099px]:w-auto max-[1099px]:bg-transparent max-[1099px]:p-0 max-[1099px]:px-8 max-[1099px]:mb-16",
             )}
             data-exp-subtitle
           >
-            Inside Estrela Studio
+            Digital Marketing and Web Development Agency in the USA
           </span>
 
           <div
@@ -695,10 +712,16 @@ const Experience = () => {
             data-exp-text
           >
             <p className="exp-text text-[1.5rem] leading-[140%] text-grey">
-              Estrela Studio is a global branding and digital design agency
-              rooted in Vienna and Cape Town. We live and breathe our craft,
-              building brands, websites, and digital products that turn bold
-              ideas into design that matters.
+              Marketinix is a full-service digital agency helping businesses
+              across the USA grow, scale, and stand out online. We deliver
+              result-driven digital solutions including web development, graphic
+              design, SEO, social media marketing, paid advertising, and
+              branding. Our approach blends creativity with strategy, ensuring
+              every project is visually compelling, technically strong, and
+              conversion-focused. Whether you’re a startup building your first
+              online presence or an established brand looking to scale, we
+              tailor digital experiences that align with your goals, audience,
+              and industry. At Marketinix, growth isn’t a promise—it’s the plan.
             </p>
           </div>
         </div>

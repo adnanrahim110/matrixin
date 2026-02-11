@@ -12,32 +12,35 @@ const SERVICES_TITLE = "What we do";
 const SERVICES = [
   {
     number: "01",
-    title: "Product strategy and design",
-    text: "Great products don't just happen, they're shaped by insight. We dig into research, audits, and user testing to understand what people need, then translate those findings into smart, intuitive UX solutions where every decision has purpose.",
-    image:
-      "https://images.prismic.io/estrelastudio/aN5_a55xUNkB1acx_01.ProductStrat.jpg?w=1320&h=780&auto=compress,format",
+    title: "Web Design",
+    text: "Custom, responsive website designs built to reflect your brand, enhance usability, and improve conversions across all devices.",
+    image: "/imgs/s1.jpg",
   },
   {
     number: "02",
-    title: "App and website design",
-    text: "We think outside the box to make sure your product sets itself apart and sets the bar. We build beautiful, intuitive interfaces that are compelling and consistent, powered by scalable design systems.",
-    image:
-      "https://images.prismic.io/estrelastudio/aN5_bZ5xUNkB1acy_02.App%26Web.jpg?w=1320&h=780&auto=compress,format",
+    title: "Web Development",
+    text: "Scalable, secure, and fast web solutions engineered to support growth, performance, and long-term business stability.",
+    image: "/imgs/s2.jpg",
   },
   {
     number: "03",
-    title: "Brand strategy and identity design",
-    text: "Why look like someone else when you want to stand out? Together, we craft unique brand identities across touchpoints with a digital-first mindset. We bring the spark by distilling your brand DNA and getting to the root of what your users actually want.",
-    image:
-      "https://images.prismic.io/estrelastudio/aN5_b55xUNkB1acz_03.Brand.jpg?w=1320&h=780&auto=compress,format",
+    title: "Digital Marketing",
+    text: "Strategic SEO, PPC, social media, and content marketing focused on traffic growth, lead generation, and ROI.",
+    image: "/imgs/s3.jpg",
+  },
+  {
+    number: "04",
+    title: "Graphic Design",
+    text: "Creative branding, visuals, and marketing assets designed to capture attention and strengthen brand recognition.",
+    image: "/imgs/s4.jpg",
   },
 ];
 
 const CTA = {
   title:
-    "Discover our services and how we shape purpose-driven digital and branding experiences.",
-  href: "/services",
-  label: "What We Do",
+    "Looking for a custom project? <br /> <span class='text-primary'>Let's work together.</span>",
+  href: "/contact",
+  label: "Get in Touch",
 };
 
 const Services = () => {
@@ -402,9 +405,8 @@ const Services = () => {
                   "service-title font-heading text-[3.4rem] leading-[120%]",
                   "max-[1099px]:text-[2.6rem] max-[1099px]:leading-[120%]",
                 )}
-              >
-                {CTA.title}
-              </h3>
+                dangerouslySetInnerHTML={{ __html: CTA.title }}
+              />
             </div>
 
             <Button href={CTA.href}>{CTA.label}</Button>

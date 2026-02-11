@@ -137,62 +137,6 @@ export default function WorkArchiveHeader() {
           </select>
         </label>
       </div>
-
-      <div className="work-switcher relative text-[1.4rem]">
-        <div className="work-switcher-options flex items-center justify-center gap-[0.3rem] pointer-events-auto">
-          <button
-            type="button"
-            className={cn(
-              "work-switcher-option active relative flex h-16 w-[4.4rem] items-center justify-center overflow-hidden rounded-[0.2rem] pointer-events-auto",
-              "text-light",
-            )}
-            data-value="grid"
-            aria-label="Grid view"
-          >
-            <span
-              aria-hidden="true"
-              className={cn(
-                "work-switcher-bg pointer-events-none absolute inset-0 z-0 rounded-[0.2rem]",
-                "bg-white/10 backdrop-blur-[1.2rem]",
-                "shadow-[inset_0_0_.8rem_rgba(255,255,255,0.02),inset_0_0_.2rem_rgba(255,255,255,0.2)]",
-              )}
-            />
-            <span className="work-switcher-text relative z-1">01</span>
-          </button>
-
-          <button
-            type="button"
-            className={cn(
-              "work-switcher-option relative flex h-16 w-[4.4rem] items-center justify-center overflow-hidden rounded-[0.2rem] pointer-events-auto",
-              "text-light",
-            )}
-            data-value="list"
-            aria-label="List view"
-          >
-            <span
-              aria-hidden="true"
-              className={cn(
-                "work-switcher-bg pointer-events-none absolute inset-0 z-0 rounded-[0.2rem]",
-                "bg-white/10 backdrop-blur-[1.2rem]",
-                "shadow-[inset_0_0_.8rem_rgba(255,255,255,0.02),inset_0_0_.2rem_rgba(255,255,255,0.2)]",
-              )}
-            />
-            <span className="work-switcher-text relative z-1">02</span>
-          </button>
-        </div>
-
-        <fieldset className="filter-group sr-only pointer-events-auto">
-          <legend>Filter projects</legend>
-          <label className="filter-option">
-            <input type="radio" name="work-switcher" value="grid" />
-            <span>Grid</span>
-          </label>
-          <label className="filter-option">
-            <input type="radio" name="work-switcher" value="list" />
-            <span>List</span>
-          </label>
-        </fieldset>
-      </div>
     </div>
   );
 }

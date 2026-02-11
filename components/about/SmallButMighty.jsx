@@ -6,11 +6,10 @@ import { memo, useLayoutEffect, useRef } from "react";
 import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
 
-const IMAGE =
-  "https://images.prismic.io/estrelastudio/aN1j_p5xUNkB1YXF_Divide.jpg?w=3000&h=1500&auto=compress,format";
+const IMAGE = "/imgs/about.jpg";
 
 const CONTENT =
-  "At Estrela, we’re a small team by design. Female-led, close-knit, and committed to showing up with passion and dedication. We pride ourselves on creating one-on-one partnerships that feel personal, not transactional. Balance matters to us, because thriving as people helps us thrive as designers. So we celebrate the wins, learn from the challenges, and keep pushing ourselves to grow. At the heart of it all is that spark you can’t quite put your finger on, but you feel it in everything we do.";
+  "Marketinix is a focused team of strategists, designers, developers, and marketers helping businesses grow online across the United States. We combine creative execution with technical precision to build websites, campaigns, and brand systems that improve real business outcomes. Our process is collaborative and transparent from discovery to delivery. Every recommendation is tied to measurable impact, from stronger visibility and engagement to better-quality leads and long-term growth.";
 
 const SmallButMighty = () => {
   const sectionRef = useRef(null);
@@ -60,7 +59,7 @@ const SmallButMighty = () => {
     >
       <div className="info-content max-[1099px]:p-8 max-[449px]:p-6 min-[1100px]:flex min-[1100px]:mb-12 min-[1100px]:pl-8">
         <h2 className="info-title italic text-[1.8rem] leading-[120%] max-[1099px]:mb-12 max-[449px]:mb-10 min-[1100px]:w-176 min-[1100px]:shrink-0 min-[1100px]:pr-8">
-          Small but Mighty
+          Built for Measurable Growth
         </h2>
         <p className="info-text max-[1099px]:pr-0 max-[1099px]:text-grey max-[1099px]:text-[1.8rem] max-[1099px]:leading-[160%] max-[449px]:text-[1.6rem] min-[1100px]:w-[81.3rem] min-[1100px]:text-[3.4rem] min-[1100px]:leading-[120%]">
           {CONTENT}

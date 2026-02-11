@@ -5,11 +5,11 @@ import { useLayoutEffect, useMemo, useRef } from "react";
 
 import ContactForm from "@/components/contact/ContactForm";
 import Faqs from "@/components/home/Faqs";
-import Testimonials from "@/components/home/Testimonials";
 import { ensureGsap } from "@/utils/gsap";
 import { usePrefersReducedMotion } from "@/utils/usePrefersReducedMotion";
 
 import PreFooter from "../home/PreFooter";
+import Testimonials from "../home/Testimonials";
 import ServiceHero from "./ServiceHero";
 import ServiceApproachSection from "./detail/ServiceApproachSection";
 import ServiceCaseStudiesSection from "./detail/ServiceCaseStudiesSection";

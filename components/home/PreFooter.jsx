@@ -5,8 +5,7 @@ import { useLayoutEffect, useRef } from "react";
 
 import { ensureGsap } from "@/utils/gsap";
 
-const ESTRELA_PRE_FOOTER_IMAGE =
-  "https://images.prismic.io/estrelastudio/aN6C555xUNkB1af4_Rectangle2381-1-min.jpg?w=3000&h=1800&auto=compress,format";
+const ESTRELA_PRE_FOOTER_IMAGE = "/imgs/footer.png";
 
 const remToPx = (rem) => {
   const rootFontSize = Number.parseFloat(

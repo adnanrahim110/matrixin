@@ -13,43 +13,38 @@ const FAQS_TITLE = "FAQs";
 
 const FAQS = [
   {
-    question: "What types of projects do you take on?",
+    question: "What industries do you work with?",
     answer:
-      "We specialise in branding and UX/UI design for websites and apps, but our approach is versatile. Whether it’s a full brand identity, a design system build, or ongoing design support, we adapt to fit your business goals.",
+      "We work with startups, e-commerce brands, service providers, and enterprises across multiple industries. Let's discuss your niche.",
   },
   {
-    question: "Which industries do you work with?",
+    question: "Do you offer custom marketing strategies?",
     answer:
-      "Our core expertise is in fintech and e-commerce, but we’ve partnered with clients across hospitality, law, accounting, packaging, edtech and many more. We are an agile team and our skills can adapt to most verticals, bringing a fresh, human-centric perspective to any industry.",
+      "Yes, every strategy is tailored to your business goals, audience, and budget. Request a free strategy call.",
   },
   {
-    question: "How does your pricing work?",
+    question: "How long does website development take?",
     answer:
-      "We offer both project-based pricing and ongoing retainers, billed at a flat hourly rate. Once we scope your project, you’ll receive a clear estimate before we begin. If the scope shifts, we’ll flag it early so there are no surprises.",
+      "Timelines vary, but most projects are completed within 3-6 weeks. Get a project timeline today.",
   },
   {
-    question: "Do you handle development too?",
+    question: "Can you manage SEO and paid ads together?",
     answer:
-      "We focus on what we do best: design. For development, we collaborate with trusted partners we believe are the best of the best. If you already have a dev team, we’ll work hand-in-hand with them to ensure a smooth handover and seamless build.",
+      "Absolutely. Combining SEO with paid campaigns maximizes visibility and results. Start optimizing your growth now.",
   },
   {
-    question: "What is your design process like?",
+    question: "Do you provide ongoing support after launch?",
     answer:
-      "Every project begins with a discovery session to align on your goals. From there, we move through two key phases: UX Discovery & Design, where we focus on research, user flows, and wireframes to create an intuitive experience, and UI Discovery & Design, where we bring your brand to life through polished, visually engaging interfaces. We work transparently, keep you involved at every stage, and iterate throughout the process to ensure the final product meets your vision.",
+      "Yes, we offer maintenance, updates, and performance optimization. Ask about our support plans.",
   },
   {
-    question: "How long does a typical project take?",
+    question: "How do I get started with Marketinix?",
     answer:
-      "Timelines depend on scope, but most branding projects take roughly 6 to 8 weeks, and websites or apps typically run 8 to 12 weeks from kickoff to development handover. We’ll always share a timeline upfront to ensure clarity and structure.",
+      "Simply contact us, and we'll guide you through the next steps. Let's build something impactful.",
   },
 ];
 
-const remToPx = (rem) => {
-  const rootFontSize = Number.parseFloat(
-    window.getComputedStyle(document.documentElement).fontSize || "16",
-  );
-  return rem * rootFontSize;
-};
+const createInitialOpenMap = (list) => list.map((_, index) => index === 0);
 
 const splitLines = (element, innerClassName) => {
   if (!element) return { revert: () => {}, inlines: [] };
@@ -131,7 +126,7 @@ const Faqs = ({ title, items: itemsProp, light = false, className = "" }) => {
   const initialItems =
     Array.isArray(itemsProp) && itemsProp.length ? itemsProp : FAQS;
 
-  const [openMap, setOpenMap] = useState(() => initialItems.map(() => false));
+  const [openMap, setOpenMap] = useState(() => createInitialOpenMap(initialItems));
   const openMapRef = useRef(openMap);
 
   const items = useMemo(() => initialItems, [itemsProp]);
@@ -141,9 +136,10 @@ const Faqs = ({ title, items: itemsProp, light = false, className = "" }) => {
   }, [openMap]);
 
   useLayoutEffect(() => {
-    setOpenMap(items.map(() => false));
-    openMapRef.current = items.map(() => false);
-    itemRefs.current = [];
+    const nextOpenMap = createInitialOpenMap(items);
+    setOpenMap(nextOpenMap);
+    openMapRef.current = nextOpenMap;
+    itemRefs.current.length = items.length;
     splitRefs.current.forEach((split) => split?.revert?.());
     splitRefs.current = [];
     tlRefs.current.forEach((tl) => tl?.kill?.());
@@ -194,11 +190,17 @@ const Faqs = ({ title, items: itemsProp, light = false, className = "" }) => {
           const split = splitLines(answer, innerClassName);
           splitRefs.current[index] = split;
 
-          gsap.set(split.inlines, { yPercent: 110 });
+          gsap.set(split.inlines, {
+            yPercent: 110,
+            clipPath: "inset(100% 0% 0% 0%)",
+          });
           gsap.set(answer, { yPercent: 10 });
 
           if (openMapRef.current[index]) {
-            gsap.set(split.inlines, { yPercent: 0 });
+            gsap.set(split.inlines, {
+              yPercent: 0,
+              clipPath: "inset(0% 0% 0% 0%)",
+            });
             gsap.set(answer, { yPercent: 0 });
           }
         });
@@ -210,26 +212,16 @@ const Faqs = ({ title, items: itemsProp, light = false, className = "" }) => {
 
         setupItems();
 
-        const isMobile = window.matchMedia("(max-width: 1099px)").matches;
-        const collapsedHeight = remToPx(7.5);
-
         itemRefs.current.forEach((faqEl, index) => {
           if (!faqEl) return;
           const inner = faqEl.querySelector("[data-faq-inner]");
           const wrapper = faqEl.querySelector("[data-faq-answer-wrapper]");
           if (!inner || !wrapper) return;
 
-          if (isMobile) {
-            gsap.set(inner, { height: "auto" });
-            gsap.set(wrapper, {
-              height: openMapRef.current[index] ? "auto" : 0,
-            });
-          } else {
-            gsap.set(wrapper, { height: "auto" });
-            gsap.set(inner, {
-              height: openMapRef.current[index] ? "auto" : collapsedHeight,
-            });
-          }
+          gsap.set(inner, { height: "auto" });
+          gsap.set(wrapper, {
+            height: openMapRef.current[index] ? "auto" : 0,
+          });
         });
       };
 
@@ -256,84 +248,82 @@ const Faqs = ({ title, items: itemsProp, light = false, className = "" }) => {
   }, [items, reducedMotion]);
 
   const toggleFaq = (index) => {
-    const faqEl = itemRefs.current[index];
-    if (!faqEl) return;
-
-    const inner = faqEl.querySelector("[data-faq-inner]");
-    const answerWrapper = faqEl.querySelector("[data-faq-answer-wrapper]");
-    const answer = faqEl.querySelector("[data-faq-answer]");
-    const split = splitRefs.current[index];
-
-    if (!inner || !answerWrapper || !answer || !split?.inlines?.length) return;
-
-    const isMobile = window.matchMedia("(max-width: 1099px)").matches;
-    const nextOpen = !openMapRef.current[index];
-
-    setOpenMap((prev) => {
-      const next = [...prev];
-      next[index] = nextOpen;
-      openMapRef.current = next;
-      return next;
-    });
-
-    tlRefs.current[index]?.kill?.();
-
-    const collapsedHeight = remToPx(7.5);
-
     const dur = reducedMotion ? 0.01 : 0.8;
     const durLong = reducedMotion ? 0.01 : 1.4;
     const ease = reducedMotion ? "none" : "power4.out";
+    const animateFaqState = (itemIndex, shouldOpen) => {
+      const faqEl = itemRefs.current[itemIndex];
+      if (!faqEl) return;
 
-    const tl = gsap.timeline({
-      defaults: { overwrite: "auto" },
-      onComplete: () => {
-        ScrollTrigger.refresh?.();
-      },
+      const answerWrapper = faqEl.querySelector("[data-faq-answer-wrapper]");
+      const answer = faqEl.querySelector("[data-faq-answer]");
+      const split = splitRefs.current[itemIndex];
+      const inlines = split?.inlines ?? [];
+
+      if (!answerWrapper || !answer) return;
+
+      tlRefs.current[itemIndex]?.kill?.();
+
+      const tl = gsap.timeline({
+        defaults: { overwrite: "auto" },
+        onComplete: () => {
+          ScrollTrigger.refresh?.();
+        },
+      });
+
+      if (shouldOpen) {
+        tl.add(() => faqEl.classList.add("active"), 0);
+        tl.to(answerWrapper, { height: "auto", duration: dur, ease }, 0);
+        tl.to(answer, { yPercent: 0, duration: durLong, ease }, 0);
+        if (inlines.length) {
+          tl.to(
+            inlines,
+            {
+              yPercent: 0,
+              clipPath: "inset(0% 0% 0% 0%)",
+              duration: durLong,
+              ease,
+              stagger: reducedMotion ? 0 : 0.05,
+            },
+            0,
+          );
+        }
+      } else {
+        tl.add(() => faqEl.classList.remove("active"), 0);
+        tl.to(answerWrapper, { height: 0, duration: dur, ease }, 0);
+        tl.to(answer, { yPercent: 10, duration: durLong, ease }, 0);
+        if (inlines.length) {
+          tl.to(
+            inlines,
+            {
+              yPercent: 110,
+              clipPath: "inset(100% 0% 0% 0%)",
+              duration: durLong,
+              ease,
+              stagger: reducedMotion ? 0 : 0.05,
+            },
+            0,
+          );
+        }
+      }
+
+      tlRefs.current[itemIndex] = tl;
+    };
+
+    const prevMap = [...openMapRef.current];
+    const nextOpen = !prevMap[index];
+    const nextMap = prevMap.map((_, itemIndex) => nextOpen && itemIndex === index);
+
+    setOpenMap(nextMap);
+    openMapRef.current = nextMap;
+
+    prevMap.forEach((isOpen, itemIndex) => {
+      if (isOpen && itemIndex !== index) {
+        animateFaqState(itemIndex, false);
+      }
     });
 
-    if (nextOpen) {
-      tl.add(() => faqEl.classList.add("active"), 0);
-      tl.to(
-        isMobile ? answerWrapper : inner,
-        { height: "auto", duration: dur, ease },
-        0,
-      );
-      tl.to(answer, { yPercent: 0, duration: durLong, ease }, 0);
-      tl.to(
-        split.inlines,
-        {
-          yPercent: 0,
-          duration: durLong,
-          ease,
-          stagger: reducedMotion ? 0 : 0.05,
-        },
-        0,
-      );
-    } else {
-      tl.add(() => faqEl.classList.remove("active"), 0);
-      tl.to(
-        isMobile ? answerWrapper : inner,
-        {
-          height: isMobile ? 0 : collapsedHeight,
-          duration: dur,
-          ease,
-        },
-        0,
-      );
-      tl.to(answer, { yPercent: 10, duration: durLong, ease }, 0);
-      tl.to(
-        split.inlines,
-        {
-          yPercent: 110,
-          duration: durLong,
-          ease,
-          stagger: reducedMotion ? 0 : 0.05,
-        },
-        0,
-      );
-    }
-
-    tlRefs.current[index] = tl;
+    animateFaqState(index, nextOpen);
   };
 
   return (
@@ -410,7 +400,7 @@ const Faqs = ({ title, items: itemsProp, light = false, className = "" }) => {
                   data-faq-answer-wrapper
                   className={cn(
                     "faq-answer-wrapper overflow-hidden",
-                    "max-[1099px]:h-0",
+                    "h-0",
                   )}
                 >
                   <p

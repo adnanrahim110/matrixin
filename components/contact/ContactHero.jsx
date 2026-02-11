@@ -121,7 +121,7 @@ export default function ContactHero() {
       renderer: "svg",
       loop: false,
       autoplay: false,
-      path: "/icon.json",
+      path: "/mkrt.json",
     });
     lottieDesktopRef.current = anim;
 
@@ -303,7 +303,9 @@ export default function ContactHero() {
             let radiusY = 0;
             let iconIndex = 0;
 
-            const heroMedia = Array.from(section.querySelectorAll(".hero-media"));
+            const heroMedia = Array.from(
+              section.querySelectorAll(".hero-media"),
+            );
 
             const stTl = gsap.timeline({
               scrollTrigger: {
@@ -361,8 +363,7 @@ export default function ContactHero() {
                 if (!item.bounds) return;
 
                 const a0 = anglesRad[(i + angleOffset) % len];
-                const a1 =
-                  anglesRad[(i + angleOffset - shiftStep + len) % len];
+                const a1 = anglesRad[(i + angleOffset - shiftStep + len) % len];
                 const angle = immediate ? a0 : lerpAngle(a0, a1, t);
 
                 const s0 = SCALES[currentScaleIndex][(i + angleOffset) % len];
@@ -373,9 +374,7 @@ export default function ContactHero() {
                 const scale = immediate ? s0 : lerp(s0, s1, t);
 
                 const x =
-                  radiusX +
-                  Math.cos(angle) * radiusX -
-                  item.bounds.width * 0.5;
+                  radiusX + Math.cos(angle) * radiusX - item.bounds.width * 0.5;
                 const y =
                   radiusY -
                   Math.sin(angle) * radiusY -
@@ -576,7 +575,7 @@ export default function ContactHero() {
         ref={wrapperRef}
         className={[
           "hero-media-wrapper pointer-events-none",
-          "absolute left-1/2 top-[47%] h-[65vh] w-[80vw] -translate-x-1/2 -translate-y-1/2",
+          "absolute left-1/2 top-[52%] h-[75vh] w-[80vw] -translate-x-1/2 -translate-y-1/2",
           "max-[1099px]:relative max-[1099px]:left-auto max-[1099px]:top-auto max-[1099px]:mx-auto",
           "max-[1099px]:w-[30rem] max-[1099px]:h-auto max-[1099px]:aspect-[3/1.8]",
           "max-[1099px]:transform-none",

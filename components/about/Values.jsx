@@ -9,28 +9,28 @@ import { ensureGsap } from "@/utils/gsap";
 const VALUES = [
   {
     number: "01",
-    title: "Creatively Curious",
-    text: "We thrive on the unconventional and champion bold, original ideas. Our love of learning fuels our drive to explore uncharted territories in our designs and thinking.",
+    title: "Strategy First",
+    text: "We begin with research, audience insight, and clear objectives before execution. A strong strategy ensures every page, campaign, and creative decision has purpose.",
   },
   {
     number: "02",
-    title: "Freedom to Lead",
-    text: "At our core, we empower and trust each other to take ownership of our roles. We champion initiative, encouraging one another to lead with confidence and seek help when needed.",
+    title: "Performance Mindset",
+    text: "We focus on outcomes that matter: qualified traffic, conversion quality, lead generation, and revenue impact. We measure results and optimize continuously.",
   },
   {
     number: "03",
-    title: "Design Excellence",
-    text: "We are dedicated to our craft and committed to delivering exceptional results in every project we touch. Our shared passion for design ensures that we always bring our best to the table.",
+    title: "Craft and Clarity",
+    text: "From visual design to development quality, we care about details. We build digital experiences that are clean, user-friendly, and aligned with your brand.",
   },
   {
     number: "04",
-    title: "Collective Success",
-    text: "We celebrate our victories and setbacks as a team, and recognise each as crucial for growth. Our success story is written with 'we' as the hero, and uplifts and recognises every voice.",
+    title: "Partnership and Transparency",
+    text: "We work as an extension of your team with clear communication, realistic timelines, and transparent reporting so you always know what is happening and why.",
   },
 ];
 
 const MISSION =
-  "At Estrela, we design to champion the people behind the brands. We focus on solving real challenges so we can build better products and more human experiences. We believe in making a meaningful contribution through collaboration, care and craft, standing alongside our clients as partners and advocates. With a steady, supportive hand, we bring ideas to life, no matter the size, to create work that truly moves people.";
+  "At Marketinix, our mission is to help businesses in the USA grow with digital strategies that are practical, measurable, and built for long-term impact. We combine web design, web development, SEO, social media marketing, and brand-led creative execution to solve real growth challenges. We partner closely with every client, align on clear goals, and deliver with accountability so each digital investment moves your business forward.";
 
 const splitLines = (element) => {
   if (!element) return { revert: () => {}, lines: [] };
@@ -150,7 +150,6 @@ const Values = () => {
           // Split value text into lines so hover can animate line-by-line.
           const splits = [];
           valueRefs.current.filter(Boolean).forEach((valueEl) => {
-            valueEl.classList.add("active");
             const textEl = valueEl.querySelector("[data-value-text]");
             if (!textEl) return;
             splits.push(splitLines(textEl));
@@ -161,23 +160,18 @@ const Values = () => {
           const values = valueRefs.current.filter(Boolean);
           const setActive = (activeIndex) => {
             values.forEach((el, index) => {
-              if (activeIndex === -1) {
-                el.classList.remove("inactive");
-                el.classList.add("active");
-                return;
-              }
-              if (index === activeIndex) {
-                el.classList.add("active");
-                el.classList.remove("inactive");
-              } else {
-                el.classList.add("inactive");
-              }
+              const isActive = index === activeIndex;
+              el.classList.toggle("active", isActive);
+              el.classList.toggle("inactive", !isActive);
             });
           };
 
+          // Start with the first value active.
+          setActive(0);
+
           const handlers = values.map((el, index) => {
             const onEnter = () => setActive(index);
-            const onLeave = () => setActive(-1);
+            const onLeave = () => setActive(0);
             el.addEventListener("mouseenter", onEnter);
             el.addEventListener("mouseleave", onLeave);
             return { el, onEnter, onLeave };
@@ -240,7 +234,7 @@ const Values = () => {
 
       <div className="mv-mission mb-40 max-[1099px]:mb-28 min-[1100px]:mb-[15.1rem] min-[1100px]:ml-[72.6rem] min-[1100px]:w-184">
         <h3 className="mv-mission-title mb-16 text-[1.8rem] italic leading-[120%] min-[1100px]:mb-10 min-[1100px]:text-[2.2rem]">
-          Why We Create
+          Why We Build
         </h3>
         <p className="mv-mission-text text-grey max-[1099px]:text-[1.8rem] max-[1099px]:leading-[160%] max-[449px]:text-[1.6rem]">
           {MISSION}
@@ -263,8 +257,11 @@ const Values = () => {
                 "value group relative hover:z-1",
                 "max-[1099px]:block max-[1099px]:border-t max-[1099px]:border-dark/10 max-[1099px]:py-12 max-[449px]:py-10",
                 "min-[1100px]:flex min-[1100px]:h-[7.6rem] min-[1100px]:cursor-default min-[1100px]:items-center min-[1100px]:justify-end",
-                // active / inactive styling (mirrors Estrela CSS)
                 "[&.active_.value-title]:opacity-100 [&.inactive_.value-title]:opacity-20",
+                "[&.active_.value-text]:opacity-100",
+                "[&.active_.line-inner]:translate-y-0",
+                "[&.active_.char]:translate-y-0",
+                "[&.active_.value-border]:[clip-path:inset(0)]",
               )}
             >
               <div
@@ -284,7 +281,7 @@ const Values = () => {
                   className={cn(
                     "value-number italic overflow-hidden",
                     "max-[1099px]:mb-4",
-                    "min-[1100px]:absolute min-[1100px]:right-[calc(100%+1.5rem)] min-[1100px]:top-[0.6rem] min-[1100px]:w-12 min-[1100px]:text-right",
+                    "min-[1100px]:absolute min-[1100px]:right-[calc(100%+2rem)] min-[1100px]:top-[0.6rem] min-[1100px]:w-12 min-[1100px]:text-right",
                   )}
                 >
                   {value.number.split("").map((char, charIndex) => (
@@ -308,7 +305,7 @@ const Values = () => {
                   className={cn(
                     "value-title font-body leading-[100%] transition-opacity duration-1200 ease-ease",
                     "text-[3.8rem] max-[1099px]:mb-4 max-[1099px]:leading-[115%] max-[699px]:text-[3.4rem] max-[449px]:text-[3.0rem]",
-                    "min-[1100px]:w-286 min-[1100px]:text-[5.4rem]",
+                    "min-[1100px]:w-286 min-[1100px]:text-[4.5rem]",
                   )}
                 >
                   {value.title}

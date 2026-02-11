@@ -528,7 +528,7 @@ const Footer = () => {
               <h6 className="links-title mb-[2.4rem] font-heading text-[1.6rem] opacity-60">
                 {dropdownNav?.name || "Services"}
               </h6>
-              <div className="space-y-2">
+              <div className="space-y-3.5">
                 {(dropdownNav?.dropdown || []).map((item) => (
                   <Link
                     key={item.slug}
@@ -597,7 +597,6 @@ const Footer = () => {
             <Button
               href="/contact-us"
               variant="magnetic"
-              tone="green"
               className="max-[1099px]:min-h-40"
             >
               Contact Us
@@ -611,25 +610,27 @@ const Footer = () => {
                 </p>
 
                 <div className="contact flex flex-col items-start">
-                  <div className="contact-link-wrapper mb-4 flex items-start">
-                    <span
-                      aria-hidden="true"
-                      className="contact-bullet mt-4 mr-4 block h-[0.4rem] w-[0.4rem] rotate-45 bg-light"
-                    />
-                    <a
-                      href={phoneContact?.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={phoneContact?.name || "Phone"}
-                      className={cn(
-                        "contact-link relative z-1 inline-block overflow-hidden text-light",
-                        "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
-                        "hover:after:scale-x-100 hover:after:origin-left",
-                      )}
-                    >
-                      {phoneContact?.value}
-                    </a>
-                  </div>
+                  {phoneContact && (
+                    <div className="contact-link-wrapper mb-4 flex items-start">
+                      <span
+                        aria-hidden="true"
+                        className="contact-bullet mt-4 mr-4 block h-[0.4rem] w-[0.4rem] rotate-45 bg-light"
+                      />
+                      <a
+                        href={phoneContact?.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={phoneContact?.name || "Phone"}
+                        className={cn(
+                          "contact-link relative z-1 inline-block overflow-hidden text-light",
+                          "after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-current after:scale-x-0 after:origin-right after:transition-transform after:duration-1400 after:ease-[cubic-bezier(.19,1,.22,1)]",
+                          "hover:after:scale-x-100 hover:after:origin-left",
+                        )}
+                      >
+                        {phoneContact?.value}
+                      </a>
+                    </div>
+                  )}
 
                   <div className="contact-link-wrapper mb-4 flex items-start">
                     <span

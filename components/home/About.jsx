@@ -7,14 +7,10 @@ import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
 import Button from "../ui/Button";
 
-const ABOUT_IMAGES = [
-  "https://images.prismic.io/estrelastudio/aN6PdJ5xUNkB1aq3_WhoweAre_01.jpg?w=2100&h=1350&auto=compress,format",
-  "https://images.prismic.io/estrelastudio/aN6PdZ5xUNkB1aq4_WhoweAre_02.jpg?w=2100&h=1350&auto=compress,format",
-  "https://images.prismic.io/estrelastudio/aN6VT55xUNkB1avI_WhoweAre_03.jpg?w=2100&h=1350&auto=compress,format",
-];
+const ABOUT_IMAGES = ["/imgs/a1.jpg", "/imgs/a2.jpg", "/imgs/a3.jpg"];
 
 const ABOUT_TEXT =
-  "Estrela Studio is a people-first design studio that cares as much about your business and product as you do. We’re big on honesty, collaboration, and good coffee, the foundations of every great partnership. No project is too small for our A-game and we pour the same craft and care into every brief. Our promise is simple: to guide you with a steady, nurturing hand and turn your ideas, big or small, into brands, websites, and experiences that truly matter.";
+  "Marketinix is a results-focused digital agency built for brands that want measurable growth, not just online presence. We combine strategy, creativity, and technology to deliver digital solutions that perform. Our team works closely with clients across the USA to understand their goals, audience, and competitive landscape. From startups to growing enterprises, we help businesses strengthen their digital footprint, attract the right customers, and convert traffic into revenue. Transparency, innovation, and performance drive everything we do—because your success is our metric.";
 
 const About = () => {
   const sectionRef = useRef(null);

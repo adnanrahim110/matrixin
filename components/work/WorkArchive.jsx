@@ -10,7 +10,6 @@ import { useWorkArchiveEffects } from "@/utils/useWorkArchiveEffects";
 import WorkArchiveHeader from "./WorkArchiveHeader";
 import WorkArchiveTitle from "./WorkArchiveTitle";
 import WorkGrid from "./WorkGrid";
-import WorkList from "./WorkList";
 
 export default function WorkArchive() {
   const rootRef = useRef(null);
@@ -38,7 +37,6 @@ export default function WorkArchive() {
         <div className="work-wrapper relative z-0 -mt-[40vh]">
           <div className="work-inner relative overflow-hidden">
             <WorkGrid projects={WORK_PROJECTS} />
-            <WorkList projects={WORK_PROJECTS} />
           </div>
         </div>
       </section>

@@ -226,6 +226,11 @@ export default function ServiceHero({ service }) {
   const hasBullets = bullets.length > 0;
   const hasFacts = facts.length > 0;
   const hasAside = hasMedia || hasBullets || hasFacts;
+  const hasPrimaryCta = Boolean(primaryCta?.href && primaryCta?.label);
+  const hasSecondaryCta = Boolean(secondaryCta?.href && secondaryCta?.label);
+  const hasHeroCta = hasPrimaryCta || hasSecondaryCta;
+  const showRightCta = hasHeroCta && !hasBullets && hasAside;
+  const showLeftCta = hasHeroCta && !showRightCta;
 
   return (
     <header
@@ -273,7 +278,7 @@ export default function ServiceHero({ service }) {
               <h1
                 ref={titleRef}
                 className={cn(
-                  "font-heading text-[clamp(6.2rem,5vw+2rem,7.5rem)] leading-[105%] tracking-[-0.03em]",
+                  "font-heading text-[clamp(6.2rem,5vw+1rem,6.5rem)] leading-[105%] tracking-[-0.03em]",
                   "max-w-240 max-[1099px]:max-w-none",
                   "max-[1099px]:text-[5.4rem] max-[1099px]:leading-[110%] max-[699px]:text-[4.4rem] max-[449px]:text-[3.8rem]",
                   hero?.eyebrow && "mt-6",
@@ -285,7 +290,7 @@ export default function ServiceHero({ service }) {
               <p
                 ref={subtitleRef}
                 className={cn(
-                  "mt-8 text-[2.4rem] leading-[140%] max-w-208",
+                  "mt-8 text-[2rem] leading-[140%] max-w-208",
                   "max-[1099px]:mt-6 max-[1099px]:max-w-none max-[699px]:text-[2rem] max-[449px]:text-[1.8rem]",
                   subtleText,
                 )}
@@ -314,27 +319,29 @@ export default function ServiceHero({ service }) {
                 </div>
               )}
 
-              <div className="mt-12 grid gap-4 max-[1099px]:mt-10 max-[449px]:mt-8">
-                {primaryCta?.href && primaryCta?.label && (
-                  <Button
-                    href={primaryCta.href}
-                    variant="magnetic"
-                    tone={tone}
-                    className="h-24 max-[449px]:h-20"
-                  >
-                    {primaryCta.label}
-                  </Button>
-                )}
-                {secondaryCta?.href && secondaryCta?.label && (
-                  <Button
-                    href={secondaryCta.href}
-                    tone="light"
-                    className={cn("h-24 max-[449px]:h-20")}
-                  >
-                    {secondaryCta.label}
-                  </Button>
-                )}
-              </div>
+              {showLeftCta && (
+                <div className="mt-12 grid gap-4 max-[1099px]:mt-10 max-[449px]:mt-8">
+                  {hasPrimaryCta && (
+                    <Button
+                      href={primaryCta.href}
+                      variant="magnetic"
+                      tone={tone}
+                      className="h-24 max-[449px]:h-20"
+                    >
+                      {primaryCta.label}
+                    </Button>
+                  )}
+                  {hasSecondaryCta && (
+                    <Button
+                      href={secondaryCta.href}
+                      tone="light"
+                      className={cn("h-24 max-[449px]:h-20")}
+                    >
+                      {secondaryCta.label}
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
 
             {hasAside && (
@@ -356,6 +363,35 @@ export default function ServiceHero({ service }) {
                       loading="lazy"
                     />
                   </figure>
+                )}
+
+                {showRightCta && (
+                  <div
+                    className={cn(
+                      hasMedia ? "mt-8" : "mt-0",
+                      "grid gap-4 max-[1099px]:mt-8 max-[449px]:mt-6",
+                    )}
+                  >
+                    {hasPrimaryCta && (
+                      <Button
+                        href={primaryCta.href}
+                        variant="magnetic"
+                        tone={tone}
+                        className="h-24 max-[449px]:h-20"
+                      >
+                        {primaryCta.label}
+                      </Button>
+                    )}
+                    {hasSecondaryCta && (
+                      <Button
+                        href={secondaryCta.href}
+                        tone="light"
+                        className={cn("h-24 max-[449px]:h-20")}
+                      >
+                        {secondaryCta.label}
+                      </Button>
+                    )}
+                  </div>
                 )}
 
                 {hasBullets && (

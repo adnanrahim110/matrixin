@@ -696,7 +696,7 @@ export default function MegaMenu({ open, onClose, navlinks = [] }) {
                 const isDropdown =
                   link.href === false && Array.isArray(link.dropdown);
                 const shared = cn(
-                  "group relative block font-heading text-[7.8rem] leading-[110%] text-light",
+                  "group relative block font-heading text-[7.2rem] leading-[110%] text-light",
                   "max-[1099px]:text-[5.4rem]",
                 );
                 const indicator = (
@@ -826,20 +826,22 @@ export default function MegaMenu({ open, onClose, navlinks = [] }) {
                   <ArrowUpRight className="w-6 h-6 text-white/40 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-500" />
                 </a>
 
-                <a
-                  href={phoneContact?.href}
-                  className="group flex items-center justify-between py-2 border-b border-white/10 hover:border-white/40 transition-colors duration-500"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 text-white/60 group-hover:bg-white group-hover:text-dark transition-all duration-500">
-                      <PhoneIcon className="w-5 h-5" />
+                {phoneContact && (
+                  <a
+                    href={phoneContact?.href}
+                    className="group flex items-center justify-between py-2 border-b border-white/10 hover:border-white/40 transition-colors duration-500"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 text-white/60 group-hover:bg-white group-hover:text-dark transition-all duration-500">
+                        <PhoneIcon className="w-5 h-5" />
+                      </div>
+                      <span className="text-[1.8rem] text-light font-light group-hover:translate-x-2 transition-transform duration-500">
+                        {phoneContact?.value}
+                      </span>
                     </div>
-                    <span className="text-[1.8rem] text-light font-light group-hover:translate-x-2 transition-transform duration-500">
-                      {phoneContact?.value}
-                    </span>
-                  </div>
-                  <ArrowUpRight className="w-6 h-6 text-white/40 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-500" />
-                </a>
+                    <ArrowUpRight className="w-6 h-6 text-white/40 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-500" />
+                  </a>
+                )}
               </div>
             </div>
 
@@ -863,16 +865,16 @@ export default function MegaMenu({ open, onClose, navlinks = [] }) {
                   {socials.map((social) => {
                     const Icon = social?.Icon || ArrowUpRight;
                     return (
-                    <a
-                      key={social.label}
-                      href={social.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={social.label}
-                      className="flex items-center justify-center w-12 h-12 rounded-full border border-white/10 text-white/60 hover:bg-white hover:text-dark hover:border-white transition-all duration-500 ease-out"
-                    >
-                      <Icon className="w-5 h-5" />
-                    </a>
+                      <a
+                        key={social.label}
+                        href={social.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={social.label}
+                        className="flex items-center justify-center w-12 h-12 rounded-full border border-white/10 text-white/60 hover:bg-white hover:text-dark hover:border-white transition-all duration-500 ease-out"
+                      >
+                        <Icon className="w-5 h-5" />
+                      </a>
                     );
                   })}
                 </div>

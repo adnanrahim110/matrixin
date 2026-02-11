@@ -40,7 +40,7 @@ export default function WorkCta({ wrapperClassName }) {
             variant="magnetic"
             href="/contact"
             tone="dark"
-            className="min-h-64 w-full max-w-92 min-[1100px]:h-48 min-[1100px]:min-h-48 min-[1100px]:w-176"
+            className="min-h-64 w-full max-[1099px]:max-w-92 min-[1100px]:h-48 min-[1100px]:min-h-48 w-176"
           >
             Get in touch
           </Button>

@@ -5,7 +5,7 @@ export default function WorkList({ projects }) {
   return (
     <div className="work-list">
       <div className="work-list-wrapper relative w-full min-[1100px]:absolute min-[1100px]:inset-0">
-        <div className="work-list-inner z-10 pt-[60vh] min-[1100px]:absolute min-[1100px]:left-0 min-[1100px]:top-[60vh] min-[1100px]:w-full min-[1100px]:pt-0">
+        <div className="work-list-inner z-10 pt-[60vh] min-[1100px]:absolute min-[1100px]:left-0 min-[1100px]:top-[-60vh] min-[1100px]:w-full min-[1100px]:pt-0">
           <div className="work-list-projects relative w-full bg-dark min-[1100px]:absolute min-[1100px]:inset-0">
             {projects.map((project) => {
               const dataServices = JSON.stringify(

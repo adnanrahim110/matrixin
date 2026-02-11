@@ -472,7 +472,7 @@ const Header = ({ menuOpen = false, onToggleMenu, navlinks = [] }) => {
             id="header-services-dropdown"
             role="menu"
             className={cn(
-              "absolute left-1/2 top-full z-20 mt-8 w-188 -translate-x-1/2 overflow-hidden rounded-[0.4rem] border",
+              "absolute left-1/2 top-full z-20 mt-8 w-full -translate-x-1/2 overflow-hidden rounded-[0.4rem] border",
               "[-webkit-backdrop-filter:blur(1.2rem)] backdrop-blur-[2rem]",
               theme === "dark"
                 ? "border-white/10 bg-black/70 text-light"
@@ -524,7 +524,7 @@ const Header = ({ menuOpen = false, onToggleMenu, navlinks = [] }) => {
 
             <div className="px-4 py-4">
               <div>
-                <div className="grid grid-cols-2 gap-2 max-[1099px]:grid-cols-1">
+                <div className="grid gap-2 max-[1099px]:grid-cols-1">
                   {(servicesLink.dropdown || []).map((service) => {
                     const isActive =
                       pathname === `/services/${service.slug}` ||
@@ -548,7 +548,7 @@ const Header = ({ menuOpen = false, onToggleMenu, navlinks = [] }) => {
                             : "hover:bg-dark/5",
                         )}
                       >
-                        <span className="font-heading text-[1.4rem] leading-[110%] max-[1099px]:text-[2rem]">
+                        <span className="font-heading text-[1.4rem] leading-[110%] max-[1099px]:text-[2rem] whitespace-nowrap">
                           {service.name}
                         </span>
                         <span

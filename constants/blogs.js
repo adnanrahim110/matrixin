@@ -8,7 +8,7 @@ export const BLOGS = [
     updatedAt: "2026-01-22",
     readingTime: "7 min read",
     author: {
-      name: "Matrixin Studio",
+      name: "Marketinix Studio",
       role: "Design & Development",
       avatar:
         "https://images.prismic.io/estrelastudio/aN6C555xUNkB1af4_Rectangle2381-1-min.jpg?w=800&h=800&auto=compress,format",
@@ -21,7 +21,7 @@ export const BLOGS = [
       caption: "Editorial systems are less about components and more about rhythm.",
     },
     meta: {
-      title: "Building an editorial design system that scales | Matrixin",
+      title: "Building an editorial design system that scales | Marketinix",
       description:
         "Learn how to build an editorial design system that stays premium as content grows: typography, spacing, and interaction rhythm.",
       keywords: ["editorial design", "design system", "typography", "ui"],
@@ -74,7 +74,7 @@ export const BLOGS = [
       {
         type: "quote",
         text: "A premium feel isn’t the number of effects — it’s the restraint and consistency.",
-        cite: "Matrixin notes",
+        cite: "Marketinix notes",
       },
       {
         type: "statGrid",
@@ -108,7 +108,7 @@ export const BLOGS = [
     updatedAt: "2026-01-05",
     readingTime: "6 min read",
     author: {
-      name: "Matrixin Studio",
+      name: "Marketinix Studio",
       role: "UX Strategy",
       avatar:
         "https://images.prismic.io/estrelastudio/aN6PdJ5xUNkB1aq3_WhoweAre_01.jpg?w=800&h=800&auto=compress,format",
@@ -121,7 +121,7 @@ export const BLOGS = [
       caption: "Clarity first, personality second — but never absent.",
     },
     meta: {
-      title: "Conversion-first landing pages (without looking generic) | Matrixin",
+      title: "Conversion-first landing pages (without looking generic) | Marketinix",
       description:
         "Learn a conversion-first landing page structure that stays premium and custom: clarity, proof, and editorial rhythm.",
       keywords: ["landing pages", "conversion rate", "ux", "ui design"],
@@ -171,7 +171,7 @@ export const BLOGS = [
     updatedAt: "2025-11-18",
     readingTime: "8 min read",
     author: {
-      name: "Matrixin Studio",
+      name: "Marketinix Studio",
       role: "Product Design",
       avatar:
         "https://images.prismic.io/estrelastudio/aN5_bZ5xUNkB1acy_02.App%26Web.jpg?w=800&h=800&auto=compress,format",
@@ -184,7 +184,7 @@ export const BLOGS = [
       caption: "Audits are fastest when you follow a consistent rubric.",
     },
     meta: {
-      title: "A practical UI/UX audit checklist | Matrixin",
+      title: "A practical UI/UX audit checklist | Marketinix",
       description:
         "Use this UI/UX audit checklist to identify friction and quick wins across hierarchy, accessibility, performance, and conversion.",
       keywords: ["ux audit", "ui audit", "accessibility", "performance"],
@@ -236,7 +236,7 @@ export const BLOGS = [
     updatedAt: "2025-10-12",
     readingTime: "5 min read",
     author: {
-      name: "Matrixin Studio",
+      name: "Marketinix Studio",
       role: "SEO & Content",
       avatar:
         "https://images.prismic.io/estrelastudio/aN-dN55xUNkB1cOz_testimonials-bg.jpg?w=800&h=800&auto=compress,format",
@@ -249,7 +249,7 @@ export const BLOGS = [
       caption: "Structure makes content indexable and understandable.",
     },
     meta: {
-      title: "SEO for editorial sites: structure beats hacks | Matrixin",
+      title: "SEO for editorial sites: structure beats hacks | Marketinix",
       description:
         "Build durable SEO for editorial sites with semantic structure, internal linking, and clean metadata — no hacks needed.",
       keywords: ["SEO", "editorial site", "semantic HTML", "content strategy"],
@@ -290,7 +290,7 @@ export const BLOGS = [
     updatedAt: "2025-09-04",
     readingTime: "6 min read",
     author: {
-      name: "Matrixin Studio",
+      name: "Marketinix Studio",
       role: "Brand & Content",
       avatar:
         "https://images.prismic.io/estrelastudio/aN6L155xUNkB1anY_Grid_01.jpg?w=800&h=800&auto=compress,format",
@@ -303,7 +303,7 @@ export const BLOGS = [
       caption: "People buy outcomes, not aesthetics.",
     },
     meta: {
-      title: "Case study writing that actually sells | Matrixin",
+      title: "Case study writing that actually sells | Marketinix",
       description:
         "Learn a case study structure that sells: problem, constraints, approach, and measurable results — written for skimmers.",
       keywords: ["case study", "copywriting", "portfolio", "results"],
@@ -328,7 +328,7 @@ export const BLOGS = [
       {
         type: "quote",
         text: "The best case studies read like a clear story — not a feature list.",
-        cite: "Matrixin writing note",
+        cite: "Marketinix writing note",
       },
       {
         type: "statGrid",
@@ -350,7 +350,7 @@ export const BLOGS = [
     updatedAt: "2025-08-26",
     readingTime: "7 min read",
     author: {
-      name: "Matrixin Studio",
+      name: "Marketinix Studio",
       role: "Frontend",
       avatar:
         "https://images.prismic.io/estrelastudio/aN6L2J5xUNkB1anZ_Grid_02.jpg?w=800&h=800&auto=compress,format",
@@ -363,7 +363,7 @@ export const BLOGS = [
       caption: "Fast is a feeling, not only a metric.",
     },
     meta: {
-      title: "Performance as a design feature | Matrixin",
+      title: "Performance as a design feature | Marketinix",
       description:
         "Improve UX by treating performance as a design feature: motion restraint, image strategy, and interaction latency.",
       keywords: ["performance", "web vitals", "ux", "frontend"],

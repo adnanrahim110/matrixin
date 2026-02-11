@@ -1,8 +1,11 @@
 import { Facebook, Instagram, Linkedin, Mail, Phone, Twitter } from "lucide-react";
 import { SERVICES } from "./services";
 
+const toNavServiceName = (name = "") =>
+  String(name).replace(/\s+in\s+USA$/i, "").trim();
+
 const SERVICES_DROPDOWN = SERVICES.map((service) => ({
-  name: service.name,
+  name: toNavServiceName(service.name),
   slug: service.slug,
 }));
 
@@ -46,12 +49,12 @@ export const contactDetails = [
     tone: "primary",
     description: "Send a brief - or just say hello.",
   },
-  {
-    name: "Phone",
-    value: "+1 234 567 890",
-    href: "tel:+1234567890",
-    Icon: Phone,
-    tone: "green",
-    description: "Prefer a call? We're happy to chat.",
-  },
+  // {
+  //   name: "Phone",
+  //   value: "+1 234 567 890",
+  //   href: "tel:+1234567890",
+  //   Icon: Phone,
+  //   tone: "green",
+  //   description: "Prefer a call? We're happy to chat.",
+  // },
 ];

@@ -554,6 +554,8 @@ export const SERVICES = [
       lede: [
         "Whether you’re a startup, local business, or growing company, we develop websites that support your business goals — leads, sales, and long-term scalability.",
       ],
+      primaryCta: { label: "Get Free Custom Development Consultation", href: "/contact-us" },
+      secondaryCta: { label: "View Portfolio", href: "/portfolio" },
       image: { src: "/imgs/services/s3-h.jpg", alt: "Custom Web Development Services in USA" },
     },
     includes: {
@@ -639,6 +641,7 @@ export const SERVICES = [
       subtitle:
         "Marketinix offers professional SEO services in the USA focused on real business growth, not just rankings. Our strategies help your website attract qualified traffic, improve visibility, and convert users into paying customers.",
       lede: ["We follow 100% white-hat SEO practices aligned with Google’s latest algorithms."],
+      primaryCta: { label: "Get Free SEO Consultation", href: "/contact-us" },
       image: { src: "/imgs/services/s4-h.jpg", alt: "SEO Services in USA" },
     },
     includes: {
@@ -721,6 +724,7 @@ export const SERVICES = [
       title: "Turn Followers into Customers",
       subtitle:
         "Social media isn’t just about posting — it’s about engagement, branding, and conversions. Marketinix provides social media marketing services in the USA to help brands connect with the right audience and drive measurable results.",
+      primaryCta: { label: "Get Free Social Media Consultation", href: "/contact-us" },
       image: {
         src: "/imgs/services/s5-h.jpg",
         alt: "Social Media Marketing Services in USA",

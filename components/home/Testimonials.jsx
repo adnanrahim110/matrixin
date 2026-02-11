@@ -19,59 +19,44 @@ const TESTIMONIALS_BG = "/imgs/testi.jpg";
 
 const TESTIMONIALS = [
   {
-    text: `"The team at Estrela have been amazing and critical to our UI/UX journey, they challenge our thoughts for the better and have allowed us to become South Africa's fastest-growing Buy Now Pay Later platform. I cannot recommend them enough."`,
-    name: "Craig Newborn",
-    role: "Former CEO, PayJustNow",
+    text: "Marketinix rebuilt our website with a clear conversion strategy and stronger user experience. Within three months, our qualified inbound leads increased and our sales team had better opportunities to close.",
+    name: "Michael Turner",
+    role: "Director of Growth, US Home Services Company",
   },
   {
-    text: `"Working with Estrela Studio has been a genuinely outstanding experience. Their team brings a rare combination of creativity, technical expertise, and collaborative spirit. Estrela met us exactly where we were - they listened closely, understood the strategic goals and translated that direction into clear, compelling visual design. They led the project with confidence, and I recommend them without hesitation."`,
-    name: "Donna Blackwell-Kopotic",
-    role: "Sims Lifecycle Service (US)",
+    text: "Their team combined web design, web development, and SEO in one clear plan. The new site is faster, easier to manage, and now ranks for high-intent keywords in our target US markets.",
+    name: "Emily Carter",
+    role: "Marketing Manager, US Professional Services Firm",
   },
   {
-    text: `"The Estrela team have a grasp of branding and product design like I've never seen before. We searched the globe for a tech-focused CI design agency and found that the top talent was right here in Cape Town."`,
-    name: "Colleen Harrison",
-    role: "Former Head of Marketing, Payfast",
+    text: "We needed a partner who could align brand messaging with measurable digital performance. Marketinix delivered a complete strategy that improved both our online visibility and lead quality.",
+    name: "Daniel Brooks",
+    role: "Founder, B2B SaaS Startup",
   },
   {
-    text: `"Working with Natalia and the Estrela team is like working with a bomb squad. They know exactly which wires to cut to get exactly the results we were looking for. They are the only agency we have on speed dial."`,
-    name: "Jason Bagley",
-    role: "Founder and CEO, Growth Experts (US)",
+    text: "From technical SEO fixes to landing page improvements, every recommendation was practical and data-backed. We saw better organic traffic and lower cost per acquisition across campaigns.",
+    name: "Sophia Mitchell",
+    role: "Head of Marketing, US E-commerce Brand",
   },
   {
-    text: `"Working with Natalia and the Estrela team on the HelpGuide rebrand has been a true pleasure. Their design approach is strategic, thoughtful, and truly user-centric, and we couldn't be more pleased with the results."`,
-    name: "Melinda Smith",
-    role: "Executive Director & Editor in Chief, HelpGuide (US)",
+    text: "Marketinix took ownership from discovery to execution and kept communication transparent at every stage. Their digital marketing support gave us stronger performance and a clear path to scale.",
+    name: "Olivia Reed",
+    role: "Operations Lead, US Healthcare Group",
   },
   {
-    text: `"The team at Estrela Studio are a powerhouse squad of design, UI and UX professionals. Their DNA can be found in our brand for good reason. Smart, dedicated and always tackling each new brief with diligence and enthusiasm. Highly recommended without hesitation."`,
-    name: "Mark McChlery",
-    role: "Chief Data and Analytics Officer, PayJustNow",
+    text: "What impressed us most was their ability to turn complex requirements into a clean, conversion-focused website. The final product reflects our brand and performs far better than our previous platform.",
+    name: "Ryan Foster",
+    role: "Co-Founder, US Logistics Platform",
   },
   {
-    text: `"Working with Estrela Studio has been a truly special experience. Leigh and Kristen invested themselves in our journey, capturing the essence of our brand and going the extra mile at every step. Their creativity, care, and dedication shine through in a site that feels world-class and truly ours. Sharing tears with us at launch was a testament to how much they cared. We're deeply grateful and proud to recommend Estrela Studio."`,
-    name: "Keith Hesketh",
-    role: "Marketing & eCommerce Manager, Yucca Packaging",
+    text: "Their social media marketing and paid campaign strategy helped us reach the right audience instead of just increasing impressions. Engagement quality improved and we started generating consistent inquiries.",
+    name: "Ava Jenkins",
+    role: "Brand Manager, US Consumer Services Company",
   },
   {
-    text: `"Working with the Estrela team was a joy. The experience of turning an idea into a product design has the potential to be chaotic and overwhelming, but the experts at Estrela knew how to ask the right questions and turn the answers into a structured, clear design process that delivered stunning results that exceeded the project goals, and on deadline, to boot!"`,
-    name: "Brianna Bond",
-    role: "CEO, LCFO (US)",
-  },
-  {
-    text: `"We at Itemate have worked with the Estrela team for the past two years. During this time, their professionalism and creativity has added a dimension to our solutions which has had a major positive impact on our client's experience and assisting us grow with these clients. A big thanks to Natalia and Team."`,
-    name: "Robert van Breukelen",
-    role: "CEO, Itemate Solutions",
-  },
-  {
-    text: `"Estrela has been fantastic to collaborate with and went to great detail to understand my brands needs and turned that into the most effective user experience for my customers. Look forward to working together again soon."`,
-    name: "Justin Archer",
-    role: "Founder, Bashwax Animation Studio",
-  },
-  {
-    text: `"Natalia and her team at Estrela are some of the best UX/UI designers we've had the privilege of working with. From conception through to execution, their thoughtfulness and thoroughness never fail to impress."`,
-    name: "Anton Van Diermen",
-    role: "Director and Co-Founder, Zulik",
+    text: "We were looking for a long-term digital partner, not a short-term vendor. Marketinix consistently delivered on strategy, design quality, and reporting clarity, which made decision-making much easier for our team.",
+    name: "Nathan Cole",
+    role: "Business Development Director, US Consulting Firm",
   },
 ];
 
@@ -476,7 +461,7 @@ const Testimonials = ({ items: itemsProp, title, overline, backgroundSrc }) => {
         className={cn(
           "testimonials-title relative z-2 mx-auto text-center font-heading",
           "px-8 mb-[10.4rem] text-[5.4rem] leading-[120%]",
-          "min-[1100px]:w-[81.6rem] min-[1100px]:mb-[6.4rem] min-[1100px]:text-[8.4rem] min-[1100px]:leading-[100%]",
+          "min-[1100px]:max-w-7xl min-[1100px]:mb-[6.4rem] min-[1100px]:text-[7rem] min-[1100px]:leading-[100%]",
         )}
       >
         {title || TITLE}
@@ -519,7 +504,7 @@ const Testimonials = ({ items: itemsProp, title, overline, backgroundSrc }) => {
                 key={`${index}-${item.name}`}
                 data-carousel-item
                 className={cn(
-                  "carousel-item relative min-w-0 flex-[0_0_81.6rem] w-[81.6rem] h-200",
+                  "carousel-item relative min-w-0 flex-[0_0_81.6rem] w-[81.6rem] h-120",
                   "max-[1099px]:flex-[0_0_calc(100vw-6rem)] max-[1099px]:w-[calc(100vw-6rem)] max-[1099px]:h-0 max-[1099px]:pb-[72%] max-[1099px]:mx-2",
                   isCurrent && "current",
                   isPrev && "prev",

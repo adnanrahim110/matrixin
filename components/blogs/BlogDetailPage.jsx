@@ -7,7 +7,7 @@ import { useLayoutEffect, useMemo, useRef } from "react";
 import ContactForm from "@/components/contact/ContactForm";
 import Faqs from "@/components/home/Faqs";
 import PreFooter from "@/components/home/PreFooter";
-import Testimonials from "@/components/home/Testimonials";
+import Testimonials from "@/components/layouts/Testimonials";
 import Button from "@/components/ui/Button";
 import { cn } from "@/utils/cn";
 import { ensureGsap } from "@/utils/gsap";
